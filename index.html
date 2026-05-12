@@ -1,0 +1,2516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pokémon Odyssey — Companion Guide v4.1.1</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080d18;--bg2:#0f1520;--bg3:#17213a;--border:#243050;--gold:#f0c040;--teal:#00c4e0;--green:#22c55e;--red:#ef4444;--text:#dde6f5;--text2:#8899bb;--shadow:0 4px 20px rgba(0,0,0,.6);--radius:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Exo 2',sans-serif;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* HEADER */
+header{background:linear-gradient(135deg,#050a12 0%,#0d1830 60%,#08102a 100%);border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:200;box-shadow:0 4px 30px rgba(0,0,0,.9)}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;gap:12px}
+.title-block{}
+.site-title{font-family:'Press Start 2P',monospace;font-size:13px;color:var(--gold);text-shadow:0 0 24px rgba(240,192,64,.6);letter-spacing:1px}
+.site-sub{font-size:10px;color:var(--text2);margin-top:3px}
+nav{display:grid;grid-template-columns:repeat(5,1fr);background:rgba(0,0,0,.3);border-top:1px solid rgba(36,48,80,.6)}
+.tab-btn{background:none;border:none;border-bottom:3px solid transparent;color:var(--text2);padding:10px 6px;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:7.5px;white-space:nowrap;transition:.2s all;text-align:center;overflow:hidden;text-overflow:ellipsis}
+.tab-btn:hover{color:var(--text);background:rgba(255,255,255,.04)}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);background:rgba(240,192,64,.07)}
+
+/* SECTIONS */
+.section{display:none;padding:20px;max-width:1440px;margin:0 auto;animation:fadeIn .2s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* PROGRESS */
+.progress-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:14px}
+.progress-label{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold);white-space:nowrap}
+.progress-track{flex:1;height:10px;background:var(--bg3);border-radius:5px;overflow:hidden;border:1px solid var(--border)}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:5px;transition:width .4s ease}
+.progress-count{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--text2);white-space:nowrap}
+
+/* SECTION HEADING */
+.section-title{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--gold);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.note-box{background:rgba(240,192,64,.07);border:1px solid rgba(240,192,64,.25);border-radius:var(--radius);padding:10px 14px;font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.6}
+.note-box strong{color:var(--gold)}
+
+/* FILTERS */
+.filters{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.search-input{background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:7px 12px;border-radius:var(--radius);font-family:'Exo 2',sans-serif;font-size:13px;width:220px;outline:none;transition:.2s}
+.search-input:focus{border-color:var(--gold)}
+.filter-btn{background:var(--bg2);border:1px solid var(--border);color:var(--text2);padding:6px 12px;border-radius:var(--radius);cursor:pointer;font-size:12px;font-family:'Exo 2',sans-serif;transition:.2s}
+.filter-btn:hover,.filter-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(240,192,64,.08)}
+
+/* POKÉDEX GRID */
+.pokedex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.poke-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:10px;cursor:pointer;transition:.2s all;position:relative;overflow:hidden;user-select:none}
+.poke-card:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:var(--shadow)}
+.poke-card.caught{border-color:var(--green);background:linear-gradient(135deg,var(--bg2) 0%,rgba(34,197,94,.07) 100%)}
+.poke-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.poke-num{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--text2)}
+.catch-btn{width:18px;height:18px;border-radius:50%;border:2px solid #475569;background:none;cursor:pointer;transition:.2s;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:transparent}
+.catch-btn.caught{border-color:var(--green);background:var(--green);color:#fff}
+.poke-sprite{display:block;width:72px;height:72px;margin:2px auto 4px;image-rendering:pixelated;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))}
+.poke-name{font-weight:700;font-size:12px;text-align:center;margin-bottom:5px;line-height:1.2}
+.etrian-star{color:var(--gold)}
+.type-badges{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;margin-bottom:4px}
+.tb{padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.poke-evo{font-size:10px;color:var(--text2);text-align:center;line-height:1.4}
+.caught-check{position:absolute;top:8px;right:8px;background:var(--green);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;display:none}
+.poke-card.caught .caught-check{display:flex}
+
+/* TYPE COLORS */
+.t-Normal{background:#90a0a8}.t-Fire{background:#e87020}.t-Water{background:#5878e8}.t-Electric{background:#c8a800;color:#1a1200}.t-Grass{background:#68b840;color:#0d1a06}.t-Ice{background:#78c8c8;color:#0a1a1a}.t-Fighting{background:#b02018}.t-Poison{background:#8830a0}.t-Ground{background:#b88820;color:#1a1000}.t-Flying{background:#9080e0}.t-Psychic{background:#e84878}.t-Bug{background:#90a010;color:#0a0e00}.t-Rock{background:#a89020;color:#1a1400}.t-Ghost{background:#604888}.t-Dragon{background:#5820e0}.t-Dark{background:#402830}.t-Steel{background:#7088a0}.t-Fairy{background:#d06070}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:1000;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:12px;max-width:580px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.9);position:relative}
+.modal-head{background:linear-gradient(135deg,var(--bg3),var(--bg2));padding:18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:2}
+.modal-sprite{width:88px;height:88px;image-rendering:pixelated;filter:drop-shadow(0 2px 12px rgba(0,0,0,.6))}
+.modal-info h2{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--gold);margin-bottom:8px}
+.modal-body{padding:18px}
+.info-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:13px}
+.info-lbl{color:var(--text2);min-width:88px;font-weight:600;font-size:12px}
+.info-val{color:var(--text);flex:1;line-height:1.5}
+.ability-chip{display:inline-block;background:rgba(148,124,240,.15);border:1px solid rgba(148,124,240,.3);color:#a090e8;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px}
+.moves-section h4{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--teal);margin:14px 0 8px}
+.moves-grid{display:grid;grid-template-columns:auto 1fr;gap:5px 10px}
+.mv-lv{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold);background:rgba(240,192,64,.1);padding:3px 5px;border-radius:4px;align-self:center;white-space:nowrap}
+.mv-name{font-size:12px;align-self:center}
+.stats-row{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:10px}
+.stat-box{background:var(--bg3);border-radius:6px;padding:6px 4px;text-align:center}
+.stat-lbl{font-size:9px;color:var(--text2);font-weight:700}
+.stat-val{font-family:'Press Start 2P',monospace;font-size:9px;color:var(--gold);margin-top:2px}
+.modal-close{position:absolute;top:14px;right:14px;background:none;border:1px solid var(--border);color:var(--text2);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:14px;line-height:1;transition:.2s}
+.modal-close:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ENCOUNTERS */
+.region-block{margin-bottom:16px}
+.region-header{background:linear-gradient(90deg,rgba(240,192,64,.1),transparent);border-left:3px solid var(--gold);padding:10px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-radius:0 var(--radius) var(--radius) 0;user-select:none}
+.region-name{font-family:'Press Start 2P',monospace;font-size:9px;color:var(--gold)}
+.region-tag{font-size:10px;color:var(--text2);font-style:italic}
+.region-arrow{color:var(--text2);transition:.2s transform}
+.region-arrow.open{transform:rotate(180deg)}
+.region-body{padding:8px 0 0}
+.region-body.collapsed{display:none}
+.method-block{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden}
+.method-head{background:rgba(0,196,224,.08);padding:7px 14px;font-weight:700;font-size:11px;color:var(--teal);border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.5px}
+.enc-table{width:100%;border-collapse:collapse}
+.enc-table th{padding:6px 12px;font-size:10px;color:var(--text2);text-align:left;border-bottom:1px solid var(--border);font-weight:700;text-transform:uppercase}
+.enc-table td{padding:6px 12px;font-size:13px;border-bottom:1px solid rgba(36,48,80,.5);vertical-align:middle}
+.enc-table tr:last-child td{border-bottom:none}
+.enc-table tr:hover td{background:rgba(255,255,255,.025)}
+.enc-sprite{width:36px;height:36px;image-rendering:pixelated;vertical-align:middle}
+.enc-name-col{font-weight:600}
+.enc-etrian{color:var(--gold);font-size:10px;font-weight:700}
+.enc-lvl{color:var(--text2);font-size:12px}
+.enc-pct{font-weight:700;font-size:12px}
+.enc-pct.p-high{color:var(--green)}.enc-pct.p-mid{color:var(--gold)}.enc-pct.p-low{color:#f87171}.enc-pct.p-event{color:var(--teal)}
+.enc-cb{width:20px;height:20px;border-radius:50%;border:2px solid #475569;background:none;cursor:pointer;transition:.2s;font-size:9px;color:transparent;display:flex;align-items:center;justify-content:center}
+.enc-cb.caught{border-color:var(--green);background:var(--green);color:#fff}
+
+/* GUIDE TABLES (TM, Tutors, Quests) */
+.guide-table{width:100%;border-collapse:collapse;background:var(--bg2);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
+.guide-table th{background:rgba(0,196,224,.1);padding:11px 16px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--teal);border-bottom:1px solid var(--border)}
+.guide-table td{padding:9px 16px;font-size:13px;border-bottom:1px solid rgba(36,48,80,.5);vertical-align:top;line-height:1.5}
+.guide-table tr:last-child td{border-bottom:none}
+.guide-table tr:hover td{background:rgba(255,255,255,.025)}
+.tm-num{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold);white-space:nowrap}
+.quest-num{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold)}
+.quest-name{font-weight:700}
+.quest-reward{color:var(--teal);font-weight:600}
+.quest-image-hint{margin-top:6px;font-size:11px;color:var(--gold);background:rgba(240,192,64,.08);border:1px solid rgba(240,192,64,.2);border-radius:4px;padding:4px 8px;display:inline-block}
+
+/* SEA MAP */
+.seamap-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.seamap-wrap img{max-width:100%;border-radius:var(--radius);border:1px solid var(--border)}
+
+
+/* SEARCH CLEAR BUTTON */
+.search-wrap{position:relative;display:inline-flex;align-items:center}
+.search-wrap .search-input{padding-right:30px}
+.search-clear{position:absolute;right:8px;background:none;border:none;color:var(--text2);cursor:pointer;font-size:14px;line-height:1;padding:0;transition:.15s;display:none}
+.search-clear:hover{color:var(--gold)}
+.search-clear.visible{display:block}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .pokedex-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+  .site-title{font-size:9px}
+  .tab-btn{font-size:6.5px;padding:9px 4px}
+  nav{grid-template-columns:repeat(3,1fr)}
+  .section{padding:12px}
+  .stats-row{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="title-block">
+      <div class="site-title">⚔ Pokémon Odyssey</div>
+      <div class="site-sub">Companion Guide · v4.1.1 · ⭐ = Etrian Variant</div>
+    </div>
+  </div>
+  <nav>
+    <button class="tab-btn active" onclick="switchTab('pokedex',this)">📖 Pokédex</button>
+    <button class="tab-btn" onclick="switchTab('encounters',this)">🌿 Encounters</button>
+    <button class="tab-btn" onclick="switchTab('events',this)">⚡ Events</button>
+    <button class="tab-btn" onclick="switchTab('foe',this)">💀 F.O.E.</button>
+    <button class="tab-btn" onclick="switchTab('naval',this)">⚓ Naval</button>
+    <button class="tab-btn" onclick="switchTab('tms',this)">💿 TMs</button>
+    <button class="tab-btn" onclick="switchTab('tutors',this)">🎓 Move Tutors</button>
+    <button class="tab-btn" onclick="switchTab('quests',this)">📜 Side Quests</button>
+    <button class="tab-btn" onclick="switchTab('seamap',this)">🗺️ Sea Map</button>
+  </nav>
+</header>
+
+<!-- POKÉDEX -->
+<div id="tab-pokedex" class="section active">
+  <div class="progress-box">
+    <span class="progress-label">CAUGHT</span>
+    <div class="progress-track"><div class="progress-fill" id="dex-bar" style="width:0%"></div></div>
+    <span class="progress-count" id="dex-count">0 / 0</span>
+  </div>
+  <div class="note-box">
+    <strong>⭐ Etrian Variants</strong> are Pokémon unique to the Odyssey region. Their custom sprites can be found in the <a href="https://docs.google.com/spreadsheets/d/1Es1clPMUhEEqZRHW0tgAmvxqSzVXiXmD/edit?gid=1620070709" target="_blank" style="color:var(--teal)">official Etrian Variants sheet</a>. Pokémon marked <strong>(⭐)</strong> evolve into an Etrian Variant.<br>
+    <strong>Odyssey moves</strong> (shown where data is available from the guide sheets) may differ from standard Pokémon moves. Click any card to view details.
+  </div>
+  <div class="filters">
+    <div class="search-wrap"><input class="search-input" id="dex-search" placeholder="Search Pokémon…" oninput="filterDex();updateClear('dex-search','dex-clear')"><button class="search-clear" id="dex-clear" onclick="clearSearch('dex-search','dex-clear',filterDex)" title="Clear search">✕</button></div>
+    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setFilter('caught',this)">Caught</button>
+    <button class="filter-btn" onclick="setFilter('uncaught',this)">Uncaught</button>
+    <button class="filter-btn" onclick="setFilter('etrian',this)">Etrian Variants</button>
+  </div>
+  <div class="pokedex-grid" id="dex-grid"></div>
+</div>
+
+<!-- ENCOUNTERS -->
+<div id="tab-encounters" class="section">
+  <div class="progress-box">
+    <span class="progress-label">CAUGHT</span>
+    <div class="progress-track"><div class="progress-fill" id="enc-bar" style="width:0%"></div></div>
+    <span class="progress-count" id="enc-count">0 / 0</span>
+  </div>
+  <div class="note-box">
+    Catching a Pokémon in any location marks it as caught everywhere, including the Pokédex. <strong>(⭐)</strong> = Evolves into an Etrian Variant. <strong>⭐</strong> = Is an Etrian Variant.
+    Data covers all main-game encounter locations. Postgame and Naval Exploration encounters are noted separately.
+  </div>
+  <div style="margin-bottom:10px">
+    <div class="search-wrap" style="width:100%;max-width:360px"><input class="search-input" id="enc-search" placeholder="Search Pokémon or location…" oninput="onEncSearch();updateClear('enc-search','enc-clear')" style="width:100%"><button class="search-clear" id="enc-clear" onclick="clearSearch('enc-search','enc-clear',onEncSearch)" title="Clear search">✕</button></div>
+  </div>
+  <div class="filters" id="enc-filters" style="justify-content:space-between;flex-wrap:wrap;gap:8px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="filter-btn active" id="encf-all" onclick="setEncFilter('all',this)">All</button>
+      <button class="filter-btn" id="encf-caught" onclick="setEncFilter('caught',this)">Caught</button>
+      <button class="filter-btn" id="encf-uncaught" onclick="setEncFilter('uncaught',this)">Uncaught</button>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="filter-btn" onclick="toggleAllEncRegions(true)">▼ Expand All</button>
+      <button class="filter-btn" onclick="toggleAllEncRegions(false)">▶ Collapse All</button>
+    </div>
+  </div>
+  <div id="enc-regions"></div>
+</div>
+
+
+<!-- EVENTS & SIDEQUESTS -->
+<div id="tab-events" class="section">
+  <div class="progress-box">
+    <span class="progress-label">OBTAINED</span>
+    <div class="progress-track"><div class="progress-fill" id="evt-bar" style="width:0%"></div></div>
+    <span class="progress-count" id="evt-count">0 / 0</span>
+  </div>
+  <div class="note-box">
+    Pokémon obtained through <strong>events</strong>, <strong>sidequests</strong>, and <strong>trades</strong>. These are excluded from the Encounters tab. Marking one as obtained syncs with the Pokédex.
+  </div>
+  <div style="margin-bottom:10px">
+    <div class="search-wrap" style="width:100%;max-width:360px"><input class="search-input" id="evt-search" placeholder="Search Pokémon or location…" oninput="onEvtSearch();updateClear('evt-search','evt-clear')" style="width:100%"><button class="search-clear" id="evt-clear" onclick="clearSearch('evt-search','evt-clear',onEvtSearch)" title="Clear search">✕</button></div>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <button class="filter-btn" onclick="toggleAllEvtRegions(true)">▼ Expand All</button>
+    <button class="filter-btn" onclick="toggleAllEvtRegions(false)">▶ Collapse All</button>
+  </div>
+  <div id="evt-regions"></div>
+</div>
+
+
+<!-- F.O.E. ENCOUNTERS -->
+<div id="tab-foe" class="section">
+  <div class="progress-box">
+    <span class="progress-label">DEFEATED</span>
+    <div class="progress-track"><div class="progress-fill" id="foe-bar" style="width:0%"></div></div>
+    <span class="progress-count" id="foe-count">0 / 0</span>
+  </div>
+  <div class="note-box">
+    <strong>💀 F.O.E.</strong> (Field-On Enemy) are powerful boss-type Pokémon found roaming the overworld. They are significantly stronger than regular wild encounters. Data sourced from the <a href="https://docs.google.com/spreadsheets/d/1-duiiF5TXQtI3E9BdyXEViYYYVel_sUstNk1lZCqHsE/edit?gid=25816556" target="_blank" style="color:var(--teal)">official guide sheet</a>.
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <button class="filter-btn" onclick="toggleAllFoeRegions(true)">▼ Expand All</button>
+    <button class="filter-btn" onclick="toggleAllFoeRegions(false)">▶ Collapse All</button>
+  </div>
+  <div id="foe-regions"></div>
+</div>
+
+<!-- NAVAL EXPLORATIONS -->
+<div id="tab-naval" class="section">
+  <div class="progress-box">
+    <span class="progress-label">CAUGHT</span>
+    <div class="progress-track"><div class="progress-fill" id="naval-bar" style="width:0%"></div></div>
+    <span class="progress-count" id="naval-count">0 / 0</span>
+  </div>
+  <div class="note-box">
+    Pokémon encountered during <strong>Naval Explorations</strong> at sea. Encounters scale with your progress through the Strata. Each expedition randomly encounters one group of 3 Pokémon. Data from the <a href="https://docs.google.com/spreadsheets/d/1-duiiF5TXQtI3E9BdyXEViYYYVel_sUstNk1lZCqHsE/edit?gid=25816556" target="_blank" style="color:var(--teal)">official guide sheet</a>.
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <button class="filter-btn" onclick="toggleAllNavalRegions(true)">▼ Expand All</button>
+    <button class="filter-btn" onclick="toggleAllNavalRegions(false)">▶ Collapse All</button>
+  </div>
+  <div id="naval-regions"></div>
+</div>
+
+<!-- TMs -->
+<div id="tab-tms" class="section">
+  <div class="section-title">💿 TM Locations</div>
+  <table class="guide-table" id="tm-table">
+    <thead><tr><th>TM</th><th>Move</th><th>Type</th><th>Location / How to Obtain</th></tr></thead>
+    <tbody id="tm-tbody"></tbody>
+  </table>
+</div>
+
+<!-- MOVE TUTORS -->
+<div id="tab-tutors" class="section">
+  <div class="section-title">🎓 Move Tutors</div>
+  <table class="guide-table">
+    <thead><tr><th>Move</th><th>Type</th><th>Location</th></tr></thead>
+    <tbody id="tutor-tbody"></tbody>
+  </table>
+</div>
+
+<!-- SIDE QUESTS -->
+<div id="tab-quests" class="section">
+  <div class="section-title">📜 Side Quests</div>
+  <div style="display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap">
+    <span id="quest-progress-label" style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold)">0 / 0 COMPLETE</span>
+    <button class="filter-btn" id="quest-hide-btn" onclick="toggleHideCompleted()">🙈 Hide Completed</button>
+  </div>
+  <table class="guide-table">
+    <thead><tr><th>✓</th><th>#</th><th>Name</th><th>Location</th><th>Description</th><th>Reward</th></tr></thead>
+    <tbody id="quest-tbody"></tbody>
+  </table>
+</div>
+
+<!-- SEA MAP -->
+<div id="tab-seamap" class="section">
+  <div class="section-title">🗺️ Sea Map</div>
+  <div class="seamap-wrap">
+    <img src="https://lh3.googleusercontent.com/pw/AP1GczMlfUBhFnblryqUG56Ssae3knUAK4evUWt3Eb0axVSzPtfmg2pUNjlQ9XlDifZlWxUBiTMgUwwHLoQKe8lP6KibJLSnR_NPUZ9Xb--kLLrPHviVgQqMrq-G8yJxVk_LqmINdAJEY1EFolVqTSdKfSR2=w1490-h652-s-no?authuser=0"
+         alt="Pokémon Odyssey Sea Map"
+         onerror="this.style.display='none';document.getElementById('seamap-fallback').style.display='block'">
+    <div id="seamap-fallback" style="display:none;padding:24px;color:var(--text2);font-size:13px">
+      Unable to load the sea map image. <a href="https://lh3.googleusercontent.com/pw/AP1GczMlfUBhFnblryqUG56Ssae3knUAK4evUWt3Eb0axVSzPtfmg2pUNjlQ9XlDifZlWxUBiTMgUwwHLoQKe8lP6KibJLSnR_NPUZ9Xb--kLLrPHviVgQqMrq-G8yJxVk_LqmINdAJEY1EFolVqTSdKfSR2=w1490-h652-s-no?authuser=0" target="_blank" style="color:var(--teal)">Open directly in browser →</a>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    <div class="modal-head" id="modal-head"></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────
+
+// Pokémon: [id, name, types[], abilities[], evolveLevel|condition, evolveTo, flags, stats{}, moves[{lv,m}]]
+// flags: '' | 'etrian' | 'etrianEvo'
+// Odyssey-specific moves included where available from the official guide sheet (#1-15).
+// For all others, moves array is empty — see the official spreadsheet for full Odyssey movesets.
+
+const POKEMON = [
+// ── GEN 1 ──
+{id:1,n:"Bulbasaur",t:["Grass","Poison"],a:["Chlorophyll","Overgrow"],ev:16,evo:"Ivysaur",f:"",st:{hp:45,atk:49,def:49,spa:65,spd:65,spe:45},mv:[{lv:1,m:"Tackle"},{lv:1,m:"Growl"},{lv:1,m:"Absorb"},{lv:5,m:"Leech Seed"},{lv:10,m:"Mega Drain"},{lv:15,m:"Poisonpowder"},{lv:20,m:"Growth"},{lv:25,m:"Giga Drain"},{lv:30,m:"Trailblaze"},{lv:35,m:"Synthesis"},{lv:40,m:"Solar Beam"}]},
+{id:2,n:"Ivysaur",t:["Grass","Poison"],a:["Chlorophyll","Overgrow"],ev:32,evo:"Venusaur",f:"",st:{hp:60,atk:62,def:63,spa:80,spd:80,spe:60},mv:[{lv:1,m:"Tackle"},{lv:1,m:"Growl"},{lv:1,m:"Vine Whip"},{lv:5,m:"Leech Seed"},{lv:10,m:"Mega Drain"},{lv:16,m:"Sludge"},{lv:20,m:"Growth"},{lv:25,m:"Giga Drain"},{lv:30,m:"Trailblaze"},{lv:35,m:"Synthesis"},{lv:40,m:"Sludge Bomb"},{lv:45,m:"Solar Beam"}]},
+{id:3,n:"Venusaur",t:["Grass","Poison"],a:["Chlorophyll","Overgrow"],ev:null,evo:null,f:"",st:{hp:80,atk:82,def:83,spa:100,spd:100,spe:80},mv:[{lv:1,m:"Weather Ball"},{lv:1,m:"Growl"},{lv:1,m:"Leech Seed"},{lv:10,m:"Mega Drain"},{lv:15,m:"Poisonpowder"},{lv:20,m:"Sludge"},{lv:25,m:"Growth"},{lv:30,m:"Giga Drain"},{lv:35,m:"Trailblaze"},{lv:36,m:"Earth Power"},{lv:40,m:"Synthesis"},{lv:45,m:"Sludge Bomb"},{lv:50,m:"Solar Beam"},{lv:55,m:"Leaf Storm"}]},
+{id:4,n:"Charmander",t:["Fire"],a:["Flash Fire","Blaze"],ev:16,evo:"Charmeleon",f:"",st:{hp:39,atk:52,def:43,spa:60,spd:50,spe:65},mv:[{lv:1,m:"Scratch"},{lv:1,m:"Growl"},{lv:5,m:"Ember"},{lv:10,m:"Metal Claw"},{lv:15,m:"Dragonbreath"},{lv:20,m:"Mystical Fire"},{lv:25,m:"Slash"},{lv:30,m:"Flamethrower"},{lv:35,m:"Dragon Pulse"},{lv:40,m:"Fire Blast"}]},
+{id:5,n:"Charmeleon",t:["Fire"],a:["Flash Fire","Blaze"],ev:36,evo:"Charizard",f:"",st:{hp:58,atk:64,def:58,spa:80,spd:65,spe:80},mv:[{lv:1,m:"Scratch"},{lv:1,m:"Growl"},{lv:10,m:"Ember"},{lv:15,m:"Metal Claw"},{lv:16,m:"Dragonbreath"},{lv:20,m:"Scary Face"},{lv:25,m:"Mystical Fire"},{lv:30,m:"Night Slash"},{lv:35,m:"Flamethrower"},{lv:40,m:"Dragon Pulse"},{lv:45,m:"Fire Blast"}]},
+{id:6,n:"Charizard",t:["Fire","Flying"],a:["Flash Fire","Blaze"],ev:null,evo:null,f:"",st:{hp:78,atk:84,def:78,spa:109,spd:85,spe:100},mv:[{lv:1,m:"Outrage"},{lv:1,m:"Dragon Dance"},{lv:1,m:"Flare Blitz"},{lv:1,m:"Dragonbreath"},{lv:1,m:"Smokescreen"},{lv:15,m:"Ember"},{lv:20,m:"Metal Claw"},{lv:25,m:"Mystical Fire"},{lv:30,m:"Scary Face"},{lv:35,m:"Night Slash"},{lv:36,m:"Air Slash"},{lv:40,m:"Flamethrower"},{lv:45,m:"Dragon Pulse"},{lv:50,m:"Fire Blast"},{lv:55,m:"Heat Wave"}]},
+{id:7,n:"Squirtle",t:["Water"],a:["Shell Armor","Torrent"],ev:16,evo:"Wartortle",f:"",st:{hp:44,atk:48,def:65,spa:50,spd:64,spe:43},mv:[{lv:1,m:"Tackle"},{lv:1,m:"Tail Whip"},{lv:5,m:"Water Gun"},{lv:10,m:"Bite"},{lv:20,m:"Fake Out"},{lv:25,m:"Protect"},{lv:30,m:"Scald"},{lv:35,m:"Flip Turn"},{lv:40,m:"Hydro Pump"},{lv:45,m:"Rain Dance"}]},
+{id:8,n:"Wartortle",t:["Water"],a:["Shell Armor","Torrent"],ev:36,evo:"Blastoise",f:"",st:{hp:59,atk:63,def:80,spa:65,spd:80,spe:58},mv:[{lv:1,m:"Tackle"},{lv:1,m:"Tail Whip"},{lv:1,m:"Withdraw"},{lv:10,m:"Water Gun"},{lv:15,m:"Bite"},{lv:16,m:"Aqua Jet"},{lv:20,m:"Water Pulse"},{lv:25,m:"Fake Out"},{lv:30,m:"Protect"},{lv:35,m:"Scald"},{lv:40,m:"Flip Turn"},{lv:45,m:"Hydro Pump"},{lv:50,m:"Rain Dance"}]},
+{id:9,n:"Blastoise",t:["Water"],a:["Shell Armor","Torrent"],ev:null,evo:null,f:"",st:{hp:79,atk:83,def:100,spa:85,spd:105,spe:78},mv:[{lv:1,m:"Flash Cannon"},{lv:1,m:"Shell Smash"},{lv:1,m:"Yawn"},{lv:1,m:"Tackle"},{lv:10,m:"Water Gun"},{lv:15,m:"Bite"},{lv:20,m:"Aqua Jet"},{lv:25,m:"Water Pulse"},{lv:30,m:"Fake Out"},{lv:35,m:"Protect"},{lv:36,m:"Aura Sphere"},{lv:40,m:"Scald"},{lv:45,m:"Flip Turn"},{lv:50,m:"Hydro Pump"},{lv:55,m:"Rain Dance"}]},
+{id:10,n:"Caterpie",t:["Bug"],a:["Shield Dust","Immunity"],ev:7,evo:"Metapod",f:"",st:{hp:45,atk:30,def:35,spa:20,spd:20,spe:45},mv:[{lv:1,m:"Tackle"},{lv:1,m:"String Shot"}]},
+{id:11,n:"Metapod",t:["Bug"],a:["Shed Skin","Shell Armor"],ev:10,evo:"Butterfree",f:"",st:{hp:50,atk:20,def:55,spa:25,spd:25,spe:30},mv:[{lv:1,m:"Tackle"},{lv:7,m:"Harden"}]},
+{id:12,n:"Butterfree",t:["Bug","Flying"],a:["Compound Eyes","Tinted Lens"],ev:null,evo:null,f:"",st:{hp:65,atk:45,def:60,spa:100,spd:90,spe:90},mv:[{lv:1,m:"Electroweb"},{lv:1,m:"Giga Drain"},{lv:1,m:"Tackle"},{lv:1,m:"Harden"},{lv:10,m:"Confusion"},{lv:10,m:"Gust"},{lv:12,m:"Stun Spore"},{lv:15,m:"Sleep Powder"},{lv:20,m:"Psybeam"},{lv:25,m:"Air Cutter"},{lv:30,m:"Bug Buzz"},{lv:35,m:"Psychic"},{lv:40,m:"Rage Powder"},{lv:45,m:"Hurricane"},{lv:50,m:"Quiver Dance"}]},
+{id:13,n:"Weedle",t:["Bug","Poison"],a:["Shield Dust","Shed Skin"],ev:7,evo:"Kakuna",f:"",st:{hp:40,atk:35,def:30,spa:20,spd:20,spe:50},mv:[{lv:1,m:"Poison Sting"},{lv:1,m:"String Shot"}]},
+{id:14,n:"Kakuna",t:["Bug","Poison"],a:["Shed Skin","Shell Armor"],ev:10,evo:"Beedrill",f:"",st:{hp:45,atk:25,def:50,spa:25,spd:25,spe:35},mv:[{lv:1,m:"Poison Sting"},{lv:7,m:"Harden"}]},
+{id:15,n:"Beedrill",t:["Bug","Poison"],a:["Swarm","Sniper"],ev:null,evo:null,f:"",st:{hp:65,atk:100,def:60,spa:45,spd:90,spe:90},mv:[{lv:1,m:"Knock Off"},{lv:1,m:"Infestation"},{lv:1,m:"Tackle"},{lv:1,m:"Harden"},{lv:1,m:"Fury Attack"},{lv:10,m:"Fury Cutter"},{lv:15,m:"Knock Off"},{lv:20,m:"Feint Attack"},{lv:25,m:"Poison Tail"},{lv:30,m:"X-Scissor"},{lv:35,m:"Poison Jab"},{lv:40,m:"Pin Missile"},{lv:45,m:"Agility"},{lv:50,m:"Venom Drench"}]},
+{id:16,n:"Pidgey",t:["Normal","Flying"],a:["Keen Eye","Tangled Feet"],ev:18,evo:"Pidgeotto",f:"",mv:[]},
+{id:17,n:"Pidgeotto",t:["Normal","Flying"],a:["Keen Eye","Tangled Feet"],ev:36,evo:"Pidgeot",f:"",mv:[]},
+{id:18,n:"Pidgeot",t:["Normal","Flying"],a:["Keen Eye","Big Pecks"],ev:null,evo:null,f:"",mv:[]},
+{id:19,n:"Rattata",t:["Normal"],a:["Run Away","Hustle"],ev:20,evo:"Raticate",f:"etrian",mv:[]},
+{id:20,n:"Raticate",t:["Normal"],a:["Run Away","Hustle"],ev:null,evo:null,f:"etrian",mv:[]},
+{id:21,n:"Spearow",t:["Normal","Flying"],a:["Keen Eye","Sniper"],ev:20,evo:"Fearow",f:"etrian",mv:[]},
+{id:22,n:"Fearow",t:["Normal","Flying"],a:["Keen Eye","Sniper"],ev:null,evo:null,f:"etrian",mv:[]},
+{id:23,n:"Ekans",t:["Poison"],a:["Intimidate","Shed Skin"],ev:22,evo:"Arbok",f:"",mv:[]},
+{id:24,n:"Arbok",t:["Poison"],a:["Intimidate","Shed Skin"],ev:null,evo:null,f:"",mv:[]},
+{id:25,n:"Pikachu",t:["Electric"],a:["Static","Lightning Rod"],ev:"Thunder Stone",evo:"Raichu",f:"etrianEvo",mv:[]},
+{id:26,n:"Raichu",t:["Electric"],a:["Static","Lightning Rod"],ev:null,evo:null,f:"etrian",mv:[]},
+{id:27,n:"Sandshrew",t:["Ground"],a:["Sand Veil","Sand Rush"],ev:22,evo:"Sandslash",f:"",mv:[]},
+{id:28,n:"Sandslash",t:["Ground"],a:["Sand Veil","Sand Rush"],ev:null,evo:null,f:"",mv:[]},
+{id:29,n:"Nidoran♀",t:["Poison"],a:["Poison Point","Hustle"],ev:16,evo:"Nidorina",f:"",mv:[]},
+{id:30,n:"Nidorina",t:["Poison"],a:["Poison Point","Hustle"],ev:"Moon Stone",evo:"Nidoqueen",f:"",mv:[]},
+{id:31,n:"Nidoqueen",t:["Poison","Ground"],a:["Poison Point","Rivalry"],ev:null,evo:null,f:"",mv:[]},
+{id:32,n:"Nidoran♂",t:["Poison"],a:["Poison Point","Hustle"],ev:16,evo:"Nidorino",f:"",mv:[]},
+{id:33,n:"Nidorino",t:["Poison"],a:["Poison Point","Hustle"],ev:"Moon Stone",evo:"Nidoking",f:"",mv:[]},
+{id:34,n:"Nidoking",t:["Poison","Ground"],a:["Poison Point","Rivalry"],ev:null,evo:null,f:"",mv:[]},
+{id:35,n:"Clefairy",t:["Fairy"],a:["Cute Charm","Magic Guard"],ev:"Moon Stone",evo:"Clefable",f:"",mv:[]},
+{id:36,n:"Clefable",t:["Fairy"],a:["Cute Charm","Magic Guard"],ev:null,evo:null,f:"",mv:[]},
+{id:37,n:"Vulpix",t:["Fire"],a:["Flash Fire","Drought"],ev:"Fire Stone",evo:"Ninetales",f:"",mv:[]},
+{id:38,n:"Ninetales",t:["Fire"],a:["Flash Fire","Drought"],ev:null,evo:null,f:"",mv:[]},
+{id:39,n:"Jigglypuff",t:["Normal","Fairy"],a:["Cute Charm","Friend Guard"],ev:"Moon Stone",evo:"Wigglytuff",f:"etrian",mv:[]},
+{id:40,n:"Wigglytuff",t:["Normal","Fairy"],a:["Cute Charm","Frisk"],ev:null,evo:null,f:"etrian",mv:[]},
+{id:41,n:"Zubat",t:["Poison","Flying"],a:["Inner Focus","Infiltrator"],ev:22,evo:"Golbat",f:"",mv:[]},
+{id:42,n:"Golbat",t:["Poison","Flying"],a:["Inner Focus","Infiltrator"],ev:"Friendship",evo:"Crobat",f:"",mv:[]},
+{id:43,n:"Oddish",t:["Grass","Poison"],a:["Chlorophyll","Run Away"],ev:21,evo:"Gloom",f:"etrianEvo",mv:[]},
+{id:44,n:"Gloom",t:["Grass","Poison"],a:["Chlorophyll","Stench"],ev:"Leaf Stone",evo:"Vileplume",f:"",mv:[]},
+{id:45,n:"Vileplume",t:["Grass","Poison"],a:["Chlorophyll","Effect Spore"],ev:null,evo:null,f:"etrian",mv:[]},
+{id:46,n:"Paras",t:["Bug","Grass"],a:["Effect Spore","Dry Skin"],ev:24,evo:"Parasect",f:"",mv:[]},
+{id:47,n:"Parasect",t:["Bug","Grass"],a:["Effect Spore","Dry Skin"],ev:null,evo:null,f:"",mv:[]},
+{id:48,n:"Venonat",t:["Bug","Poison"],a:["Compound Eyes","Tinted Lens"],ev:31,evo:"Venomoth",f:"",mv:[]},
+{id:49,n:"Venomoth",t:["Bug","Poison"],a:["Shield Dust","Tinted Lens"],ev:null,evo:null,f:"",mv:[]},
+{id:50,n:"Diglett",t:["Ground"],a:["Sand Veil","Arena Trap"],ev:26,evo:"Dugtrio",f:"",mv:[]},
+{id:51,n:"Dugtrio",t:["Ground"],a:["Sand Veil","Arena Trap"],ev:null,evo:null,f:"",mv:[]},
+{id:52,n:"Meowth",t:["Normal"],a:["Pickup","Technician"],ev:28,evo:"Persian",f:"",mv:[]},
+{id:53,n:"Persian",t:["Normal"],a:["Limber","Technician"],ev:null,evo:null,f:"",mv:[]},
+{id:54,n:"Psyduck",t:["Water"],a:["Damp","Cloud Nine"],ev:33,evo:"Golduck",f:"",mv:[]},
+{id:55,n:"Golduck",t:["Water"],a:["Damp","Cloud Nine"],ev:null,evo:null,f:"",mv:[]},
+{id:56,n:"Mankey",t:["Fighting"],a:["Vital Spirit","Anger Point"],ev:28,evo:"Primeape",f:"",mv:[]},
+{id:57,n:"Primeape",t:["Fighting"],a:["Vital Spirit","Anger Point"],ev:null,evo:null,f:"",mv:[]},
+{id:58,n:"Growlithe",t:["Fire"],a:["Intimidate","Flash Fire"],ev:"Fire Stone",evo:"Arcanine",f:"",mv:[]},
+{id:59,n:"Arcanine",t:["Fire"],a:["Intimidate","Flash Fire"],ev:null,evo:null,f:"",mv:[]},
+{id:60,n:"Poliwag",t:["Water"],a:["Damp","Water Absorb"],ev:25,evo:"Poliwhirl",f:"",mv:[]},
+{id:61,n:"Poliwhirl",t:["Water"],a:["Damp","Water Absorb"],ev:"Water Stone",evo:"Poliwrath",f:"",mv:[]},
+{id:62,n:"Poliwrath",t:["Water","Fighting"],a:["Damp","Water Absorb"],ev:null,evo:null,f:"",mv:[]},
+{id:63,n:"Abra",t:["Psychic"],a:["Synchronize","Inner Focus"],ev:16,evo:"Kadabra",f:"",mv:[]},
+{id:64,n:"Kadabra",t:["Psychic"],a:["Synchronize","Inner Focus"],ev:"Trade",evo:"Alakazam",f:"",mv:[]},
+{id:65,n:"Alakazam",t:["Psychic"],a:["Synchronize","Inner Focus"],ev:null,evo:null,f:"",mv:[]},
+{id:66,n:"Machop",t:["Fighting"],a:["Guts","No Guard"],ev:28,evo:"Machoke",f:"",mv:[]},
+{id:67,n:"Machoke",t:["Fighting"],a:["Guts","No Guard"],ev:"Trade",evo:"Machamp",f:"",mv:[]},
+{id:68,n:"Machamp",t:["Fighting"],a:["Guts","No Guard"],ev:null,evo:null,f:"",mv:[]},
+{id:69,n:"Bellsprout",t:["Grass","Poison"],a:["Chlorophyll","Gluttony"],ev:21,evo:"Weepinbell",f:"",mv:[]},
+{id:70,n:"Weepinbell",t:["Grass","Poison"],a:["Chlorophyll","Gluttony"],ev:"Leaf Stone",evo:"Victreebel",f:"",mv:[]},
+{id:71,n:"Victreebel",t:["Grass","Poison"],a:["Chlorophyll","Gluttony"],ev:null,evo:null,f:"",mv:[]},
+{id:72,n:"Tentacool",t:["Water","Poison"],a:["Clear Body","Liquid Ooze"],ev:30,evo:"Tentacruel",f:"",mv:[]},
+{id:73,n:"Tentacruel",t:["Water","Poison"],a:["Clear Body","Liquid Ooze"],ev:null,evo:null,f:"",mv:[]},
+{id:74,n:"Geodude",t:["Rock","Ground"],a:["Rock Head","Sturdy"],ev:25,evo:"Graveler",f:"",mv:[]},
+{id:75,n:"Graveler",t:["Rock","Ground"],a:["Rock Head","Sturdy"],ev:"Trade",evo:"Golem",f:"",mv:[]},
+{id:76,n:"Golem",t:["Rock","Ground"],a:["Rock Head","Sturdy"],ev:null,evo:null,f:"",mv:[]},
+{id:77,n:"Ponyta",t:["Fire"],a:["Run Away","Flash Fire"],ev:40,evo:"Rapidash",f:"",mv:[]},
+{id:78,n:"Rapidash",t:["Fire"],a:["Run Away","Flash Fire"],ev:null,evo:null,f:"",mv:[]},
+{id:79,n:"Slowpoke",t:["Water","Psychic"],a:["Oblivious","Own Tempo"],ev:37,evo:"Slowbro",f:"",mv:[]},
+{id:80,n:"Slowbro",t:["Water","Psychic"],a:["Oblivious","Own Tempo"],ev:null,evo:null,f:"",mv:[]},
+{id:81,n:"Magnemite",t:["Electric","Steel"],a:["Sturdy","Analytic"],ev:30,evo:"Magneton",f:"",mv:[]},
+{id:82,n:"Magneton",t:["Electric","Steel"],a:["Sturdy","Analytic"],ev:"Mt. Coronet",evo:"Magnezone",f:"",mv:[]},
+{id:83,n:"Farfetch'd",t:["Normal","Flying"],a:["Keen Eye","Inner Focus"],ev:null,evo:null,f:"etrian",mv:[]},
+{id:84,n:"Doduo",t:["Normal","Flying"],a:["Run Away","Early Bird"],ev:31,evo:"Dodrio",f:"",mv:[]},
+{id:85,n:"Dodrio",t:["Normal","Flying"],a:["Run Away","Early Bird"],ev:null,evo:null,f:"",mv:[]},
+{id:86,n:"Seel",t:["Water"],a:["Thick Fat","Hydration"],ev:34,evo:"Dewgong",f:"",mv:[]},
+{id:87,n:"Dewgong",t:["Water","Ice"],a:["Thick Fat","Hydration"],ev:null,evo:null,f:"",mv:[]},
+{id:88,n:"Grimer",t:["Poison"],a:["Stench","Gluttony"],ev:38,evo:"Muk",f:"etrian",mv:[]},
+{id:89,n:"Muk",t:["Poison"],a:["Stench","Gluttony"],ev:null,evo:null,f:"etrian",mv:[]},
+{id:90,n:"Shellder",t:["Water"],a:["Shell Armor","Skill Link"],ev:"Water Stone",evo:"Cloyster",f:"",mv:[]},
+{id:91,n:"Cloyster",t:["Water","Ice"],a:["Shell Armor","Skill Link"],ev:null,evo:null,f:"",mv:[]},
+{id:92,n:"Gastly",t:["Ghost","Poison"],a:["Levitate"],ev:25,evo:"Haunter",f:"",mv:[]},
+{id:93,n:"Haunter",t:["Ghost","Poison"],a:["Levitate"],ev:"Trade",evo:"Gengar",f:"",mv:[]},
+{id:94,n:"Gengar",t:["Ghost","Poison"],a:["Cursed Body"],ev:null,evo:null,f:"",mv:[]},
+{id:95,n:"Onix",t:["Rock","Ground"],a:["Rock Head","Sturdy"],ev:"Trade w/ Metal Coat",evo:"Steelix",f:"",mv:[]},
+{id:96,n:"Drowzee",t:["Psychic"],a:["Insomnia","Forewarn"],ev:26,evo:"Hypno",f:"",mv:[]},
+{id:97,n:"Hypno",t:["Psychic"],a:["Insomnia","Forewarn"],ev:null,evo:null,f:"",mv:[]},
+{id:98,n:"Krabby",t:["Water"],a:["Hyper Cutter","Shell Armor"],ev:28,evo:"Kingler",f:"etrian",mv:[]},
+{id:99,n:"Kingler",t:["Water"],a:["Hyper Cutter","Shell Armor"],ev:null,evo:null,f:"etrian",mv:[]},
+{id:100,n:"Voltorb",t:["Electric"],a:["Soundproof","Static"],ev:30,evo:"Electrode",f:"etrian",mv:[]},
+{id:101,n:"Electrode",t:["Electric"],a:["Soundproof","Static"],ev:null,evo:null,f:"etrian",mv:[]},
+{id:102,n:"Exeggcute",t:["Grass","Psychic"],a:["Chlorophyll","Harvest"],ev:"Leaf Stone",evo:"Exeggutor",f:"etrian",mv:[]},
+{id:103,n:"Exeggutor",t:["Grass","Psychic"],a:["Chlorophyll","Harvest"],ev:null,evo:null,f:"etrian",mv:[]},
+{id:104,n:"Cubone",t:["Ground"],a:["Rock Head","Lightningrod"],ev:28,evo:"Marowak",f:"",mv:[]},
+{id:105,n:"Marowak",t:["Ground"],a:["Rock Head","Lightningrod"],ev:null,evo:null,f:"",mv:[]},
+{id:106,n:"Hitmonlee",t:["Fighting"],a:["Limber","Reckless"],ev:null,evo:null,f:"",mv:[]},
+{id:107,n:"Hitmonchan",t:["Fighting"],a:["Keen Eye","Iron Fist"],ev:null,evo:null,f:"",mv:[]},
+{id:108,n:"Lickitung",t:["Normal"],a:["Own Tempo","Oblivious"],ev:"Know Rollout",evo:"Lickilicky",f:"",mv:[]},
+{id:109,n:"Koffing",t:["Poison"],a:["Levitate","Neutralizing Gas"],ev:35,evo:"Weezing",f:"",mv:[]},
+{id:110,n:"Weezing",t:["Poison"],a:["Levitate","Neutralizing Gas"],ev:null,evo:null,f:"",mv:[]},
+{id:111,n:"Rhyhorn",t:["Ground","Rock"],a:["Lightning Rod","Rock Head"],ev:42,evo:"Rhydon",f:"",mv:[]},
+{id:112,n:"Rhydon",t:["Ground","Rock"],a:["Lightning Rod","Rock Head"],ev:"Trade w/ Protector",evo:"Rhyperior",f:"",mv:[]},
+{id:113,n:"Chansey",t:["Normal"],a:["Natural Cure","Serene Grace"],ev:"Friendship",evo:"Blissey",f:"",mv:[]},
+{id:114,n:"Tangela",t:["Grass"],a:["Chlorophyll","Leaf Guard"],ev:"Know Ancient Power",evo:"Tangrowth",f:"",mv:[]},
+{id:115,n:"Kangaskhan",t:["Normal"],a:["Early Bird","Scrappy"],ev:null,evo:null,f:"",mv:[]},
+{id:116,n:"Horsea",t:["Water"],a:["Swift Swim","Sniper"],ev:32,evo:"Seadra",f:"",mv:[]},
+{id:117,n:"Seadra",t:["Water"],a:["Poison Point","Sniper"],ev:"Trade w/ Dragon Scale",evo:"Kingdra",f:"",mv:[]},
+{id:118,n:"Goldeen",t:["Water"],a:["Swift Swim","Water Veil"],ev:33,evo:"Seaking",f:"",mv:[]},
+{id:119,n:"Seaking",t:["Water"],a:["Swift Swim","Water Veil"],ev:null,evo:null,f:"",mv:[]},
+{id:120,n:"Staryu",t:["Water"],a:["Illuminate","Natural Cure"],ev:"Water Stone",evo:"Starmie",f:"",mv:[]},
+{id:121,n:"Starmie",t:["Water","Psychic"],a:["Illuminate","Natural Cure"],ev:null,evo:null,f:"",mv:[]},
+{id:122,n:"Mr. Mime",t:["Psychic","Fairy"],a:["Soundproof","Filter"],ev:null,evo:null,f:"",mv:[]},
+{id:123,n:"Scyther",t:["Bug","Flying"],a:["Swarm","Technician"],ev:"Trade w/ Metal Coat",evo:"Scizor",f:"",mv:[]},
+{id:124,n:"Jynx",t:["Ice","Psychic"],a:["Oblivious","Forewarn"],ev:null,evo:null,f:"",mv:[]},
+{id:125,n:"Electabuzz",t:["Electric"],a:["Static","Vital Spirit"],ev:"Trade w/ Electirizer",evo:"Electivire",f:"",mv:[]},
+{id:126,n:"Magmar",t:["Fire"],a:["Flame Body","Vital Spirit"],ev:"Trade w/ Magmarizer",evo:"Magmortar",f:"",mv:[]},
+{id:127,n:"Pinsir",t:["Bug"],a:["Hyper Cutter","Mold Breaker"],ev:null,evo:null,f:"",mv:[]},
+{id:128,n:"Tauros",t:["Normal"],a:["Intimidate","Sheer Force"],ev:null,evo:null,f:"",mv:[]},
+{id:129,n:"Magikarp",t:["Water"],a:["Swift Swim","Rattled"],ev:20,evo:"Gyarados",f:"",mv:[]},
+{id:130,n:"Gyarados",t:["Water","Flying"],a:["Intimidate","Moxie"],ev:null,evo:null,f:"",mv:[]},
+{id:131,n:"Lapras",t:["Water","Ice"],a:["Water Absorb","Shell Armor"],ev:null,evo:null,f:"",mv:[]},
+{id:132,n:"Ditto",t:["Normal"],a:["Limber","Imposter"],ev:null,evo:null,f:"",mv:[]},
+{id:133,n:"Eevee",t:["Normal"],a:["Run Away","Adaptability"],ev:"Various stones/methods",evo:"Various",f:"etrianEvo",mv:[]},
+{id:134,n:"Vaporeon",t:["Water"],a:["Water Absorb","Hydration"],ev:null,evo:null,f:"",mv:[]},
+{id:135,n:"Jolteon",t:["Electric"],a:["Volt Absorb","Quick Feet"],ev:null,evo:null,f:"",mv:[]},
+{id:136,n:"Flareon",t:["Fire"],a:["Flash Fire","Guts"],ev:null,evo:null,f:"",mv:[]},
+{id:137,n:"Porygon",t:["Normal"],a:["Trace","Download"],ev:"Trade w/ Up-Grade",evo:"Porygon2",f:"",mv:[]},
+{id:138,n:"Omanyte",t:["Rock","Water"],a:["Swift Swim","Shell Armor"],ev:40,evo:"Omastar",f:"",mv:[]},
+{id:139,n:"Omastar",t:["Rock","Water"],a:["Swift Swim","Shell Armor"],ev:null,evo:null,f:"",mv:[]},
+{id:140,n:"Kabuto",t:["Rock","Water"],a:["Swift Swim","Battle Armor"],ev:40,evo:"Kabutops",f:"",mv:[]},
+{id:141,n:"Kabutops",t:["Rock","Water"],a:["Swift Swim","Battle Armor"],ev:null,evo:null,f:"",mv:[]},
+{id:142,n:"Aerodactyl",t:["Rock","Flying"],a:["Rock Head","Pressure"],ev:null,evo:null,f:"etrian",mv:[]},
+{id:143,n:"Snorlax",t:["Normal"],a:["Immunity","Thick Fat"],ev:"Friendship",evo:"Munchlax",f:"",mv:[]},
+{id:144,n:"Articuno",t:["Ice","Flying"],a:["Pressure","Snow Cloak"],ev:null,evo:null,f:"",mv:[]},
+{id:145,n:"Zapdos",t:["Electric","Flying"],a:["Pressure","Static"],ev:null,evo:null,f:"",mv:[]},
+{id:146,n:"Moltres",t:["Fire","Flying"],a:["Pressure","Flame Body"],ev:null,evo:null,f:"",mv:[]},
+{id:147,n:"Dratini",t:["Dragon"],a:["Shed Skin","Marvel Scale"],ev:30,evo:"Dragonair",f:"",mv:[]},
+{id:148,n:"Dragonair",t:["Dragon"],a:["Shed Skin","Marvel Scale"],ev:55,evo:"Dragonite",f:"",mv:[]},
+{id:149,n:"Dragonite",t:["Dragon","Flying"],a:["Inner Focus","Multiscale"],ev:null,evo:null,f:"",mv:[]},
+{id:150,n:"Mewtwo",t:["Psychic"],a:["Pressure","Unnerve"],ev:null,evo:null,f:"",mv:[]},
+{id:151,n:"Mew",t:["Psychic"],a:["Synchronize"],ev:null,evo:null,f:"",mv:[]},
+// ── GEN 2 (selected) ──
+{id:152,n:"Chikorita",t:["Grass"],a:["Overgrow","Leaf Guard"],ev:16,evo:"Bayleef",f:"",mv:[]},
+{id:153,n:"Bayleef",t:["Grass"],a:["Overgrow","Leaf Guard"],ev:32,evo:"Meganium",f:"",mv:[]},
+{id:154,n:"Meganium",t:["Grass"],a:["Overgrow","Leaf Guard"],ev:null,evo:null,f:"",mv:[]},
+{id:155,n:"Cyndaquil",t:["Fire"],a:["Blaze","Flash Fire"],ev:14,evo:"Quilava",f:"",mv:[]},
+{id:156,n:"Quilava",t:["Fire"],a:["Blaze","Flash Fire"],ev:36,evo:"Typhlosion",f:"",mv:[]},
+{id:157,n:"Typhlosion",t:["Fire"],a:["Blaze","Flash Fire"],ev:null,evo:null,f:"",mv:[]},
+{id:158,n:"Totodile",t:["Water"],a:["Torrent","Sheer Force"],ev:18,evo:"Croconaw",f:"",mv:[]},
+{id:159,n:"Croconaw",t:["Water"],a:["Torrent","Sheer Force"],ev:30,evo:"Feraligatr",f:"",mv:[]},
+{id:160,n:"Feraligatr",t:["Water"],a:["Torrent","Sheer Force"],ev:null,evo:null,f:"",mv:[]},
+{id:161,n:"Sentret",t:["Normal"],a:["Run Away","Keen Eye"],ev:15,evo:"Furret",f:"",mv:[]},
+{id:162,n:"Furret",t:["Normal"],a:["Run Away","Keen Eye"],ev:null,evo:null,f:"",mv:[]},
+{id:163,n:"Hoothoot",t:["Normal","Flying"],a:["Insomnia","Keen Eye"],ev:20,evo:"Noctowl",f:"etrian",mv:[]},
+{id:164,n:"Noctowl",t:["Normal","Flying"],a:["Insomnia","Keen Eye"],ev:null,evo:null,f:"etrian",mv:[]},
+{id:169,n:"Crobat",t:["Poison","Flying"],a:["Inner Focus","Infiltrator"],ev:null,evo:null,f:"",mv:[]},
+{id:170,n:"Chinchou",t:["Water","Electric"],a:["Volt Absorb","Illuminate"],ev:27,evo:"Lanturn",f:"",mv:[]},
+{id:171,n:"Lanturn",t:["Water","Electric"],a:["Volt Absorb","Illuminate"],ev:null,evo:null,f:"",mv:[]},
+{id:179,n:"Mareep",t:["Electric"],a:["Static","Plus"],ev:15,evo:"Flaaffy",f:"etrian",mv:[]},
+{id:180,n:"Flaaffy",t:["Electric"],a:["Static","Plus"],ev:30,evo:"Ampharos",f:"",mv:[]},
+{id:181,n:"Ampharos",t:["Electric"],a:["Static","Plus"],ev:null,evo:null,f:"",mv:[]},
+{id:182,n:"Bellossom",t:["Grass"],a:["Chlorophyll","Healer"],ev:null,evo:null,f:"",mv:[]},
+{id:183,n:"Marill",t:["Water","Fairy"],a:["Thick Fat","Huge Power"],ev:18,evo:"Azumarill",f:"",mv:[]},
+{id:184,n:"Azumarill",t:["Water","Fairy"],a:["Thick Fat","Huge Power"],ev:null,evo:null,f:"",mv:[]},
+{id:186,n:"Politoed",t:["Water"],a:["Damp","Drizzle"],ev:null,evo:null,f:"",mv:[]},
+{id:187,n:"Hoppip",t:["Grass","Flying"],a:["Chlorophyll","Leaf Guard"],ev:18,evo:"Skiploom",f:"",mv:[]},
+{id:188,n:"Skiploom",t:["Grass","Flying"],a:["Chlorophyll","Leaf Guard"],ev:27,evo:"Jumpluff",f:"",mv:[]},
+{id:189,n:"Jumpluff",t:["Grass","Flying"],a:["Chlorophyll","Leaf Guard"],ev:null,evo:null,f:"",mv:[]},
+{id:194,n:"Wooper",t:["Water","Ground"],a:["Damp","Water Absorb"],ev:20,evo:"Quagsire",f:"",mv:[]},
+{id:195,n:"Quagsire",t:["Water","Ground"],a:["Damp","Water Absorb"],ev:null,evo:null,f:"",mv:[]},
+{id:203,n:"Girafarig",t:["Normal","Psychic"],a:["Inner Focus","Early Bird"],ev:null,evo:null,f:"",mv:[]},
+{id:206,n:"Dunsparce",t:["Normal"],a:["Serene Grace","Run Away"],ev:null,evo:null,f:"",mv:[]},
+{id:209,n:"Snubbull",t:["Fairy"],a:["Intimidate","Run Away"],ev:23,evo:"Granbull",f:"",mv:[]},
+{id:210,n:"Granbull",t:["Fairy"],a:["Intimidate","Quick Feet"],ev:null,evo:null,f:"",mv:[]},
+{id:239,n:"Elekid",t:["Electric"],a:["Static","Vital Spirit"],ev:30,evo:"Electabuzz",f:"etrian",mv:[]},
+// ── GEN 3 (selected) ──
+{id:252,n:"Treecko",t:["Grass"],a:["Overgrow","Unburden"],ev:16,evo:"Grovyle",f:"",mv:[]},
+{id:253,n:"Grovyle",t:["Grass"],a:["Overgrow","Unburden"],ev:36,evo:"Sceptile",f:"",mv:[]},
+{id:254,n:"Sceptile",t:["Grass"],a:["Overgrow","Unburden"],ev:null,evo:null,f:"",mv:[]},
+{id:255,n:"Torchic",t:["Fire"],a:["Blaze","Speed Boost"],ev:16,evo:"Combusken",f:"",mv:[]},
+{id:256,n:"Combusken",t:["Fire","Fighting"],a:["Blaze","Speed Boost"],ev:36,evo:"Blaziken",f:"",mv:[]},
+{id:257,n:"Blaziken",t:["Fire","Fighting"],a:["Blaze","Speed Boost"],ev:null,evo:null,f:"etrian",mv:[]},
+{id:258,n:"Mudkip",t:["Water"],a:["Torrent","Damp"],ev:16,evo:"Marshtomp",f:"",mv:[]},
+{id:259,n:"Marshtomp",t:["Water","Ground"],a:["Torrent","Damp"],ev:36,evo:"Swampert",f:"",mv:[]},
+{id:260,n:"Swampert",t:["Water","Ground"],a:["Torrent","Damp"],ev:null,evo:null,f:"",mv:[]},
+{id:261,n:"Poochyena",t:["Dark"],a:["Run Away","Quick Feet"],ev:18,evo:"Mightyena",f:"etrian",mv:[]},
+{id:262,n:"Mightyena",t:["Dark"],a:["Intimidate","Quick Feet"],ev:null,evo:null,f:"",mv:[]},
+{id:263,n:"Zigzagoon",t:["Normal"],a:["Pickup","Gluttony"],ev:20,evo:"Linoone",f:"",mv:[]},
+{id:264,n:"Linoone",t:["Normal"],a:["Pickup","Gluttony"],ev:null,evo:null,f:"",mv:[]},
+{id:270,n:"Lotad",t:["Water","Grass"],a:["Swift Swim","Rain Dish"],ev:14,evo:"Lombre",f:"",mv:[]},
+{id:271,n:"Lombre",t:["Water","Grass"],a:["Swift Swim","Rain Dish"],ev:"Water Stone",evo:"Ludicolo",f:"",mv:[]},
+{id:272,n:"Ludicolo",t:["Water","Grass"],a:["Swift Swim","Rain Dish"],ev:null,evo:null,f:"",mv:[]},
+{id:273,n:"Seedot",t:["Grass"],a:["Chlorophyll","Early Bird"],ev:14,evo:"Nuzleaf",f:"",mv:[]},
+{id:274,n:"Nuzleaf",t:["Grass","Dark"],a:["Chlorophyll","Early Bird"],ev:"Leaf Stone",evo:"Shiftry",f:"",mv:[]},
+{id:275,n:"Shiftry",t:["Grass","Dark"],a:["Chlorophyll","Early Bird"],ev:null,evo:null,f:"",mv:[]},
+{id:278,n:"Wingull",t:["Water","Flying"],a:["Keen Eye","Rain Dish"],ev:25,evo:"Pelipper",f:"",mv:[]},
+{id:279,n:"Pelipper",t:["Water","Flying"],a:["Keen Eye","Drizzle"],ev:null,evo:null,f:"",mv:[]},
+{id:290,n:"Nincada",t:["Bug","Ground"],a:["Compound Eyes"],ev:20,evo:"Ninjask",f:"",mv:[]},
+{id:291,n:"Ninjask",t:["Bug","Flying"],a:["Speed Boost"],ev:null,evo:null,f:"",mv:[]},
+{id:292,n:"Shedinja",t:["Bug","Ghost"],a:["Wonder Guard"],ev:null,evo:null,f:"",mv:[]},
+{id:296,n:"Makuhita",t:["Fighting"],a:["Thick Fat","Guts"],ev:24,evo:"Hariyama",f:"",mv:[]},
+{id:297,n:"Hariyama",t:["Fighting"],a:["Thick Fat","Guts"],ev:null,evo:null,f:"",mv:[]},
+{id:299,n:"Nosepass",t:["Rock"],a:["Sturdy","Magnet Pull"],ev:"Magnetic Area",evo:"Probopass",f:"",mv:[]},
+{id:316,n:"Gulpin",t:["Poison"],a:["Liquid Ooze","Sticky Hold"],ev:26,evo:"Swalot",f:"etrian",mv:[]},
+{id:317,n:"Swalot",t:["Poison"],a:["Liquid Ooze","Sticky Hold"],ev:null,evo:null,f:"",mv:[]},
+{id:318,n:"Carvanha",t:["Water","Dark"],a:["Rough Skin","Speed Boost"],ev:30,evo:"Sharpedo",f:"",mv:[]},
+{id:319,n:"Sharpedo",t:["Water","Dark"],a:["Rough Skin","Speed Boost"],ev:null,evo:null,f:"",mv:[]},
+{id:320,n:"Wailmer",t:["Water"],a:["Water Veil","Oblivious"],ev:40,evo:"Wailord",f:"etrianEvo",mv:[]},
+{id:321,n:"Wailord",t:["Water"],a:["Water Veil","Oblivious"],ev:null,evo:null,f:"etrian",mv:[]},
+{id:333,n:"Swablu",t:["Normal","Flying"],a:["Natural Cure","Cloud Nine"],ev:35,evo:"Altaria",f:"",mv:[]},
+{id:334,n:"Altaria",t:["Dragon","Flying"],a:["Natural Cure","Cloud Nine"],ev:null,evo:null,f:"",mv:[]},
+{id:341,n:"Corphish",t:["Water"],a:["Hyper Cutter","Shell Armor"],ev:30,evo:"Crawdaunt",f:"",mv:[]},
+{id:342,n:"Crawdaunt",t:["Water","Dark"],a:["Hyper Cutter","Shell Armor"],ev:null,evo:null,f:"",mv:[]},
+{id:349,n:"Feebas",t:["Water"],a:["Swift Swim","Oblivious"],ev:"High Beauty",evo:"Milotic",f:"",mv:[]},
+{id:350,n:"Milotic",t:["Water"],a:["Marvel Scale","Competitive"],ev:null,evo:null,f:"",mv:[]},
+{id:385,n:"Jirachi",t:["Steel","Psychic"],a:["Serene Grace"],ev:null,evo:null,f:"",mv:[]},
+// ── GEN 4 evolutions ──
+{id:462,n:"Magnezone",t:["Electric","Steel"],a:["Sturdy","Analytic"],ev:null,evo:null,f:"",mv:[]},
+{id:466,n:"Electivire",t:["Electric"],a:["Motor Drive","Vital Spirit"],ev:null,evo:null,f:"",mv:[]},
+{id:476,n:"Probopass",t:["Rock","Steel"],a:["Sturdy","Sand Force"],ev:null,evo:null,f:"",mv:[]},
+];
+
+const ENCOUNTERS = [
+{region:"Fibernia",tag:"Main",slots:[
+  {method:"Event",enc:[
+    {name:"Jirachi",id:385,lv:"5",pct:"Event",note:"Keep playing the Talrega Lottery until its event is triggered."}
+  ]}
+]},
+{region:"Fibernia Woods",tag:"Main",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Bellsprout",id:69,lv:"2–4",pct:"20%"},
+    {name:"Spearow",id:21,lv:"2–4",pct:"20%",etrian:true},
+    {name:"Lotad",id:270,lv:"2–4",pct:"10%"},
+    {name:"Hoppip",id:187,lv:"2–4",pct:"10%"},
+    {name:"Nincada",id:290,lv:"2–4",pct:"10%"},
+    {name:"Nidoran♂",id:32,lv:"3–5",pct:"9%"},
+    {name:"Nidoran♀",id:29,lv:"3–5",pct:"15%"},
+    {name:"Meowth",id:52,lv:"3–5",pct:"6%"},
+  ]},
+  {method:"Headbutt",enc:[
+    {name:"Hoothoot",id:163,lv:"5",pct:"20%",etrian:true},
+    {name:"Mankey",id:56,lv:"5",pct:"20%"},
+    {name:"Sentret",id:161,lv:"5",pct:"20%"},
+    {name:"Swablu",id:333,lv:"5",pct:"20%"},
+    {name:"Seedot",id:273,lv:"5",pct:"20%"},
+  ]}
+]},
+{region:"Fibernia Promontory",tag:"Main",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Koffing",id:109,lv:"2–5",pct:"20%"},
+    {name:"Rattata",id:19,lv:"2–5",pct:"24%",etrian:true},
+    {name:"Grimer (Alola)",id:88,lv:"2–5",pct:"15%",etrian:true},
+    {name:"Wooper",id:194,lv:"2–5",pct:"15%"},
+    {name:"Venonat",id:48,lv:"2–5",pct:"20%"},
+    {name:"Gulpin",id:316,lv:"2–5",pct:"6%",etrian:true},
+  ]}
+]},
+{region:"Abandoned Lab",tag:"Main",slots:[
+  {method:"Floor",enc:[
+    {name:"Magnemite",id:81,lv:"3–6",pct:"20%"},
+    {name:"Voltorb (Hisui)",id:100,lv:"3–6",pct:"24%",etrian:true},
+    {name:"Pikachu",id:25,lv:"3–6",pct:"15%",note:"Evolves into Etrian Variant"},
+    {name:"Grimer (Alola)",id:88,lv:"3–6",pct:"15%",etrian:true},
+    {name:"Koffing",id:109,lv:"3–6",pct:"20%"},
+    {name:"Elekid",id:239,lv:"4–6",pct:"6%",etrian:true},
+  ]}
+]},
+{region:"Coastal Road",tag:"Main",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Zigzagoon",id:263,lv:"3",pct:"20%"},
+    {name:"Poochyena",id:261,lv:"3–4",pct:"24%",etrian:true},
+    {name:"Pidgey",id:16,lv:"3",pct:"15%"},
+    {name:"Wingull",id:278,lv:"3",pct:"15%"},
+    {name:"Oddish",id:43,lv:"2",pct:"20%",note:"Evolves into Etrian Variant"},
+    {name:"Jigglypuff",id:39,lv:"4–5",pct:"6%",etrian:true},
+  ]},
+  {method:"Old Rod",enc:[
+    {name:"Carvanha",id:318,lv:"5",pct:"70%"},
+    {name:"Magikarp",id:129,lv:"5",pct:"30%"},
+  ]},
+  {method:"Good Rod",enc:[
+    {name:"Staryu",id:120,lv:"5–15",pct:"60%"},
+    {name:"Carvanha",id:318,lv:"5–15",pct:"20%"},
+    {name:"Wailmer",id:320,lv:"5–15",pct:"20%",note:"Evolves into Etrian Variant"},
+  ]},
+  {method:"Super Rod",enc:[
+    {name:"Chinchou",id:170,lv:"15–25",pct:"40%"},
+    {name:"Wailmer",id:320,lv:"15–25",pct:"30%",note:"Evolves into Etrian Variant"},
+    {name:"Sharpedo",id:319,lv:"20–30",pct:"15%"},
+    {name:"Seadra",id:117,lv:"20–30",pct:"10%"},
+    {name:"Gyarados",id:130,lv:"25–35",pct:"5%"},
+  ]},
+  {method:"Event",enc:[
+    {name:"Aerodactyl",id:142,lv:"25",pct:"Sidequest",note:"Krabby Club sidequest",etrian:true},
+    {name:"Porygon",id:137,lv:"???",pct:"Trade – Sidequest"},
+    {name:"Bulbasaur / Charmander / Squirtle",id:1,lv:"5",pct:"Sidequest",note:"Pokémon Lab – starter reward"},
+    {name:"Chikorita / Cyndaquil / Totodile",id:152,lv:"15",pct:"Sidequest",note:"Pokémon Lab – starter reward"},
+    {name:"Treecko / Torchic / Mudkip",id:252,lv:"25",pct:"Sidequest",note:"Pokémon Lab – starter reward"},
+  ]}
+]},
+{region:"Seaside Grotto",tag:"Main",slots:[
+  {method:"Cave",enc:[
+    {name:"Zubat",id:41,lv:"2–4",pct:"20%"},
+    {name:"Paras",id:46,lv:"2–4",pct:"20%"},
+    {name:"Corphish",id:341,lv:"2–4",pct:"10%"},
+    {name:"Krabby",id:98,lv:"2–4",pct:"10%",etrian:true},
+    {name:"Makuhita",id:296,lv:"2–5",pct:"20%"},
+    {name:"Geodude",id:74,lv:"3–5",pct:"14%"},
+    {name:"Dunsparce",id:206,lv:"4–5",pct:"6%"},
+  ]},
+  {method:"Rock Smash",enc:[
+    {name:"Geodude",id:74,lv:"3–5",pct:"60%"},
+    {name:"Nosepass",id:299,lv:"3–5",pct:"40%"},
+  ]},
+  {method:"Old Rod",enc:[
+    {name:"Magikarp",id:129,lv:"5",pct:"70%"},
+    {name:"Poliwag",id:60,lv:"5",pct:"30%"},
+  ]},
+  {method:"Good Rod",enc:[
+    {name:"Magikarp",id:129,lv:"5–15",pct:"60%"},
+    {name:"Poliwag",id:60,lv:"5–15",pct:"20%"},
+    {name:"Feebas",id:349,lv:"5–15",pct:"20%"},
+  ]},
+  {method:"Super Rod",enc:[
+    {name:"Poliwag",id:60,lv:"15–25",pct:"70%"},
+    {name:"Gyarados",id:130,lv:"20–30",pct:"15%"},
+    {name:"Poliwhirl",id:61,lv:"20–30",pct:"10%"},
+    {name:"Gyarados",id:130,lv:"25–35",pct:"5%"},
+  ]}
+]},
+{region:"Talrega",tag:"Main",slots:[
+  {method:"Event",enc:[
+    {name:"Clefairy",id:35,lv:"???",pct:"Trade – Sidequest"}
+  ]}
+]},
+{region:"Talrega Farm",tag:"Main",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Mareep",id:179,lv:"3–4",pct:"20%",etrian:true},
+    {name:"Marill",id:183,lv:"3–5",pct:"24%"},
+    {name:"Snubbull",id:209,lv:"3–5",pct:"15%"},
+    {name:"Exeggcute",id:102,lv:"3–5",pct:"15%",etrian:true},
+    {name:"Paras",id:46,lv:"3–5",pct:"20%"},
+    {name:"Eevee",id:133,lv:"3–5",pct:"6%",note:"Evolves into Etrian Variant"},
+  ]},
+  {method:"Event",enc:[
+    {name:"Tauros",id:128,lv:"???",pct:"Trade – Sidequest"}
+  ]}
+]},
+// ── VARLEY WOODS ──
+{region:"Varley Woods",tag:"Main",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Natu",id:177,lv:"6–8",pct:"20%",etrian:true},
+    {name:"Skitty",id:300,lv:"6–9",pct:"24%"},
+    {name:"Ralts",id:280,lv:"6–9",pct:"15%",etrian:true},
+    {name:"Slakoth",id:287,lv:"6–9",pct:"15%"},
+    {name:"Roselia",id:315,lv:"6–9",pct:"20%"},
+    {name:"Yanma",id:193,lv:"7–9",pct:"6%"},
+  ]},
+  {method:"Event",enc:[
+    {name:"Celebi",id:251,lv:"50",pct:"Event",etrian:true,note:"Retrieve the Offer Bag in the First Stratum and present it at the shrine."},
+  ]}
+]},
+// ── WATERFALL WOOD ──
+{region:"Waterfall Wood",tag:"Main",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Surskit",id:283,lv:"10–12",pct:"20%"},
+    {name:"Marill",id:183,lv:"10–13",pct:"24%"},
+    {name:"Psyduck",id:54,lv:"10–13",pct:"15%"},
+    {name:"Slowpoke",id:79,lv:"10–13",pct:"15%"},
+    {name:"Oddish",id:43,lv:"10–13",pct:"20%",note:"Evolves into Etrian Variant"},
+    {name:"Lickitung",id:108,lv:"12–13",pct:"6%"},
+  ]},
+  {method:"Old Rod",enc:[
+    {name:"Magikarp",id:129,lv:"5",pct:"70%"},
+    {name:"Goldeen",id:118,lv:"5",pct:"30%"},
+  ]},
+  {method:"Good Rod",enc:[
+    {name:"Magikarp",id:129,lv:"5–15",pct:"60%"},
+    {name:"Feebas",id:349,lv:"5–15",pct:"20%"},
+    {name:"Goldeen",id:118,lv:"5–15",pct:"20%"},
+  ]},
+  {method:"Super Rod",enc:[
+    {name:"Poliwag",id:60,lv:"15–25",pct:"40%"},
+    {name:"Poliwag",id:60,lv:"15–25",pct:"30%"},
+    {name:"Poliwhirl",id:61,lv:"20–25",pct:"15%"},
+    {name:"Gyarados",id:130,lv:"25–30",pct:"10%"},
+    {name:"Poliwhirl",id:61,lv:"30–35",pct:"5%"},
+  ]}
+]},
+// ── NORTHERN ATOLL ──
+{region:"Northern Atoll",tag:"Main",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Krabby",id:98,lv:"14–16",pct:"20%",etrian:true},
+    {name:"Wingull",id:278,lv:"14–17",pct:"24%"},
+    {name:"Exeggcute",id:102,lv:"14–17",pct:"15%",etrian:true},
+    {name:"Meditite",id:307,lv:"14–17",pct:"15%",etrian:true},
+    {name:"Mankey",id:56,lv:"14–17",pct:"20%"},
+    {name:"Dratini",id:147,lv:"15–17",pct:"6%"},
+  ]},
+  {method:"Old Rod",enc:[
+    {name:"Magikarp",id:129,lv:"5",pct:"70%"},
+    {name:"Carvanha",id:318,lv:"5",pct:"30%"},
+  ]},
+  {method:"Good Rod",enc:[
+    {name:"Horsea",id:116,lv:"5–15",pct:"60%"},
+    {name:"Magikarp",id:129,lv:"5–15",pct:"20%"},
+    {name:"Mantine",id:226,lv:"5–15",pct:"20%",etrian:true},
+  ]},
+  {method:"Super Rod",enc:[
+    {name:"Horsea",id:116,lv:"15–25",pct:"40%"},
+    {name:"Horsea",id:116,lv:"15–25",pct:"30%"},
+    {name:"Gyarados",id:130,lv:"20–25",pct:"15%"},
+    {name:"Seadra",id:117,lv:"25–30",pct:"10%"},
+    {name:"Gyarados",id:130,lv:"25–35",pct:"5%"},
+  ]}
+]},
+// ── PIRATE ISLAND ──
+{region:"Pirate Island",tag:"Main",slots:[
+  {method:"Old Rod",enc:[
+    {name:"Magikarp",id:129,lv:"5",pct:"70%"},
+    {name:"Tentacool",id:72,lv:"5",pct:"30%"},
+  ]},
+  {method:"Good Rod",enc:[
+    {name:"Horsea",id:116,lv:"5–15",pct:"60%"},
+    {name:"Tentacool",id:72,lv:"5–15",pct:"20%"},
+    {name:"Remoraid",id:223,lv:"5–15",pct:"20%"},
+  ]},
+  {method:"Super Rod",enc:[
+    {name:"Horsea",id:116,lv:"15–25",pct:"40%"},
+    {name:"Tentacool",id:72,lv:"15–25",pct:"30%"},
+    {name:"Gyarados",id:130,lv:"15–25",pct:"15%"},
+    {name:"Seadra",id:117,lv:"25–35",pct:"10%"},
+    {name:"Tentacruel",id:73,lv:"25–35",pct:"5%"},
+  ]}
+]},
+// ── JAGGED MOUNTAIN ──
+{region:"Jagged Mountain",tag:"Main",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Swablu",id:333,lv:"15–17",pct:"20%"},
+    {name:"Sudowoodo",id:185,lv:"15–18",pct:"24%"},
+    {name:"Doduo",id:84,lv:"15–18",pct:"15%"},
+    {name:"Ponyta",id:77,lv:"15–18",pct:"15%",etrian:true},
+    {name:"Tyrogue",id:236,lv:"15–18",pct:"20%"},
+    {name:"Beldum",id:374,lv:"16–18",pct:"6%"},
+  ]},
+  {method:"Old Rod",enc:[
+    {name:"Magikarp",id:129,lv:"5",pct:"70%"},
+    {name:"Tentacool",id:72,lv:"5",pct:"30%"},
+  ]},
+  {method:"Good Rod",enc:[
+    {name:"Corsola",id:222,lv:"5–15",pct:"60%",etrian:true},
+    {name:"Tentacool",id:72,lv:"5–15",pct:"20%"},
+    {name:"Shellder",id:90,lv:"5–15",pct:"20%"},
+  ]},
+  {method:"Super Rod",enc:[
+    {name:"Corsola",id:222,lv:"15–25",pct:"40%",etrian:true},
+    {name:"Horsea",id:116,lv:"15–25",pct:"30%"},
+    {name:"Gyarados",id:130,lv:"15–25",pct:"15%"},
+    {name:"Horsea",id:116,lv:"25–35",pct:"10%"},
+    {name:"Seadra",id:117,lv:"25–35",pct:"5%"},
+  ]}
+]},
+// ── FARAWAY ISLAND ──
+{region:"Faraway Island",tag:"Main",slots:[
+  {method:"Old Rod",enc:[
+    {name:"Magikarp",id:129,lv:"5",pct:"70%"},
+    {name:"Magikarp",id:129,lv:"5",pct:"30%"},
+  ]},
+  {method:"Good Rod",enc:[
+    {name:"Horsea",id:116,lv:"5–15",pct:"60%"},
+    {name:"Magikarp",id:129,lv:"5–15",pct:"20%"},
+    {name:"Horsea",id:116,lv:"5–15",pct:"20%"},
+  ]},
+  {method:"Super Rod",enc:[
+    {name:"Horsea",id:116,lv:"15–25",pct:"40%"},
+    {name:"Horsea",id:116,lv:"15–25",pct:"30%"},
+    {name:"Gyarados",id:130,lv:"15–25",pct:"15%"},
+    {name:"Seadra",id:117,lv:"25–35",pct:"10%"},
+    {name:"Gyarados",id:130,lv:"25–35",pct:"5%"},
+  ]}
+]},
+// ── AQUA RESORT ──
+{region:"Aqua Resort",tag:"Main",slots:[
+  {method:"Old Rod",enc:[
+    {name:"Magikarp",id:129,lv:"5",pct:"70%"},
+    {name:"Corsola",id:222,lv:"5",pct:"30%",etrian:true},
+  ]},
+  {method:"Good Rod",enc:[
+    {name:"Horsea",id:116,lv:"5–15",pct:"60%"},
+    {name:"Magikarp",id:129,lv:"5–15",pct:"20%"},
+    {name:"Corsola",id:222,lv:"5–15",pct:"20%",etrian:true},
+  ]},
+  {method:"Super Rod",enc:[
+    {name:"Corsola",id:222,lv:"15–25",pct:"40%",etrian:true},
+    {name:"Horsea",id:116,lv:"15–25",pct:"30%"},
+    {name:"Mantine",id:226,lv:"15–25",pct:"15%",etrian:true},
+    {name:"Mantine",id:226,lv:"25–35",pct:"10%",etrian:true},
+    {name:"Gyarados",id:130,lv:"25–35",pct:"5%"},
+  ]},
+  {method:"Event",enc:[
+    {name:"Lapras",id:131,lv:"15",pct:"Sidequest",note:"The wounded Lapras sidequest"},
+    {name:"Kangaskhan",id:115,lv:"???",pct:"Trade – Sidequest",note:"A Fanatic's Demand – trade Beldum"},
+  ]}
+]},
+// ── FIRST STRATUM – EMERALD GROVE ──
+{region:"First Stratum — Emerald Grove",tag:"Stratum I",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Taillow",id:276,lv:"6–8",pct:"20%"},
+    {name:"Wurmple",id:265,lv:"6–8",pct:"20%",note:"Evolves into Etrian Variant"},
+    {name:"Caterpie",id:10,lv:"6–8",pct:"10%"},
+    {name:"Weedle",id:13,lv:"6–9",pct:"15%"},
+    {name:"Shroomish",id:285,lv:"6–9",pct:"20%",etrian:true},
+    {name:"Farfetch'd (Galar)",id:83,lv:"7–9",pct:"9%",etrian:true},
+    {name:"Sunkern",id:191,lv:"7–9",pct:"6%",etrian:true},
+  ]},
+  {method:"Headbutt",enc:[
+    {name:"Spinarak",id:167,lv:"7",pct:"20%"},
+    {name:"Volbeat",id:313,lv:"7",pct:"20%",etrian:true},
+    {name:"Illumise",id:314,lv:"7",pct:"20%",etrian:true},
+    {name:"Ledyba",id:165,lv:"7",pct:"20%"},
+    {name:"Pineco",id:204,lv:"7",pct:"20%"},
+  ]}
+]},
+// ── ARUNDEL WOODS ──
+{region:"Arundel Woods",tag:"Stratum I",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Snorunt",id:361,lv:"16–18",pct:"20%"},
+    {name:"Spheal",id:363,lv:"16–19",pct:"24%"},
+    {name:"Seel",id:86,lv:"16–19",pct:"15%"},
+    {name:"Swinub",id:220,lv:"16–19",pct:"15%"},
+    {name:"Smoochum",id:238,lv:"16–19",pct:"20%",etrian:true},
+    {name:"Sneasel",id:215,lv:"17–19",pct:"6%",etrian:true},
+  ]},
+  {method:"Event",enc:[
+    {name:"Regice",id:378,lv:"60",pct:"Event",etrian:true},
+  ]}
+]},
+// ── YGGDRASIL (OUTSIDE) ──
+{region:"Yggdrasil (Outside)",tag:"Stratum I",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Houndour",id:228,lv:"12–15",pct:"20%"},
+    {name:"Spoink",id:325,lv:"12–15",pct:"24%"},
+    {name:"Teddiursa",id:216,lv:"12–15",pct:"15%"},
+    {name:"Abra",id:63,lv:"12–15",pct:"15%"},
+    {name:"Drowzee",id:96,lv:"12–15",pct:"20%"},
+    {name:"Tangela",id:114,lv:"13–15",pct:"6%",etrian:true},
+  ]}
+]},
+// ── SECOND STRATUM – GOLGONDA (LEFT SIDE) ──
+{region:"Second Stratum — Golgonda (Left Side)",tag:"Stratum II",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Sandshrew",id:27,lv:"13–15",pct:"20%",etrian:true},
+    {name:"Cacnea",id:331,lv:"13–16",pct:"24%"},
+    {name:"Baltoy",id:343,lv:"13–16",pct:"15%",etrian:true},
+    {name:"Trapinch",id:328,lv:"13–16",pct:"15%"},
+    {name:"Numel",id:322,lv:"13–16",pct:"20%"},
+    {name:"Gligar",id:207,lv:"14–16",pct:"6%"},
+  ]},
+  {method:"Rock Smash",enc:[
+    {name:"Geodude",id:74,lv:"14–15",pct:"60%"},
+    {name:"Shuckle",id:213,lv:"14–18",pct:"40%"},
+  ]}
+]},
+// ── CAVE OF ATHARI ──
+{region:"Cave of Athari",tag:"Stratum II",slots:[
+  {method:"Cave",enc:[
+    {name:"Whismur",id:293,lv:"13–15",pct:"20%"},
+    {name:"Onix",id:95,lv:"13–16",pct:"24%"},
+    {name:"Aron",id:304,lv:"13–16",pct:"15%",etrian:true},
+    {name:"Meditite",id:307,lv:"13–16",pct:"15%",etrian:true},
+    {name:"Duskull",id:355,lv:"13–16",pct:"20%",etrian:true},
+    {name:"Shuppet",id:353,lv:"14–16",pct:"6%"},
+  ]}
+]},
+// ── GORGE OF ZANADO ──
+{region:"Gorge of Zanado",tag:"Stratum II",slots:[
+  {method:"Headbutt",enc:[
+    {name:"Aipom",id:190,lv:"18",pct:"20%"},
+    {name:"Exeggcute",id:102,lv:"18",pct:"20%",etrian:true},
+    {name:"Spearow",id:21,lv:"18",pct:"20%",etrian:true},
+    {name:"Natu",id:177,lv:"18",pct:"20%",etrian:true},
+    {name:"Hoppip",id:187,lv:"18",pct:"20%"},
+  ]},
+  {method:"Event",enc:[
+    {name:"Girafarig",id:203,lv:"20",pct:"Sidequest",note:"The perfect gift sidequest reward"},
+  ]}
+]},
+// ── SECOND STRATUM – GOLGONDA (RIGHT SIDE) ──
+{region:"Second Stratum — Golgonda (Right Side)",tag:"Stratum II",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Trapinch",id:328,lv:"16–18",pct:"20%"},
+    {name:"Ekans",id:23,lv:"16–18",pct:"20%",etrian:true},
+    {name:"Diglett",id:50,lv:"16–18",pct:"10%"},
+    {name:"Cubone",id:104,lv:"16–20",pct:"15%",etrian:true},
+    {name:"Lileep",id:345,lv:"16–20",pct:"14%"},
+    {name:"Anorith",id:347,lv:"16–20",pct:"15%"},
+    {name:"Skarmory",id:227,lv:"18–20",pct:"6%"},
+  ]},
+  {method:"Sand",enc:[
+    {name:"Larvitar",id:246,lv:"16–20",pct:"65%"},
+    {name:"Phanpy",id:231,lv:"16–21",pct:"35%"},
+  ]}
+]},
+// ── SECOND STRATUM (SANDY CAVES) ──
+{region:"Second Stratum (Sandy Caves)",tag:"Stratum II",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Baltoy",id:343,lv:"16–18",pct:"20%",etrian:true},
+    {name:"Gastly",id:92,lv:"16–20",pct:"24%"},
+    {name:"Trapinch",id:328,lv:"16–20",pct:"15%"},
+    {name:"Cubone",id:104,lv:"16–20",pct:"15%",etrian:true},
+    {name:"Sableye",id:302,lv:"16–20",pct:"20%"},
+    {name:"Misdreavus",id:200,lv:"18–20",pct:"6%",note:"Evolves into Etrian Variant"},
+  ]},
+  {method:"Sand",enc:[
+    {name:"Kabuto",id:140,lv:"15–18",pct:"100%",etrian:true},
+  ]},
+  {method:"Old Rod",enc:[
+    {name:"Omanyte",id:138,lv:"5",pct:"70%",etrian:true},
+    {name:"Omanyte",id:138,lv:"5",pct:"30%",etrian:true},
+  ]},
+  {method:"Good Rod",enc:[
+    {name:"Omanyte",id:138,lv:"5–15",pct:"60%",etrian:true},
+    {name:"Omanyte",id:138,lv:"5–15",pct:"20%",etrian:true},
+    {name:"Relicanth",id:369,lv:"5–15",pct:"20%",etrian:true},
+  ]},
+  {method:"Super Rod",enc:[
+    {name:"Omanyte",id:138,lv:"15–25",pct:"40%",etrian:true},
+    {name:"Omanyte",id:138,lv:"15–25",pct:"30%",etrian:true},
+    {name:"Relicanth",id:369,lv:"20–25",pct:"15%",etrian:true},
+    {name:"Relicanth",id:369,lv:"25–30",pct:"10%",etrian:true},
+    {name:"Relicanth",id:369,lv:"30–35",pct:"5%",etrian:true},
+  ]}
+]},
+// ── DESERT OF GOLGONDA ──
+{region:"Desert of Golgonda",tag:"Stratum II",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Trapinch",id:328,lv:"20–22",pct:"20%"},
+    {name:"Baltoy",id:343,lv:"20–24",pct:"24%",etrian:true},
+    {name:"Cacnea",id:331,lv:"20–24",pct:"15%"},
+    {name:"Sandshrew",id:27,lv:"20–24",pct:"15%",etrian:true},
+    {name:"Numel",id:322,lv:"20–24",pct:"20%"},
+    {name:"Murkrow",id:198,lv:"23–25",pct:"6%"},
+  ]},
+  {method:"Sand",enc:[
+    {name:"Rhyhorn",id:111,lv:"20–26",pct:"66%"},
+    {name:"Cubone",id:104,lv:"20–24",pct:"34%",etrian:true},
+  ]},
+  {method:"Old Rod",enc:[
+    {name:"Magikarp",id:129,lv:"5",pct:"70%"},
+    {name:"Barboach",id:339,lv:"5",pct:"30%",etrian:true},
+  ]},
+  {method:"Good Rod",enc:[
+    {name:"Barboach",id:339,lv:"5–15",pct:"60%",etrian:true},
+    {name:"Magikarp",id:129,lv:"5–15",pct:"20%"},
+    {name:"Psyduck",id:54,lv:"5–15",pct:"20%"},
+  ]},
+  {method:"Super Rod",enc:[
+    {name:"Barboach",id:339,lv:"15–25",pct:"40%",etrian:true},
+    {name:"Psyduck",id:54,lv:"15–25",pct:"30%"},
+    {name:"Gyarados",id:130,lv:"20–30",pct:"15%"},
+    {name:"Golduck",id:55,lv:"20–30",pct:"10%"},
+    {name:"Whiscash",id:340,lv:"25–35",pct:"5%",etrian:true},
+  ]},
+  {method:"Event",enc:[
+    {name:"Regirock",id:377,lv:"60",pct:"Event",etrian:true},
+  ]}
+]},
+// ── CHARON ──
+{region:"Charon",tag:"Main",slots:[
+  {method:"Event",enc:[
+    {name:"Farfetch'd",id:83,lv:"???",pct:"Trade – Sidequest",etrian:true,note:"I want a Ralts! — trade reward"},
+  ]}
+]},
+// ── BRIGIT FARM ──
+{region:"Brigit Farm",tag:"Main",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Mareep",id:179,lv:"23–25",pct:"20%",etrian:true},
+    {name:"Electrike",id:309,lv:"23–26",pct:"24%"},
+    {name:"Surskit",id:283,lv:"23–26",pct:"15%"},
+    {name:"Pikachu",id:25,lv:"23–26",pct:"15%"},
+    {name:"Eevee",id:133,lv:"23–26",pct:"20%",note:"Evolves into Etrian Variant"},
+    {name:"Miltank",id:241,lv:"25–27",pct:"6%"},
+  ]}
+]},
+// ── MAPLE ISLAND ──
+{region:"Maple Island",tag:"Main",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Furret",id:162,lv:"16–18",pct:"20%"},
+    {name:"Spinarak",id:167,lv:"16–18",pct:"24%"},
+    {name:"Hoppip",id:187,lv:"16–18",pct:"15%"},
+    {name:"Nidorino",id:33,lv:"16–18",pct:"10%"},
+    {name:"Nidorina",id:30,lv:"16–18",pct:"10%"},
+    {name:"Pinsir",id:127,lv:"16–18",pct:"15%"},
+    {name:"Scyther",id:123,lv:"16–18",pct:"6%"},
+  ]}
+]},
+// ── THIRD STRATUM (1) ──
+{region:"Third Stratum (1)",tag:"Stratum III",slots:[
+  {method:"Sand",enc:[
+    {name:"Slugma",id:218,lv:"26–28",pct:"20%"},
+    {name:"Magby",id:240,lv:"26–29",pct:"24%",etrian:true},
+    {name:"Growlithe",id:58,lv:"26–29",pct:"15%"},
+    {name:"Lunatone",id:337,lv:"26–29",pct:"15%"},
+    {name:"Solrock",id:338,lv:"26–29",pct:"20%"},
+    {name:"Torkoal",id:324,lv:"27–29",pct:"6%"},
+  ]}
+]},
+// ── THIRD STRATUM (2) ──
+{region:"Third Stratum (2)",tag:"Stratum III",slots:[
+  {method:"Sand",enc:[
+    {name:"Geodude",id:74,lv:"27–29",pct:"20%"},
+    {name:"Machop",id:66,lv:"28–30",pct:"24%",etrian:true},
+    {name:"Slugma",id:218,lv:"28–30",pct:"15%"},
+    {name:"Magby",id:240,lv:"28–30",pct:"15%",etrian:true},
+    {name:"Golbat",id:42,lv:"28–30",pct:"20%"},
+    {name:"Machoke",id:67,lv:"28–30",pct:"6%",etrian:true},
+  ]}
+]},
+// ── THIRD STRATUM (3–4) ──
+{region:"Third Stratum (3–4)",tag:"Stratum III",slots:[
+  {method:"Sand",enc:[
+    {name:"Machop",id:66,lv:"28–30",pct:"20%",etrian:true},
+    {name:"Aron",id:304,lv:"28–31",pct:"24%",etrian:true},
+    {name:"Vulpix",id:37,lv:"28–31",pct:"15%",etrian:true},
+    {name:"Slugma",id:218,lv:"28–31",pct:"15%"},
+    {name:"Golbat",id:42,lv:"28–31",pct:"20%"},
+    {name:"Wobbuffet",id:202,lv:"29–31",pct:"6%"},
+  ]}
+]},
+// ── THIRD STRATUM (5–6) ──
+{region:"Third Stratum (5–6)",tag:"Stratum III",slots:[
+  {method:"Sand",enc:[
+    {name:"Magmar",id:126,lv:"31–33",pct:"20%",etrian:true},
+    {name:"Geodude",id:74,lv:"31–34",pct:"24%"},
+    {name:"Vulpix",id:37,lv:"31–34",pct:"15%",etrian:true},
+    {name:"Torkoal",id:324,lv:"31–34",pct:"15%"},
+    {name:"Slugma",id:218,lv:"31–34",pct:"20%"},
+    {name:"Bagon",id:371,lv:"32–34",pct:"6%"},
+  ]}
+]},
+// ── THIRD STRATUM (DEEPEST PART) ──
+{region:"Third Stratum (Deepest Part)",tag:"Stratum III",slots:[
+  {method:"Sand",enc:[
+    {name:"Onix",id:95,lv:"30–32",pct:"20%"},
+    {name:"Torkoal",id:324,lv:"30–33",pct:"24%"},
+    {name:"Golbat",id:42,lv:"30–33",pct:"15%"},
+    {name:"Growlithe",id:58,lv:"30–33",pct:"15%"},
+    {name:"Slugma",id:218,lv:"30–33",pct:"20%"},
+    {name:"Loudred",id:294,lv:"31–33",pct:"6%"},
+  ]}
+]},
+// ── AUBURN THICKET ──
+{region:"Auburn Thicket",tag:"Stratum III",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Heracross",id:214,lv:"37–39",pct:"20%"},
+    {name:"Scyther",id:123,lv:"37–39",pct:"20%"},
+    {name:"Pinsir",id:127,lv:"37–39",pct:"10%"},
+    {name:"Dustox",id:269,lv:"37–39",pct:"10%",etrian:true},
+    {name:"Beautifly",id:267,lv:"37–39",pct:"10%",etrian:true},
+    {name:"Butterfree",id:12,lv:"38–40",pct:"14%"},
+    {name:"Beedrill",id:15,lv:"38–40",pct:"10%"},
+    {name:"Castform",id:351,lv:"38–40",pct:"6%"},
+  ]},
+  {method:"Event",enc:[
+    {name:"Snorlax",id:143,lv:"45",pct:"Event"},
+    {name:"Registeel",id:379,lv:"60",pct:"Event",etrian:true},
+  ]}
+]},
+// ── FOURTH STRATUM (1–2) ──
+{region:"Fourth Stratum (1–2)",tag:"Stratum IV",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Tropius",id:357,lv:"36–38",pct:"20%"},
+    {name:"Weepinbell",id:70,lv:"36–40",pct:"24%"},
+    {name:"Gloom",id:44,lv:"36–40",pct:"15%"},
+    {name:"Zangoose",id:335,lv:"36–40",pct:"15%"},
+    {name:"Seviper",id:336,lv:"36–40",pct:"20%"},
+    {name:"Kecleon",id:352,lv:"38–40",pct:"6%"},
+  ]}
+]},
+// ── FOURTH STRATUM (3) ──
+{region:"Fourth Stratum (3)",tag:"Stratum IV",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Wooper",id:194,lv:"37–39",pct:"20%"},
+    {name:"Quagsire",id:195,lv:"37–40",pct:"24%"},
+    {name:"Lombre",id:271,lv:"37–40",pct:"15%"},
+    {name:"Nuzleaf",id:274,lv:"37–40",pct:"15%"},
+    {name:"Marill",id:183,lv:"37–40",pct:"20%"},
+    {name:"Dratini",id:147,lv:"38–40",pct:"6%"},
+  ]},
+  {method:"Old Rod",enc:[
+    {name:"Magikarp",id:129,lv:"5",pct:"70%"},
+    {name:"Feebas",id:349,lv:"5",pct:"30%"},
+  ]},
+  {method:"Good Rod",enc:[
+    {name:"Feebas",id:349,lv:"5–15",pct:"60%"},
+    {name:"Barboach",id:339,lv:"5–15",pct:"20%",etrian:true},
+    {name:"Poliwag",id:60,lv:"5–15",pct:"20%"},
+  ]},
+  {method:"Super Rod",enc:[
+    {name:"Poliwag",id:60,lv:"15–20",pct:"40%"},
+    {name:"Slowpoke",id:79,lv:"20–25",pct:"30%"},
+    {name:"Poliwhirl",id:61,lv:"25–30",pct:"15%"},
+    {name:"Gyarados",id:130,lv:"30–35",pct:"10%"},
+    {name:"Golduck",id:55,lv:"35–40",pct:"5%"},
+  ]}
+]},
+// ── FOURTH STRATUM (4) ──
+{region:"Fourth Stratum (4)",tag:"Stratum IV",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Linoone",id:264,lv:"37–39",pct:"20%"},
+    {name:"Nidorina",id:30,lv:"37–40",pct:"24%"},
+    {name:"Nidorino",id:33,lv:"37–40",pct:"15%"},
+    {name:"Venomoth",id:49,lv:"37–40",pct:"15%"},
+    {name:"Girafarig",id:203,lv:"37–40",pct:"20%"},
+    {name:"Absol",id:359,lv:"38–40",pct:"6%",etrian:true},
+  ]}
+]},
+// ── FOURTH STRATUM (5) ──
+{region:"Fourth Stratum (5)",tag:"Stratum IV",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Quagsire",id:195,lv:"40–42",pct:"20%"},
+    {name:"Linoone",id:264,lv:"40–43",pct:"24%"},
+    {name:"Dodrio",id:85,lv:"40–43",pct:"15%"},
+    {name:"Tangela",id:114,lv:"40–43",pct:"15%",etrian:true},
+    {name:"Swellow",id:277,lv:"40–43",pct:"20%"},
+    {name:"Chansey",id:113,lv:"41–43",pct:"6%",etrian:true},
+  ]}
+]},
+// ── AZURE CAVE ──
+{region:"Azure Cave",tag:"Stratum IV",slots:[
+  {method:"Cave",enc:[
+    {name:"Loudred",id:294,lv:"38–40",pct:"20%"},
+    {name:"Psyduck",id:54,lv:"38–41",pct:"24%"},
+    {name:"Golbat",id:42,lv:"38–41",pct:"15%"},
+    {name:"Nosepass",id:299,lv:"38–41",pct:"15%"},
+    {name:"Misdreavus",id:200,lv:"38–41",pct:"20%",note:"Evolves into Etrian Variant"},
+    {name:"Mawile",id:303,lv:"39–41",pct:"6%"},
+  ]},
+  {method:"Old Rod",enc:[
+    {name:"Magikarp",id:129,lv:"5",pct:"70%"},
+    {name:"Poliwag",id:60,lv:"5",pct:"30%"},
+  ]},
+  {method:"Good Rod",enc:[
+    {name:"Magikarp",id:129,lv:"5–15",pct:"60%"},
+    {name:"Poliwag",id:60,lv:"5–15",pct:"20%"},
+    {name:"Slowpoke",id:79,lv:"5–15",pct:"20%"},
+  ]},
+  {method:"Super Rod",enc:[
+    {name:"Psyduck",id:54,lv:"15–25",pct:"40%"},
+    {name:"Poliwag",id:60,lv:"20–25",pct:"30%"},
+    {name:"Slowpoke",id:79,lv:"25–30",pct:"15%"},
+    {name:"Gyarados",id:130,lv:"30–35",pct:"10%"},
+    {name:"Golduck",id:55,lv:"35–40",pct:"5%"},
+  ]}
+]},
+// ── LOST WOODS ──
+{region:"Lost Woods",tag:"Stratum IV",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Haunter",id:93,lv:"42–44",pct:"20%"},
+    {name:"Shuppet",id:353,lv:"42–45",pct:"24%"},
+    {name:"Mightyena",id:262,lv:"42–45",pct:"15%",etrian:true},
+    {name:"Vigoroth",id:288,lv:"42–45",pct:"15%"},
+    {name:"Parasect",id:47,lv:"42–45",pct:"20%"},
+    {name:"Dusclops",id:356,lv:"43–45",pct:"6%",etrian:true},
+  ]}
+]},
+// ── ETRIA GRAVEYARD ──
+{region:"Etria Graveyard",tag:"Stratum IV",slots:[
+  {method:"Tall Grass",enc:[
+    {name:"Shuppet",id:353,lv:"37–39",pct:"20%"},
+    {name:"Duskull",id:355,lv:"37–40",pct:"24%",etrian:true},
+    {name:"Ariados",id:168,lv:"37–40",pct:"15%"},
+    {name:"Haunter",id:93,lv:"37–40",pct:"15%"},
+    {name:"Murkrow",id:198,lv:"37–40",pct:"20%"},
+    {name:"Chimecho",id:358,lv:"38–40",pct:"6%"},
+  ]}
+]},
+// ── CAVE OF AGES ──
+{region:"Cave of Ages",tag:"Stratum IV",slots:[
+  {method:"Grass",enc:[
+    {name:"Scream Tail",id:987,lv:"45–49",pct:"45%"},
+    {name:"Sandy Shock",id:989,lv:"46–49",pct:"20%"},
+    {name:"Flutter Mane",id:990,lv:"45–48",pct:"20%"},
+    {name:"Great Tusk",id:984,lv:"47–49",pct:"9%"},
+    {name:"Roaring Moon",id:1005,lv:"48–50",pct:"6%"},
+  ]}
+]},
+// ── FIFTH STRATUM – B1F ──
+{region:"Fifth Stratum — B1F",tag:"Stratum V",slots:[
+  {method:"Grass",enc:[
+    {name:"Manectric",id:310,lv:"45–47",pct:"20%"},
+    {name:"Grumpig",id:326,lv:"45–48",pct:"24%"},
+    {name:"Houndoom",id:229,lv:"45–48",pct:"15%"},
+    {name:"Sableye",id:302,lv:"45–48",pct:"15%"},
+    {name:"Magneton",id:82,lv:"45–48",pct:"20%"},
+    {name:"Metang",id:375,lv:"46–48",pct:"6%"},
+  ]}
+]},
+// ── FIFTH STRATUM – B2F ──
+{region:"Fifth Stratum — B2F",tag:"Stratum V",slots:[
+  {method:"Grass",enc:[
+    {name:"Lunatone",id:337,lv:"46–48",pct:"20%"},
+    {name:"Hypno",id:97,lv:"46–49",pct:"24%"},
+    {name:"Claydol",id:344,lv:"46–49",pct:"15%",etrian:true},
+    {name:"Solrock",id:338,lv:"46–49",pct:"15%"},
+    {name:"Kadabra",id:64,lv:"46–49",pct:"20%"},
+    {name:"Metang",id:375,lv:"47–49",pct:"6%"},
+  ]}
+]},
+// ── FIFTH STRATUM – B3F ──
+{region:"Fifth Stratum — B3F",tag:"Stratum V",slots:[
+  {method:"Grass",enc:[
+    {name:"Electrode (Hisui)",id:101,lv:"48–50",pct:"20%",etrian:true},
+    {name:"Banette",id:354,lv:"48–51",pct:"24%"},
+    {name:"Marowak",id:105,lv:"48–51",pct:"15%",etrian:true},
+    {name:"Mr. Mime",id:122,lv:"48–51",pct:"15%"},
+    {name:"Jynx",id:124,lv:"48–51",pct:"20%",etrian:true},
+    {name:"Gardevoir",id:282,lv:"49–51",pct:"6%",etrian:true},
+  ]}
+]},
+// ── FIFTH STRATUM – B4F ──
+{region:"Fifth Stratum — B4F",tag:"Stratum V",slots:[
+  {method:"Grass",enc:[
+    {name:"Muk (Alola)",id:89,lv:"49–51",pct:"20%",etrian:true},
+    {name:"Wigglytuff",id:40,lv:"49–52",pct:"24%",etrian:true},
+    {name:"Slowbro",id:80,lv:"49–52",pct:"15%"},
+    {name:"Clefable",id:36,lv:"49–52",pct:"15%"},
+    {name:"Xatu",id:178,lv:"49–52",pct:"20%",etrian:true},
+    {name:"Alakazam",id:65,lv:"50–52",pct:"6%"},
+  ]}
+]},
+// ── SIXTH STRATUM (SOUTH) ──
+{region:"Sixth Stratum (South)",tag:"Stratum VI",slots:[
+  {method:"Grass",enc:[
+    {name:"Piloswine",id:221,lv:"53–55",pct:"20%"},
+    {name:"Loudred",id:294,lv:"53–56",pct:"24%"},
+    {name:"Snorunt",id:361,lv:"53–56",pct:"15%"},
+    {name:"Medicham",id:308,lv:"53–56",pct:"15%",etrian:true},
+    {name:"Lairon",id:305,lv:"53–56",pct:"20%",etrian:true},
+    {name:"Weavile",id:461,lv:"54–56",pct:"6%",etrian:true},
+  ]}
+]},
+// ── SIXTH STRATUM (CENTER) ──
+{region:"Sixth Stratum (Center)",tag:"Stratum VI",slots:[
+  {method:"Grass",enc:[
+    {name:"Piloswine",id:221,lv:"54–56",pct:"20%"},
+    {name:"Hariyama",id:297,lv:"54–57",pct:"24%"},
+    {name:"Machoke",id:67,lv:"54–57",pct:"15%",etrian:true},
+    {name:"Graveler",id:75,lv:"54–57",pct:"15%"},
+    {name:"Ursaring",id:217,lv:"54–57",pct:"20%"},
+    {name:"Aggron",id:306,lv:"55–57",pct:"6%",etrian:true},
+  ]}
+]},
+// ── SIXTH STRATUM (NORTH) ──
+{region:"Sixth Stratum (North)",tag:"Stratum VI",slots:[
+  {method:"Grass",enc:[
+    {name:"Ponyta",id:77,lv:"54–56",pct:"20%",etrian:true},
+    {name:"Glalie",id:362,lv:"54–58",pct:"24%"},
+    {name:"Medicham",id:308,lv:"54–58",pct:"15%",etrian:true},
+    {name:"Sneasel",id:215,lv:"54–58",pct:"15%",etrian:true},
+    {name:"Golduck",id:55,lv:"54–58",pct:"20%"},
+    {name:"Swalot",id:317,lv:"56–58",pct:"6%",etrian:true},
+  ]}
+]},
+// ── SIXTH STRATUM (WEST) ──
+{region:"Sixth Stratum (West)",tag:"Stratum VI",slots:[
+  {method:"Grass",enc:[
+    {name:"Sealeo",id:364,lv:"54–56",pct:"20%"},
+    {name:"Slowbro",id:80,lv:"54–58",pct:"24%"},
+    {name:"Ambipom",id:424,lv:"54–58",pct:"15%"},
+    {name:"Tauros",id:128,lv:"54–58",pct:"15%"},
+    {name:"Absol",id:359,lv:"54–58",pct:"20%",etrian:true},
+    {name:"Stantler",id:234,lv:"56–58",pct:"6%",etrian:true},
+  ]}
+]},
+// ── ACUITY LAKEFRONT ──
+{region:"Acuity Lakefront",tag:"Stratum VI",slots:[
+  {method:"Grass",enc:[
+    {name:"Sneasel",id:215,lv:"50–52",pct:"20%",etrian:true},
+    {name:"Sealeo",id:364,lv:"50–53",pct:"24%"},
+    {name:"Snorunt",id:361,lv:"50–53",pct:"15%"},
+    {name:"Piloswine",id:221,lv:"50–53",pct:"15%"},
+    {name:"Ursaring",id:217,lv:"50–53",pct:"20%"},
+    {name:"Froslass",id:478,lv:"51–53",pct:"6%"},
+  ]},
+  {method:"Event",enc:[
+    {name:"Suicune",id:245,lv:"60",pct:"Event"},
+  ]}
+]},
+// ── LAKE OF RAGE ──
+{region:"Lake of Rage",tag:"Stratum VI",slots:[
+  {method:"Grass",enc:[
+    {name:"Venomoth",id:49,lv:"50–52",pct:"20%"},
+    {name:"Furret",id:162,lv:"50–53",pct:"24%"},
+    {name:"Noctowl",id:164,lv:"50–53",pct:"15%",etrian:true},
+    {name:"Ratreecate",id:0,lv:"50–53",pct:"15%",etrian:true},
+    {name:"Ampharos",id:181,lv:"50–53",pct:"20%",etrian:true},
+    {name:"Farigiraf",id:956,lv:"51–53",pct:"6%"},
+  ]},
+  {method:"Old Rod",enc:[
+    {name:"Magikarp",id:129,lv:"5",pct:"70%"},
+    {name:"Feebas",id:349,lv:"5",pct:"30%"},
+  ]},
+  {method:"Good Rod",enc:[
+    {name:"Poliwag",id:60,lv:"5–15",pct:"60%"},
+    {name:"Magikarp",id:129,lv:"5–15",pct:"20%"},
+    {name:"Feebas",id:349,lv:"5–15",pct:"20%"},
+  ]},
+  {method:"Super Rod",enc:[
+    {name:"Poliwag",id:60,lv:"15–25",pct:"40%"},
+    {name:"Poliwag",id:60,lv:"15–25",pct:"30%"},
+    {name:"Gyarados",id:130,lv:"15–25",pct:"15%"},
+    {name:"Poliwhirl",id:61,lv:"25–35",pct:"10%"},
+    {name:"Gyarados",id:130,lv:"25–35",pct:"5%"},
+  ]},
+  {method:"Event",enc:[
+    {name:"Raikou",id:243,lv:"60",pct:"Event"},
+  ]}
+]},
+// ── MOUNT CHIMNEY ──
+{region:"Mount Chimney",tag:"Stratum VI",slots:[
+  {method:"Grass",enc:[
+    {name:"Camerupt",id:323,lv:"50–52",pct:"20%"},
+    {name:"Torkoal",id:324,lv:"50–53",pct:"24%"},
+    {name:"Magmar",id:126,lv:"50–53",pct:"15%",etrian:true},
+    {name:"Machoke",id:67,lv:"50–53",pct:"15%",etrian:true},
+    {name:"Lairon",id:305,lv:"50–53",pct:"20%",etrian:true},
+    {name:"Pupitar",id:247,lv:"51–53",pct:"6%"},
+  ]},
+  {method:"Event",enc:[
+    {name:"Entei",id:244,lv:"60",pct:"Event"},
+  ]}
+]},
+// ── SEVENTH STRATUM – B1F ──
+{region:"Seventh Stratum — B1F",tag:"Stratum VII",slots:[
+  {method:"Grass",enc:[
+    {name:"Ratreecate",id:0,lv:"60–61",pct:"20%",etrian:true},
+    {name:"Bellossom",id:182,lv:"60–62",pct:"24%",etrian:true},
+    {name:"Azumarill",id:184,lv:"60–62",pct:"15%"},
+    {name:"Breloom",id:286,lv:"60–62",pct:"15%",etrian:true},
+    {name:"Claydol",id:344,lv:"60–62",pct:"20%",etrian:true},
+    {name:"Ampharos",id:181,lv:"60–62",pct:"6%",etrian:true},
+  ]}
+]},
+// ── SEVENTH STRATUM – B2F ──
+{region:"Seventh Stratum — B2F",tag:"Stratum VII",slots:[
+  {method:"Grass",enc:[
+    {name:"Marowak",id:105,lv:"60–61",pct:"20%",etrian:true},
+    {name:"Swalot",id:317,lv:"60–62",pct:"24%",etrian:true},
+    {name:"Pupitar",id:247,lv:"60–62",pct:"15%"},
+    {name:"Arbok",id:24,lv:"60–62",pct:"15%",etrian:true},
+    {name:"Ampharos",id:181,lv:"60–62",pct:"20%",etrian:true},
+    {name:"Scizor",id:212,lv:"60–62",pct:"6%"},
+  ]}
+]},
+// ── SEVENTH STRATUM – B3F ──
+{region:"Seventh Stratum — B3F",tag:"Stratum VII",slots:[
+  {method:"Grass",enc:[
+    {name:"Ninetales",id:38,lv:"61–62",pct:"20%",etrian:true},
+    {name:"Claydol",id:344,lv:"61–63",pct:"24%",etrian:true},
+    {name:"Vileplume",id:45,lv:"61–63",pct:"15%",etrian:true},
+    {name:"Altaria",id:334,lv:"61–63",pct:"15%"},
+    {name:"Alakazam",id:65,lv:"61–63",pct:"20%"},
+    {name:"Tyranitar",id:248,lv:"61–63",pct:"6%"},
+  ]}
+]},
+// ── PORCELAIN CAVE ──
+{region:"Porcelain Cave",tag:"Stratum VII",slots:[
+  {method:"Grass",enc:[
+    {name:"Golem",id:76,lv:"61–62",pct:"20%"},
+    {name:"Probopass",id:476,lv:"61–63",pct:"24%"},
+    {name:"Golbat",id:42,lv:"61–63",pct:"15%"},
+    {name:"Haunter",id:93,lv:"61–63",pct:"15%"},
+    {name:"Exploud",id:295,lv:"61–63",pct:"20%"},
+    {name:"Dudunsparce",id:982,lv:"61–63",pct:"6%"},
+  ]}
+]},
+// ── SEVENTH STRATUM – B4F ──
+{region:"Seventh Stratum — B4F",tag:"Stratum VII",slots:[
+  {method:"Grass",enc:[
+    {name:"Ninetales",id:38,lv:"62–63",pct:"20%",etrian:true},
+    {name:"Fearow",id:22,lv:"62–64",pct:"24%",etrian:true},
+    {name:"Ratreecate",id:0,lv:"62–64",pct:"15%",etrian:true},
+    {name:"Gliscor",id:472,lv:"62–64",pct:"15%"},
+    {name:"Scizor",id:212,lv:"62–64",pct:"20%"},
+    {name:"Metagross",id:376,lv:"62–64",pct:"6%"},
+  ]}
+]},
+// ── EIGHTH STRATUM – B1F ──
+{region:"Eighth Stratum — B1F",tag:"Stratum VIII",slots:[
+  {method:"Grass",enc:[
+    {name:"Tangrowth",id:465,lv:"67–68",pct:"20%",etrian:true},
+    {name:"Jynx",id:124,lv:"67–69",pct:"24%",etrian:true},
+    {name:"Arbok",id:24,lv:"67–69",pct:"15%",etrian:true},
+    {name:"Dusclops",id:356,lv:"67–69",pct:"15%",etrian:true},
+    {name:"Ampharos",id:181,lv:"67–69",pct:"20%",etrian:true},
+    {name:"Dusknoir",id:477,lv:"67–69",pct:"6%",etrian:true},
+  ]}
+]},
+// ── EIGHTH STRATUM – B2F ──
+{region:"Eighth Stratum — B2F",tag:"Stratum VIII",slots:[
+  {method:"Grass",enc:[
+    {name:"Parasect",id:47,lv:"68–69",pct:"20%"},
+    {name:"Ariados",id:168,lv:"68–70",pct:"24%"},
+    {name:"Houndoom",id:229,lv:"68–70",pct:"15%"},
+    {name:"Jynx",id:124,lv:"68–70",pct:"15%",etrian:true},
+    {name:"Dusclops",id:356,lv:"68–70",pct:"20%",etrian:true},
+    {name:"Ursaluna",id:901,lv:"68–70",pct:"6%"},
+  ]}
+]},
+// ── EIGHTH STRATUM – B3F ──
+{region:"Eighth Stratum — B3F",tag:"Stratum VIII",slots:[
+  {method:"Grass",enc:[
+    {name:"Jynx",id:124,lv:"69–70",pct:"20%",etrian:true},
+    {name:"Yanmega",id:469,lv:"69–71",pct:"24%"},
+    {name:"Tangrowth",id:465,lv:"69–71",pct:"15%",etrian:true},
+    {name:"Swalot",id:317,lv:"69–71",pct:"15%",etrian:true},
+    {name:"Sableye",id:302,lv:"69–71",pct:"20%"},
+    {name:"Dragonite",id:149,lv:"69–71",pct:"6%"},
+  ]}
+]},
+// ── EIGHTH STRATUM – B4F ──
+{region:"Eighth Stratum — B4F",tag:"Stratum VIII",slots:[
+  {method:"Grass",enc:[
+    {name:"Tangrowth",id:465,lv:"70–71",pct:"20%",etrian:true},
+    {name:"Absol",id:359,lv:"70–72",pct:"24%",etrian:true},
+    {name:"Arbok",id:24,lv:"70–72",pct:"15%",etrian:true},
+    {name:"Jynx",id:124,lv:"70–72",pct:"15%",etrian:true},
+    {name:"Ampharos",id:181,lv:"70–72",pct:"20%",etrian:true},
+    {name:"Dusknoir",id:477,lv:"70–72",pct:"6%",etrian:true},
+  ]}
+]},
+// ── EIGHTH STRATUM – B5F ──
+{region:"Eighth Stratum — B5F",tag:"Stratum VIII",slots:[
+  {method:"Grass",enc:[
+    {name:"Jynx",id:124,lv:"72–73",pct:"20%",etrian:true},
+    {name:"Ampharos",id:181,lv:"72–74",pct:"24%",etrian:true},
+    {name:"Arbok",id:24,lv:"72–74",pct:"15%",etrian:true},
+    {name:"Dusclops",id:356,lv:"72–74",pct:"15%",etrian:true},
+    {name:"Gengar",id:94,lv:"72–74",pct:"20%"},
+    {name:"Mismagius",id:429,lv:"72–74",pct:"6%",etrian:true},
+  ]},
+  {method:"Event",enc:[
+    {name:"Blaziken (Battle Bond)",id:257,lv:"75",pct:"Sidequest",etrian:true,note:"Postgame — My Parting Gift... quest"},
+  ]}
+]},
+// ── POSTGAME EVENTS ──
+{region:"Cave of Ages (Postgame)",tag:"Postgame",slots:[
+  {method:"Event",enc:[
+    {name:"Regigigas",id:486,lv:"90",pct:"Event",etrian:true},
+  ]}
+]},
+{region:"Seventh Stratum — B1F (Postgame)",tag:"Postgame",slots:[
+  {method:"Event",enc:[
+    {name:"Walking Wake",id:1009,lv:"90",pct:"Event"},
+  ]}
+]},
+{region:"Fourth Stratum (Postgame)",tag:"Postgame",slots:[
+  {method:"Event",enc:[
+    {name:"Raging Bolt",id:1021,lv:"90",pct:"Event"},
+  ]}
+]},
+{region:"Third Stratum (Postgame)",tag:"Postgame",slots:[
+  {method:"Event",enc:[
+    {name:"Gouging Fire",id:1020,lv:"90",pct:"Event"},
+  ]}
+]},
+];
+
+const TMS = [
+{n:"TM01",m:"Drain Punch",t:"Fighting",loc:"Sixth Stratum, central area"},
+{n:"TM02",m:"Dragon Claw",t:"Dragon",loc:"Cave of Ages"},
+{n:"TM03",m:"Water Pulse",t:"Water",loc:"Second Stratum, right side"},
+{n:"TM04",m:"Calm Mind",t:"Psychic",loc:"Fifth Stratum, B1F"},
+{n:"TM05",m:"Snarl",t:"Dark",loc:'Quest Reward: "Show me a Sneasel!", Krabby Club'},
+{n:"TM06",m:"Toxic",t:"Poison",loc:"Sixth Stratum, western area"},
+{n:"TM07",m:"Hail",t:"Ice",loc:"Arundel"},
+{n:"TM08",m:"Bulk Up",t:"Fighting",loc:'Quest Reward: "Eeveelution!", Third Stratum Base'},
+{n:"TM09",m:"Bullet Seed",t:"Grass",loc:"Varley Woods"},
+{n:"TM10",m:"Flash Cannon",t:"Steel",loc:"Seventh Stratum, B1F"},
+{n:"TM11",m:"Sunny Day",t:"Normal",loc:"Charon"},
+{n:"TM12",m:"Taunt",t:"Dark",loc:"Talrega's Guild, TM machine near Rikkah"},
+{n:"TM13",m:"Ice Beam",t:"Ice",loc:"Sea of Galazeah, eastern side"},
+{n:"TM14",m:"Blizzard",t:"Ice",loc:"Sixth Stratum, southern area"},
+{n:"TM15",m:"Hyper Beam",t:"Normal",loc:"Fifth Stratum, B2F"},
+{n:"TM16",m:"Light Screen",t:"Psychic",loc:'Quest Reward: "The Cake is a Lie", Krabby Club'},
+{n:"TM17",m:"Protect",t:"Normal",loc:"Fourth Stratum"},
+{n:"TM18",m:"Rain Dance",t:"Water",loc:"Gorge of Zanado"},
+{n:"TM19",m:"Giga Drain",t:"Grass",loc:"First Stratum"},
+{n:"TM20",m:"Safeguard",t:"Normal",loc:"Talrega's Guild, TM machine near Rikkah"},
+{n:"TM21",m:"Frustration",t:"Normal",loc:"Charon"},
+{n:"TM22",m:"Solar Beam",t:"Grass",loc:"Third Stratum"},
+{n:"TM23",m:"Iron Tail",t:"Steel",loc:'Quest Reward: "Eeveelution!", Third Stratum Base'},
+{n:"TM24",m:"Thunderbolt",t:"Electric",loc:'Quest Reward: "The lost Castform", Auburn Thicket'},
+{n:"TM25",m:"Thunder",t:"Electric",loc:'Quest Reward: "The Mantis\' Nest", Rade of Carcino'},
+{n:"TM26",m:"Earthquake",t:"Ground",loc:"Second Stratum, right side"},
+{n:"TM27",m:"Return",t:"Normal",loc:"Charon"},
+{n:"TM28",m:"Dig",t:"Ground",loc:"Second Stratum, left side"},
+{n:"TM29",m:"Psychic",t:"Psychic",loc:"Fifth Stratum, B2F"},
+{n:"TM30",m:"Shadow Ball",t:"Ghost",loc:"Third Stratum"},
+{n:"TM31",m:"Brick Break",t:"Fighting",loc:'Quest Reward: "One drink too many...", Brigit Farm'},
+{n:"TM32",m:"Double Team",t:"Normal",loc:"Lost Woods"},
+{n:"TM33",m:"Reflect",t:"Psychic",loc:'Quest Reward: "The Cake is a Lie", Krabby Club'},
+{n:"TM34",m:"Shock Wave",t:"Electric",loc:'Quest Reward: "One drink too many...", Brigit Farm'},
+{n:"TM35",m:"Flamethrower",t:"Fire",loc:"Third Stratum"},
+{n:"TM36",m:"Sludge Bomb",t:"Poison",loc:"Auburn Thicket"},
+{n:"TM37",m:"Sandstorm",t:"Rock",loc:"Desert of Golgonda"},
+{n:"TM38",m:"Fire Blast",t:"Fire",loc:"Porcelain Cave"},
+{n:"TM39",m:"Rock Tomb",t:"Rock",loc:"Coastal Road"},
+{n:"TM40",m:"Aerial Ace",t:"Flying",loc:"First Stratum"},
+{n:"TM41",m:"Torment",t:"Dark",loc:"Talrega's Guild, TM machine near Rikkah"},
+{n:"TM42",m:"Facade",t:"Normal",loc:"Second Stratum, left side"},
+{n:"TM43",m:"Dragon Pulse",t:"Dragon",loc:"Seventh Stratum, B2F"},
+{n:"TM44",m:"Rest",t:"Psychic",loc:"Fourth Stratum"},
+{n:"TM45",m:"Attract",t:"Normal",loc:"Talrega's Guild, TM machine near Rikkah"},
+{n:"TM46",m:"Dark Pulse",t:"Dark",loc:"Abyssal Fortress"},
+{n:"TM47",m:"Steel Wing",t:"Steel",loc:"Sea of Galazeah, eastern side"},
+{n:"TM48",m:"Skill Swap",t:"Psychic",loc:"Fourth Stratum"},
+{n:"TM49",m:"Scald",t:"Water",loc:"Azure Cave"},
+{n:"TM50",m:"Overheat",t:"Fire",loc:"Seventh Stratum, B4F"},
+];
+
+const TUTORS = [
+{m:"Headbutt",type:"Normal",loc:"Talrega, Adventurer's Guild"},
+{m:"Fire Punch",type:"Fire",loc:"Third Stratum's Base Camp"},
+{m:"Thunderpunch",type:"Electric",loc:"Gorge of Zanado"},
+{m:"Ice Punch",type:"Ice",loc:"Rade of Carcino"},
+{m:"Rock Slide",type:"Rock",loc:"Aqua Resort"},
+{m:"Aqua Jet",type:"Water",loc:"Aqua Resort"},
+{m:"Roost",type:"Flying",loc:"Gorenil"},
+{m:"Thunder Wave",type:"Electric",loc:"Aqua Resort"},
+{m:"Icy Wind",type:"Ice",loc:"Aqua Resort"},
+{m:"Bullet Punch",type:"Steel",loc:"Aqua Resort"},
+{m:"Substitute",type:"Normal",loc:"Fifth Stratum (B1F)"},
+{m:"Helping Hand",type:"Normal",loc:"Talrega"},
+{m:"Superpower",type:"Fighting",loc:"Aqua Resort"},
+];
+
+const QUESTS = [
+{n:1,name:"Talk to me!",loc:"Talrega (Elder)",desc:"Talk to the elder next to the Adventurers Guild.",reward:"Poké Ball ×5"},
+{n:2,name:"The Island of Varley",loc:"Coastal Road — Dock of Talrega (Captain)",desc:"Find a new sea route to Varley through Naval Explorations.",reward:"Access to Varley"},
+{n:3,name:"The Island of Arundel",loc:"Coastal Road — Dock of Talrega (Captain)",desc:"Find a new sea route to Arundel through Naval Explorations.",reward:"Access to Arundel"},
+{n:4,name:"The Island of Charon",loc:"Coastal Road — Dock of Talrega (Captain)",desc:"Find a new sea route to Charon through Naval Explorations.",reward:"Access to Charon"},
+{n:5,name:"The Island of Gorenil",loc:"Coastal Road — Dock of Talrega (Captain)",desc:"Find a new sea route to Gorenil through Naval Explorations.",reward:"Access to Gorenil"},
+{n:6,name:"Shop LV.2",loc:"Adventurers Guild (Rikkah)",desc:"Bring 5 Red Flowers and 3 Emerald to Rikkah.",reward:"Shop upgrade: Level 2"},
+{n:7,name:"Shop LV.3",loc:"Adventurers Guild (Rikkah)",desc:"Bring 7 Yellow Flowers and 4 Topaz to Rikkah.",reward:"Shop upgrade: Level 3"},
+{n:8,name:"Shop LV.4",loc:"Adventurers Guild (Rikkah)",desc:"Bring 6 Blue and Purple Flowers, 3 Sapphire and Dolomite to Rikkah.",reward:"Shop upgrade: Level 4"},
+{n:9,name:"Saya's Research 1",loc:"Pokémon Lab in Coastal Road (Saya)",desc:"Show a regional Gulpin to Saya.",reward:"Either Bulbasaur, Charmander or Squirtle at LV.5"},
+{n:10,name:"Saya's Research 2",loc:"Pokémon Lab in Coastal Road (Saya)",desc:"Show a regional Corsola to Saya.",reward:"Either Chikorita, Cyndaquil or Totodile at LV.15"},
+{n:11,name:"Saya's Research 3",loc:"Pokémon Lab in Coastal Road (Saya)",desc:"Show a regional Xatu to Saya.",reward:"Either Treecko, Torchic or Mudkip at LV.25"},
+{n:12,name:"Your Compendium...",loc:"Pokémon Lab in Coastal Road (Scientist)",desc:"Catch 40 Pokémon and show your Compendium to the scientist.",reward:"EV-Editor"},
+{n:13,name:"I want a Shroomish!",loc:"Adventurers Guild (Child)",desc:"Find a Shroomish for the child at the Guild of Talrega.",reward:"Clefairy"},
+{n:14,name:"The magic potion",loc:"Arundel (Hex Maniac)",desc:"Find the Talisman lost by the girl on Arundel.",reward:"Stamina upgrade (+20 points)"},
+{n:15,name:"I want a Ralts!",loc:"Charon (Bird Keeper)",desc:"Find a Ralts for the boy on Charon.",reward:"Farfetch'd ⭐"},
+{n:16,name:"The perfect gift",loc:"Gorge of Zanado (Rich Boy)",desc:"Bring 3 Red Flowers, 3 Yellow Flowers and 3 Topaz to the boy at the Gorge of Zanado.",reward:"Girafarig LV.20"},
+{n:17,name:"One drink too many...",loc:"Muu Muu Café — Island of Charon (Daig)",desc:"Help Daig calm his friends down at the Brigit Farm.",reward:"TM31 (Brick Break), TM34 (Shock Wave)"},
+{n:18,name:"The love potion",loc:"Krabby Club — Coastal Road (Hex Maniac)",desc:"Bring 4 Red Flowers and 4 Yellow Flowers to the Girl at the Krabby Club.",reward:"Dusk Stone"},
+{n:19,name:"The Old Amber",loc:"Krabby Club — Coastal Road (Adventurer)",desc:"Recover the Amber from the sandy caves of the Second Stratum.",reward:"Aerodactyl LV.25 ⭐"},
+{n:20,name:"Find Yanma",loc:"Krabby Club — Coastal Road (Bug Catcher)",desc:"Trade Yanma to the boy at the Krabby Club.",reward:"Porygon"},
+{n:21,name:"Show me a Sneasel!",loc:"Krabby Club — Coastal Road (Pokéfanatic)",desc:"Show a Sneasel to the boy at the Krabby Club.",reward:"TM05 (Snarl)"},
+{n:22,name:"The cake is a lie",loc:"Krabby Club — Coastal Road (Pokémon Breeder)",desc:"Bring 10 Oran Berries, 5 Pecha Berries and 5 Chesto Berries to the girl at the Krabby Club.",reward:"TM16 (Light Screen), TM33 (Reflect)"},
+{n:23,name:"How to tame a boar...",loc:"Krabby Club — Coastal Road (Teo, the shady-looking guy)",desc:"Fight against Teo in Fibernia Woods.",reward:"Winged Boots"},
+{n:24,name:"Eeveelution!",loc:"Third Stratum Base Camp (Lady)",desc:"Show Vaporeon, Jolteon and Flareon to the Woman at the base camp.",reward:"TM08 (Bulk Up), TM23 (Iron Tail)"},
+{n:25,name:"The Red Bell",loc:"Third Stratum Base Camp (Adventurer)",desc:"Make sure the Third Stratum boy is okay.",reward:"Tent ×2"},
+{n:26,name:"The lost Castform",loc:"Auburn Thicket — Island of Gorenil (Scientist)",desc:"Find the lost Castform in Auburn Thicket.",reward:"TM24 (Thunderbolt)"},
+{n:27,name:"Where's my child?",loc:"Azure Cave — Fourth Stratum (Hiker)",desc:"Find the lost child in the Azure Cave of the Fourth Stratum.",reward:"Magna Vis (Key Item — HM Strength equivalent)"},
+{n:28,name:"My poor Chansey",loc:"Rade of Carcino — Fourth Stratum (Lady)",desc:"Find the lost Chansey in the Fourth Stratum.",reward:'Chansey "Super Training"',hint:true},
+{n:29,name:"I hate pirates!",loc:"Rade of Carcino — Fourth Stratum (Merchant)",desc:"Recover the goods stolen by the pirates of Pirate Island.",reward:"Magmarizer, Electirizer"},
+{n:30,name:"The Renegade",loc:"Jagged Mountain (Manfroy)",desc:"Solve the mystery of the Jagged Mountain.",reward:"Memento Vitae (Key Item — move reminder)"},
+{n:31,name:"The Mantis' Nest",loc:"Rade of Carcino — Fourth Stratum (Ranger)",desc:"Defeat Kabutops F.O.E. in the First Stratum.",reward:"TM25 (Thunder)",hint:true},
+{n:32,name:"Napier's Requests",loc:"Aqua Resort (Jenetta and Napier)",desc:"Help Jenetta and Napier in their quest to recover the stolen treasures.",reward:"Master Ball, 200,000 Poké, Aqua Resort's penthouse"},
+{n:33,name:"A Fanatic's Demand",loc:"Aqua Resort (Pokéfanatic)",desc:"Find a Beldum for the boy at the Aqua Resort.",reward:"Kangaskhan"},
+{n:34,name:"The wounded Lapras",loc:"Aqua Resort (Pokémon Breeder)",desc:"Treat the wounded Lapras.",reward:"Lapras LV.15"},
+{n:35,name:"Holy Cow!",loc:"Talrega's Farm",desc:"Trade Miltank to the boy at Talrega's Farm.",reward:"Tauros"},
+{n:36,name:"From the abyss...",loc:"Sixth Stratum (Near the Base Camp)",desc:"Find the Ace Trainer's boyfriend in the Sixth Stratum.",reward:"Ultra Ball ×30",hint:true},
+{n:37,name:"The Three Bells",loc:"Sea Temple",desc:"Recover the Red Bell (3rd Stratum), the Blue Bell (Azure Cave) and the Yellow Bell (5th Stratum) and return to the Sea Temple.",reward:"???"},
+{n:38,name:"My Parting Gift...",loc:"Talrega (Postgame)",desc:"Search for the weird Blaziken in the Eighth Stratum.",reward:"Blaziken (Battle Bond) LV.75 ⭐",hint:true},
+];
+
+// ─────────────────────────────────────────────
+// UTILITIES
+// ─────────────────────────────────────────────
+const SPRITE_BASE = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
+function sprite(id){return SPRITE_BASE+id+".png";}
+
+// ─────────────────────────────────────────────
+// ETRIAN VARIANT SPRITES
+// ─────────────────────────────────────────────
+// Add custom sprite URLs here for Etrian Variants (and any other Pokémon you
+// want a custom sprite for). The key must match the Pokémon's name exactly as
+// it appears in the POKEMON array (field "n") or encounter lists (field "name").
+// These override the default PokeAPI sprite everywhere in the guide:
+// Pokédex cards, modal pop-ups, Encounters, Events, F.O.E., and Naval tabs.
+//
+// Example:
+//   "Rattata":   "https://example.com/sprites/rattata-etrian.png",
+//   "Spearow":   "https://example.com/sprites/spearow-etrian.png",
+//
+// Full list of Etrian Variants in this game (add a URL for each one):
+const ETRIAN_SPRITES = {
+  // ── Gen 1 ──────────────────────────────────
+  // "Rattata":             "",
+  // "Raticate":            "",  // also covers Ratreecate if using same key
+  // "Spearow":             "",
+  // "Fearow":              "",
+  // "Pikachu":             "",  // (⭐) evolves into etrian Raichu
+  // "Raichu":              "",
+  // "Grimer (Alola)":      "",
+  // "Muk (Alola)":         "",
+  // "Voltorb (Hisui)":     "",
+  // "Electrode (Hisui)":   "",
+  // "Jigglypuff":          "",
+  // "Wigglytuff":          "",
+  // "Krabby":              "",
+  // "Kingler":             "",
+  // "Exeggcute":           "",
+  // "Exeggutor":           "",
+  // "Farfetch'd (Galar)":  "",
+  // "Aerodactyl":          "",
+  // ── Gen 2 ──────────────────────────────────
+  // "Hoothoot":            "",
+  // "Noctowl":             "",
+  // "Mareep":              "",
+  // "Corsola":             "",
+  // "Elekid":              "",
+  // "Gulpin":              "",
+  // "Smoochum":            "",
+  // "Sneasel":             "",
+  // "Stantler":            "",
+  // ── Gen 3 ──────────────────────────────────
+  // "Poochyena":           "",
+  // "Mightyena":           "",
+  // "Oddish":              "",  // (⭐) etrianEvo
+  // "Wailmer":             "",  // (⭐) etrianEvo
+  // "Wailord":             "",
+  // "Shroomish":           "",
+  // "Volbeat":             "",
+  // "Illumise":            "",
+  // "Ralts":               "",
+  // "Natu":                "",
+  // "Xatu":                "",
+  // "Sandshrew":           "",
+  // "Sandslash":           "",
+  // "Aron":                "",
+  // "Meditite":            "",
+  // "Duskull":             "",
+  // "Wurmple":             "",  // (⭐) etrianEvo
+  // "Dustox":              "",
+  // "Beautifly":           "",
+  // "Ponyta":              "",
+  // "Machop":              "",
+  // "Machoke":             "",
+  // "Magby":               "",
+  // "Magmar":              "",
+  // "Sunkern":             "",
+  // "Mantine":             "",
+  // "Baltoy":              "",
+  // "Cubone":              "",
+  // "Absol":               "",
+  // "Ekans":               "",
+  // "Barboach":            "",
+  // "Whiscash":            "",
+  // "Vulpix":              "",
+  // "Ninetales":           "",
+  // "Blaziken":            "",
+  // "Ampharos":            "",
+  // "Breloom":             "",
+  // "Bellossom":           "",
+  // "Swalot":              "",
+  // "Kabuto":              "",
+  // "Omanyte":             "",
+  // "Relicanth":           "",
+  // ── Gen 4 ──────────────────────────────────
+  // "Marowak":             "",
+  // "Lairon":              "",
+  // "Medicham":            "",
+  // "Weavile":             "",
+  // "Tangrowth":           "",
+  // "Dusclops":            "",
+  // "Dusknoir":            "",
+  // "Kabutops":            "",
+  // "Gardevoir":           "",
+  // "Gallade":             "",
+  // "Rapidash":            "",
+  // "Claydol":             "",
+  // "Arbok":               "",
+  // "Chansey":             "",
+  // "Vileplume":           "",
+  // "Mismagius":           "",
+  // ── Custom / Odyssey-only ──────────────────
+  // "Ratreecate":          "",  // custom Odyssey Pokémon — no PokeAPI sprite
+};
+
+// Returns the correct sprite URL for a Pokémon.
+// If the Pokémon has an entry in ETRIAN_SPRITES, that URL is used instead of
+// the default PokeAPI sprite. Safe to call for any Pokémon — non-etrian ones
+// simply fall through to the standard sprite.
+function eSprite(id, name){
+  if(name && ETRIAN_SPRITES[name]) return ETRIAN_SPRITES[name];
+  if(!id) return "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+  return SPRITE_BASE+id+".png";
+}
+
+const TYPE_MAP={Normal:"t-Normal",Fire:"t-Fire",Water:"t-Water",Electric:"t-Electric",Grass:"t-Grass",Ice:"t-Ice",Fighting:"t-Fighting",Poison:"t-Poison",Ground:"t-Ground",Flying:"t-Flying",Psychic:"t-Psychic",Bug:"t-Bug",Rock:"t-Rock",Ghost:"t-Ghost",Dragon:"t-Dragon",Dark:"t-Dark",Steel:"t-Steel",Fairy:"t-Fairy"};
+function tb(type){return `<span class="tb ${TYPE_MAP[type]||'t-Normal'}">${type}</span>`;}
+
+// LocalStorage helpers
+function getCaught(){try{return new Set(JSON.parse(localStorage.getItem("po_caught")||"[]"))}catch{return new Set()}}
+function saveCaught(s){localStorage.setItem("po_caught",JSON.stringify([...s]))}
+function isCaught(name){return getCaught().has(norm(name))}
+function toggleCaught(name){
+  const s=getCaught();
+  const k=norm(name);
+  if(s.has(k)) s.delete(k); else s.add(k);
+  saveCaught(s);
+  refreshCaught();
+}
+function norm(n){return n.toLowerCase().replace(/[^a-z0-9]/g,"").replace(/^nidoran[mf♂♀]/,"nidoran")}
+
+let dexFilter="all";
+
+// ─────────────────────────────────────────────
+// TAB SWITCHING
+// ─────────────────────────────────────────────
+function switchTab(id,btn){
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("tab-"+id).classList.add("active");
+  if(btn) btn.classList.add("active");
+  else document.querySelectorAll(".tab-btn").forEach(b=>{if(b.textContent.toLowerCase().includes(id.substring(0,3))) b.classList.add("active");});
+}
+
+// ─────────────────────────────────────────────
+// POKÉDEX
+// ─────────────────────────────────────────────
+function buildDex(){
+  renderDexGrid();
+  updateDexProgress();
+}
+
+function renderDexGrid(){
+  const grid=document.getElementById("dex-grid");
+  const q=(document.getElementById("dex-search").value||"").toLowerCase();
+  const f=dexFilter;
+  const caught=getCaught();
+  let visible=POKEMON;
+  if(q) visible=visible.filter(p=>p.n.toLowerCase().includes(q)||String(p.id).includes(q));
+  if(f==="caught") visible=visible.filter(p=>caught.has(norm(p.n)));
+  if(f==="uncaught") visible=visible.filter(p=>!caught.has(norm(p.n)));
+  if(f==="etrian") visible=visible.filter(p=>p.f==="etrian"||p.f==="etrianEvo");
+  grid.innerHTML=visible.map(p=>renderCard(p,caught)).join("");
+}
+
+function renderCard(p,caught){
+  const c=caught.has(norm(p.n));
+  const isStar=p.f==="etrian";
+  const isEvo=p.f==="etrianEvo";
+  const evoInfo=p.ev?`<div class="poke-evo">${typeof p.ev==="number"?`Lv.${p.ev} → ${p.evo}`:p.ev+` → ${p.evo}`}</div>`:p.evo?`<div class="poke-evo">Final form</div>`:"";
+  return `<div class="poke-card${c?" caught":""}" onclick="openModal(${p.id})">
+    <div class="poke-card-top">
+      <span class="poke-num">#${String(p.id).padStart(3,"0")}</span>
+      <span>${isStar?'<span class="etrian-star" title="Etrian Variant">⭐</span>':isEvo?'<span class="etrian-star" title="Evolves into Etrian Variant">(⭐)</span>':""}</span>
+      <button class="catch-btn${c?" caught":""}" onclick="event.stopPropagation();toggleCaught('${p.n}');renderDexGrid();updateDexProgress();syncEncButtons('${p.n}');" title="${c?"Caught – click to unmark":"Mark as caught"}">${c?"✓":""}</button>
+    </div>
+    <img class="poke-sprite" src="${eSprite(p.id,p.n)}" alt="${p.n}" loading="lazy" onerror="this.style.opacity='.3'">
+    <div class="poke-name">${p.n}</div>
+    <div class="type-badges">${p.t.map(tb).join("")}</div>
+    ${evoInfo}
+  </div>`;
+}
+
+function setFilter(f,btn){
+  dexFilter=f;
+  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  renderDexGrid();
+}
+function filterDex(){renderDexGrid();}
+
+function updateDexProgress(){
+  const caught=getCaught();
+  const total=POKEMON.length;
+  const n=POKEMON.filter(p=>caught.has(norm(p.n))).length;
+  const pct=total?Math.round(n/total*100):0;
+  document.getElementById("dex-bar").style.width=pct+"%";
+  document.getElementById("dex-count").textContent=n+" / "+total;
+}
+
+// ─────────────────────────────────────────────
+// MODAL
+// ─────────────────────────────────────────────
+function openModal(id){
+  const p=POKEMON.find(x=>x.id===id);
+  if(!p) return;
+  const c=isCaught(p.n);
+  const isStar=p.f==="etrian";
+  const isEvo=p.f==="etrianEvo";
+  document.getElementById("modal-head").innerHTML=`
+    <img class="modal-sprite" src="${eSprite(p.id,p.n)}" alt="${p.n}" onerror="this.style.opacity='.2'">
+    <div class="modal-info">
+      <h2>#${String(p.id).padStart(3,"0")} ${p.n} ${isStar?"⭐":isEvo?"(⭐)":""}</h2>
+      <div class="type-badges" style="justify-content:flex-start">${p.t.map(tb).join("")}</div>
+      <div style="margin-top:8px">
+        <button class="filter-btn${c?" active":""}" style="font-size:12px;padding:5px 12px" onclick="toggleCaught('${p.n}');document.getElementById('modal-head').querySelector('button').textContent='${!c?"✓ Caught":"Mark Caught"}';renderDexGrid();updateDexProgress();buildEncounters();">${c?"✓ Caught":"Mark Caught"}</button>
+      </div>
+    </div>`;
+  const evoLine=p.ev?(typeof p.ev==="number"?`Lv.${p.ev} → <strong>${p.evo}</strong>`:p.ev+` → <strong>${p.evo}</strong>`):(p.evo?`Final form`:`Final form`);
+  const statsHtml=p.st?`<div style="margin-top:8px"><div style="font-size:11px;color:var(--text2);font-weight:700;margin-bottom:6px">ODYSSEY STATS</div>
+    <div class="stats-row">
+      ${["HP","ATK","DEF","SP.ATK","SP.DEF","SPD"].map((s,i)=>{const v=[p.st.hp,p.st.atk,p.st.def,p.st.spa,p.st.spd,p.st.spe][i];return`<div class="stat-box"><div class="stat-lbl">${s}</div><div class="stat-val">${v}</div></div>`}).join("")}
+    </div></div>`:"";
+  const movesHtml=p.mv&&p.mv.length?`<div class="moves-section"><h4>LEVEL-UP MOVES (Odyssey)</h4><div class="moves-grid">${p.mv.map(mv=>`<span class="mv-lv">Lv.${mv.lv}</span><span class="mv-name">${mv.m}</span>`).join("")}</div></div>`:`<div class="moves-section"><h4>LEVEL-UP MOVES</h4><p style="font-size:12px;color:var(--text2)">Full Odyssey moveset available in the <a href="https://docs.google.com/spreadsheets/d/1Es1clPMUhEEqZRHW0tgAmvxqSzVXiXmD" target="_blank" style="color:var(--teal)">official stats sheet</a>.</p></div>`;
+  const flagNote=isStar?`<div style="background:rgba(240,192,64,.08);border:1px solid rgba(240,192,64,.2);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--gold);margin-bottom:10px">⭐ Etrian Variant — custom sprite in <a href="https://docs.google.com/spreadsheets/d/1Es1clPMUhEEqZRHW0tgAmvxqSzVXiXmD/edit?gid=1620070709" target="_blank" style="color:var(--teal)">Etrian Variants sheet</a></div>`:isEvo?`<div style="background:rgba(240,192,64,.08);border:1px solid rgba(240,192,64,.2);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--gold);margin-bottom:10px">(⭐) This Pokémon evolves into an Etrian Variant</div>`:"";
+  document.getElementById("modal-body").innerHTML=`
+    ${flagNote}
+    <div class="info-row"><span class="info-lbl">Abilities:</span><span class="info-val">${p.a.map(x=>`<span class="ability-chip">${x}</span>`).join("")}</span></div>
+    <div class="info-row"><span class="info-lbl">Evolution:</span><span class="info-val">${evoLine}</span></div>
+    ${statsHtml}
+    ${movesHtml}`;
+  document.getElementById("modal-overlay").classList.add("open");
+}
+function closeModal(e){if(e.target.id==="modal-overlay")closeModalBtn();}
+function closeModalBtn(){document.getElementById("modal-overlay").classList.remove("open");}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModalBtn();});
+
+// ─────────────────────────────────────────────
+// ENCOUNTERS
+// ─────────────────────────────────────────────
+let encFilter="all";
+const collapsedEncRegions=new Set(); // keyed by region name
+
+function isEventSlot(s){return s.method==="Event";}
+
+function buildEncounters(){
+  const caught=getCaught();
+  // Progress: only non-event Pokémon
+  const allPokes=new Set();
+  ENCOUNTERS.forEach(r=>r.slots.forEach(s=>{
+    if(!isEventSlot(s)) s.enc.forEach(e=>{if(!e.name.includes("/")) allPokes.add(norm(e.name));});
+  }));
+  const n=[...allPokes].filter(x=>caught.has(x)).length;
+  const total=allPokes.size;
+  const pct=total?Math.round(n/total*100):0;
+  document.getElementById("enc-bar").style.width=pct+"%";
+  document.getElementById("enc-count").textContent=n+" / "+total;
+
+  const cont=document.getElementById("enc-regions");
+  const regionBlocks=[];
+  ENCOUNTERS.forEach((r,ri)=>{
+    // Filter out event slots entirely
+    const slots=r.slots.filter(s=>!isEventSlot(s));
+    if(!slots.length) return;
+    // Search filter: show region if name matches OR contains matching Pokémon
+    if(encSearch){
+      const regionMatch=r.region.toLowerCase().includes(encSearch);
+      const pokeMatch=slots.some(s=>s.enc.some(e=>e.name.toLowerCase().includes(encSearch)));
+      if(!regionMatch&&!pokeMatch) return;
+    }
+
+    const methodBlocks=[];
+    slots.forEach(s=>{
+      let rows=s.enc;
+      // Apply caught/uncaught filter (multi entries always shown)
+      if(encFilter==="caught") rows=rows.filter(e=>e.name.includes("/")||caught.has(norm(e.name)));
+      else if(encFilter==="uncaught") rows=rows.filter(e=>e.name.includes("/")||!caught.has(norm(e.name)));
+      if(!rows.length) return;
+
+      const rowsHtml=rows.map(e=>{
+        const c=caught.has(norm(e.name));
+        const isMulti=e.name.includes("/");
+        const pid=e.id||null;
+        const pctClass=parseInt(e.pct)>=20?"p-high":parseInt(e.pct)>=10?"p-mid":"p-low";
+        const noteCell=e.note?`<small style="display:block;color:var(--text2);font-size:10px">${e.note}</small>`:"";
+        const etrianBadge=e.etrian?` <span class="enc-etrian">⭐</span>`:"";
+        const evoNote=e.note&&e.note.includes("Etrian")?` <span style="color:var(--gold);font-size:10px">(⭐)</span>`:"";
+        return `<tr>
+          <td><img class="enc-sprite" src="${!isMulti?eSprite(pid,e.name):"data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="}" alt="${e.name}" onerror="this.style.opacity=0"></td>
+          <td><span class="enc-name-col">${e.name}</span>${etrianBadge}${evoNote}${noteCell}</td>
+          <td><span class="enc-lvl">${e.lv}</span></td>
+          <td><span class="enc-pct ${pctClass}">${e.pct}</span></td>
+          <td>${!isMulti?`<button class="enc-cb${c?" caught":""}" onclick="toggleCaughtEnc('${e.name}',this)" title="${c?"Caught":"Mark caught"}">${c?"✓":""}</button>`:""}</td>
+        </tr>`;
+      }).join("");
+      methodBlocks.push(`<div class="method-block"><div class="method-head">${s.method}</div>
+        <table class="enc-table"><thead><tr><th>Sprite</th><th>Pokémon</th><th>Level</th><th>Chance</th><th>✓</th></tr></thead>
+        <tbody>${rowsHtml}</tbody></table></div>`);
+    });
+    if(!methodBlocks.length) return;
+
+    const isCollapsed=collapsedEncRegions.has(r.region);
+    const safeReg=r.region.replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+    regionBlocks.push(`<div class="region-block">
+      <div class="region-header" onclick="toggleEncRegion('${safeReg}')">
+        <span class="region-name">${r.region}</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="region-tag">${r.tag}</span>
+          <span class="region-arrow${isCollapsed?"":" open"}" data-enc-arrow="${safeReg}">▼</span>
+        </div>
+      </div>
+      <div class="region-body${isCollapsed?" collapsed":""}" data-enc-body="${safeReg}">${methodBlocks.join("")}</div>
+    </div>`);
+  });
+  cont.innerHTML=regionBlocks.join("");
+}
+
+function toggleEncRegion(name){
+  if(collapsedEncRegions.has(name)){collapsedEncRegions.delete(name);}
+  else{collapsedEncRegions.add(name);}
+  const body=document.querySelector(`[data-enc-body="${CSS.escape(name)}"]`);
+  const arrow=document.querySelector(`[data-enc-arrow="${CSS.escape(name)}"]`);
+  if(body) body.classList.toggle("collapsed",collapsedEncRegions.has(name));
+  if(arrow) arrow.classList.toggle("open",!collapsedEncRegions.has(name));
+}
+
+function toggleAllEncRegions(expand){
+  if(expand){collapsedEncRegions.clear();}
+  else{ENCOUNTERS.forEach(r=>{const hasNonEvent=r.slots.some(s=>!isEventSlot(s));if(hasNonEvent) collapsedEncRegions.add(r.region);});}
+  buildEncounters();
+}
+
+function setEncFilter(f,btn){
+  encFilter=f;
+  document.querySelectorAll("#enc-filters .filter-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  buildEncounters();
+}
+
+function syncEncButtons(name){
+  const c=isCaught(name);
+  document.querySelectorAll(".enc-cb,.evt-cb").forEach(b=>{
+    const row=b.closest("tr");
+    if(!row) return;
+    const nameTd=row.querySelector(".enc-name-col");
+    if(nameTd&&norm(nameTd.textContent)===norm(name)){
+      b.classList.toggle("caught",c);
+      b.textContent=c?"✓":"";
+    }
+  });
+}
+
+function toggleCaughtEnc(name,btn){
+  toggleCaught(name);
+  const c=isCaught(name);
+  btn.classList.toggle("caught",c);
+  btn.textContent=c?"✓":"";
+  syncEncButtons(name);
+  renderDexGrid();
+  // If filter is active, rebuild so row visibility updates
+  if(encFilter!=="all") buildEncounters(); else buildEncounterProgress();
+  buildEventProgress();
+}
+
+function buildEncounterProgress(){
+  const allPokes=new Set();
+  ENCOUNTERS.forEach(r=>r.slots.forEach(s=>{
+    if(!isEventSlot(s)) s.enc.forEach(e=>{if(!e.name.includes("/")) allPokes.add(norm(e.name));});
+  }));
+  const caught=getCaught();
+  const n=[...allPokes].filter(x=>caught.has(x)).length;
+  const total=allPokes.size;
+  const pct=total?Math.round(n/total*100):0;
+  document.getElementById("enc-bar").style.width=pct+"%";
+  document.getElementById("enc-count").textContent=n+" / "+total;
+}
+
+// ─────────────────────────────────────────────
+// EVENTS & SIDEQUESTS
+// ─────────────────────────────────────────────
+const collapsedEvtRegions=new Set();
+let evtSearch="";
+function onEvtSearch(){
+  evtSearch=(document.getElementById("evt-search").value||"").toLowerCase().trim();
+  buildEvents();
+}
+
+function buildEvents(){
+  buildEventProgress();
+  const caught=getCaught();
+  const cont=document.getElementById("evt-regions");
+  const regionBlocks=[];
+  ENCOUNTERS.forEach(r=>{
+    const evtSlots=r.slots.filter(s=>isEventSlot(s));
+    if(!evtSlots.length) return;
+    // Search filter
+    if(evtSearch){
+      const regionMatch=r.region.toLowerCase().includes(evtSearch);
+      const pokeMatch=evtSlots.some(s=>s.enc.some(e=>e.name.toLowerCase().includes(evtSearch)));
+      if(!regionMatch&&!pokeMatch) return;
+    }
+    const rows=evtSlots.flatMap(s=>s.enc).map(e=>{
+      const c=caught.has(norm(e.name));
+      const isMulti=e.name.includes("/");
+      const pid=e.id||null;
+      const typePct=e.pct.includes("Trade")?"Trade":e.pct.includes("Sidequest")?"Sidequest":"Event";
+      const typeCol=typePct==="Trade"?`<span style="color:var(--teal);font-weight:700;font-size:11px">🔄 Trade</span>`:
+                    typePct==="Sidequest"?`<span style="color:var(--gold);font-weight:700;font-size:11px">📜 Sidequest</span>`:
+                    `<span style="color:#a090e8;font-weight:700;font-size:11px">⚡ Event</span>`;
+      const noteCell=e.note?`<small style="display:block;color:var(--text2);font-size:10px;margin-top:2px">${e.note}</small>`:"";
+      const etrianBadge=e.etrian?` <span class="enc-etrian">⭐</span>`:"";
+      return `<tr>
+        <td><img class="enc-sprite" src="${!isMulti?eSprite(pid,e.name):"data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="}" alt="${e.name}" onerror="this.style.opacity=0"></td>
+        <td><span class="enc-name-col">${e.name}</span>${etrianBadge}${noteCell}</td>
+        <td><span class="enc-lvl">${e.lv}</span></td>
+        <td>${typeCol}</td>
+        <td>${!isMulti?`<button class="enc-cb evt-cb${c?" caught":""}" onclick="toggleCaughtEnc('${e.name}',this)" title="${c?"Obtained":"Mark obtained"}">${c?"✓":""}</button>`:""}</td>
+      </tr>`;
+    }).join("");
+    const isCollapsed=collapsedEvtRegions.has(r.region);
+    const safeReg=r.region.replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+    regionBlocks.push(`<div class="region-block">
+      <div class="region-header" onclick="toggleEvtRegion('${safeReg}')">
+        <span class="region-name">${r.region}</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="region-tag">${r.tag}</span>
+          <span class="region-arrow${isCollapsed?"":" open"}" data-evt-arrow="${safeReg}">▼</span>
+        </div>
+      </div>
+      <div class="region-body${isCollapsed?" collapsed":""}" data-evt-body="${safeReg}">
+        <div class="method-block">
+          <table class="enc-table"><thead><tr><th>Sprite</th><th>Pokémon</th><th>Level</th><th>Type</th><th>✓</th></tr></thead>
+          <tbody>${rows}</tbody></table>
+        </div>
+      </div>
+    </div>`);
+  });
+  cont.innerHTML=regionBlocks.length?regionBlocks.join(""):`<p style="color:var(--text2);padding:20px;text-align:center">No event Pokémon found.</p>`;
+}
+
+function toggleEvtRegion(name){
+  if(collapsedEvtRegions.has(name)){collapsedEvtRegions.delete(name);}
+  else{collapsedEvtRegions.add(name);}
+  const body=document.querySelector(`[data-evt-body="${CSS.escape(name)}"]`);
+  const arrow=document.querySelector(`[data-evt-arrow="${CSS.escape(name)}"]`);
+  if(body) body.classList.toggle("collapsed",collapsedEvtRegions.has(name));
+  if(arrow) arrow.classList.toggle("open",!collapsedEvtRegions.has(name));
+}
+
+function toggleAllEvtRegions(expand){
+  if(expand){collapsedEvtRegions.clear();}
+  else{ENCOUNTERS.forEach(r=>{if(r.slots.some(s=>isEventSlot(s))) collapsedEvtRegions.add(r.region);});}
+  buildEvents();
+}
+
+function buildEventProgress(){
+  const evtPokes=new Set();
+  ENCOUNTERS.forEach(r=>r.slots.forEach(s=>{
+    if(isEventSlot(s)) s.enc.forEach(e=>{if(!e.name.includes("/")) evtPokes.add(norm(e.name));});
+  }));
+  const caught=getCaught();
+  const n=[...evtPokes].filter(x=>caught.has(x)).length;
+  const total=evtPokes.size;
+  const pct=total?Math.round(n/total*100):0;
+  document.getElementById("evt-bar").style.width=pct+"%";
+  document.getElementById("evt-count").textContent=n+" / "+total;
+}
+
+
+// ─────────────────────────────────────────────
+// F.O.E. DATA  (Sea of Galazeah — from Naval Explorations sheet)
+// ─────────────────────────────────────────────
+const FOE_ENCOUNTERS = [
+// ── STRATUM I ──
+{region:"First Stratum — Emerald Grove",tag:"Stratum I",foes:[
+  {name:"Stantler",id:234,lv:"28",pct:"Event",etrian:true,moves:["Confuse Ray","Blaze Kick","Baffling Step","Zen Headbutt"]}
+]},
+// ── STRATUM II ──
+{region:"Second Stratum — Golgonda (Left Side)",tag:"Stratum II",foes:[
+  {name:"Sandslash",id:28,lv:"38",pct:"Event",etrian:true,moves:["Bulldoze","Night Slash","Rock Slide","X-Scissor"]}
+]},
+{region:"Cave of Athari",tag:"Stratum II",foes:[
+  {name:"Steelix",id:208,lv:"38",pct:"Event",moves:["Bulldoze","Iron Head","Rock Slide","Water Tackle"]}
+]},
+{region:"Second Stratum — Golgonda (Right Side)",tag:"Stratum II",foes:[
+  {name:"Gliscor",id:472,lv:"38",pct:"Event",moves:["Bulldoze","Aerial Ace","Rock Slide","Poison Jab"]}
+]},
+// ── STRATUM III ──
+{region:"Third Stratum (1)",tag:"Stratum III",foes:[
+  {name:"Camerupt",id:323,lv:"48",pct:"Event",moves:["Heat Wave","Earth Power","Power Gem","Flash Cannon"]}
+]},
+{region:"Third Stratum (3–4)",tag:"Stratum III",foes:[
+  {name:"Arcanine",id:59,lv:"48",pct:"Event",moves:["Sacred Fire","Extremespeed","Iron Head","Crunch"]}
+]},
+{region:"Third Stratum (5–6)",tag:"Stratum III",foes:[
+  {name:"Gengar",id:94,lv:"48",pct:"Event",moves:["Shadow Ball","Thunderbolt","Sludge Bomb","Dark Pulse"]}
+]},
+// ── STRATUM IV ──
+{region:"Fourth Stratum (3)",tag:"Stratum IV",foes:[
+  {name:"Ludicolo",id:272,lv:"58",pct:"Event",moves:["Scald","Giga Drain","Ice Beam","Leech Seed"]}
+]},
+{region:"Fourth Stratum (4)",tag:"Stratum IV",foes:[
+  {name:"Politoed",id:186,lv:"58",pct:"Event",moves:["Hydro Pump","Hyper Voice","Ice Beam","Psychic"]}
+]},
+{region:"Lost Woods",tag:"Stratum IV",foes:[
+  {name:"Pidgeot",id:18,lv:"58",pct:"Event",moves:["Hurricane","Boomburst","Heat Wave","Roost"]}
+]},
+// ── STRATUM V ──
+{region:"Fifth Stratum — B1F",tag:"Stratum V",foes:[
+  {name:"Alakazam",id:65,lv:"65",pct:"Event",moves:["Psychic","Shadow Ball","Aura Sphere","Etheric Star"]}
+]},
+{region:"Fifth Stratum — B2F",tag:"Stratum V",foes:[
+  {name:"Gardevoir",id:282,lv:"65",pct:"Event",etrian:true,moves:["Psychic","Shadow Ball","Aura Sphere","Ad Nihilo"]},
+  {name:"Gallade",id:475,lv:"65",pct:"Event",etrian:true,moves:["5-Ring Sword","Close Combat","Triple Axel","Leaf Blade"]}
+]},
+// ── STRATUM VI ──
+{region:"Sixth Stratum (South)",tag:"Stratum VI",foes:[
+  {name:"Mamoswine",id:473,lv:"70",pct:"Event",moves:["Icicle Crash","Earthquake","Stone Edge","Ice Shard"]}
+]},
+{region:"Sixth Stratum (Center)",tag:"Stratum VI",foes:[
+  {name:"Rapidash",id:78,lv:"70",pct:"Event",etrian:true,moves:["Flare Blitz","Drill Run","Icicle Crash","Wild Charge"]}
+]},
+{region:"Sixth Stratum (West)",tag:"Stratum VI",foes:[
+  {name:"Glalie",id:362,lv:"70",pct:"Event",moves:["Ice Beam","Earthquake","Super Fang","Icy Wind"]}
+]},
+// ── STRATUM VII ──
+{region:"Seventh Stratum — B1F",tag:"Stratum VII",foes:[
+  {name:"Ninetales",id:38,lv:"75",pct:"Event",etrian:true,moves:["Divine Storm","Dark Pulse","Fire Blast","Psychic"]}
+]},
+{region:"Seventh Stratum — B2F",tag:"Stratum VII",foes:[
+  {name:"Metagross",id:376,lv:"75",pct:"Event",moves:["Ice Punch","Earthquake","Zen Headbutt","Meteor Mash"]}
+]},
+{region:"Seventh Stratum — B3F",tag:"Stratum VII",foes:[
+  {name:"Kabutops",id:141,lv:"75",pct:"Event",etrian:true,moves:["Night Slash","Sucker Punch","Scythe Dance","Dual Wingbeat"]}
+]},
+// ── STRATUM VIII ──
+{region:"Eighth Stratum — B1F",tag:"Stratum VIII",foes:[
+  {name:"Flygon",id:330,lv:"80",pct:"Event",moves:["Earth Power","Bug Buzz","Dragon Pulse","Boomburst"]}
+]},
+{region:"Eighth Stratum — B2F (North)",tag:"Stratum VIII",foes:[
+  {name:"Tangrowth",id:465,lv:"80",pct:"Event",etrian:true,moves:["Earthquake","Phantom Force","Poison Jab","Leaf Blade"]}
+]},
+{region:"Eighth Stratum — B2F (South)",tag:"Stratum VIII",foes:[
+  {name:"Tangrowth",id:465,lv:"80",pct:"Event",etrian:true,moves:["Earth Power","Giga Drain","Sludge Bomb","Shadow Ball"]}
+]},
+{region:"Eighth Stratum — B3F",tag:"Stratum VIII",foes:[
+  {name:"Dragonite",id:149,lv:"80",pct:"Event",moves:["Roost","Extremespeed","Outrage","Fire Punch"]},
+  {name:"Salamence",id:373,lv:"80",pct:"Event",moves:["Outrage","Earthquake","Brave Bird","Dragon Dance"]}
+]},
+// ── NAVAL / SEA OF GALAZEAH ──
+{region:"Sea of Galazeah — Eastern Side (North)",tag:"Naval",foes:[
+  {name:"Gyarados",id:130,lv:"38",pct:"50%",moves:["Waterfall","Bulldoze","Icicle Crash","Outrage"]}
+]},
+{region:"Sea of Galazeah — Eastern Side (North-East)",tag:"Naval",foes:[
+  {name:"Wailord",id:321,lv:"48",pct:"50%",etrian:true,moves:["Hydro Pump","Hyper Voice","Ice Beam","Earth Power"]},
+  {name:"Gyarados",id:130,lv:"48",pct:"50%",moves:["Waterfall","Earthquake","Icicle Crash","Giga Drain"]}
+]},
+{region:"Sea of Galazeah — Eastern Side (South-East)",tag:"Naval",foes:[
+  {name:"Kingdra",id:230,lv:"58",pct:"50%",moves:["Dragon Pulse","Hydro Pump","Ice Beam","Sludge Bomb"]},
+  {name:"Lanturn",id:171,lv:"58",pct:"50%",moves:["Hydro Pump","Ice Beam","Thunderbolt","Confuse Ray"]}
+]}
+];
+
+// ─────────────────────────────────────────────
+// NAVAL ENCOUNTERS DATA
+// ─────────────────────────────────────────────
+const NAVAL_ENCOUNTERS = [
+{stage:"Normal",tag:"Naval",groups:[
+  {name:"Encounter #1",enc:[{name:"Horsea",id:116,lv:"10"},{name:"Tentacool",id:72,lv:"10"},{name:"Wailmer",id:320,lv:"10",note:"Evolves into Etrian Variant"}]},
+  {name:"Encounter #2",enc:[{name:"Chinchou",id:170,lv:"10"},{name:"Carvanha",id:318,lv:"10"},{name:"Wingull",id:278,lv:"10"}]},
+  {name:"Encounter #3",enc:[{name:"Remoraid",id:223,lv:"10"},{name:"Goldeen",id:118,lv:"10"},{name:"Staryu",id:120,lv:"10"}]},
+  {name:"Encounter #4",enc:[{name:"Magikarp",id:129,lv:"10"},{name:"Shellder",id:90,lv:"10"},{name:"Seel",id:86,lv:"10"}]}
+]},
+{stage:"After the First Stratum",tag:"Naval",groups:[
+  {name:"Encounter #1",enc:[{name:"Horsea",id:116,lv:"20"},{name:"Tentacool",id:72,lv:"20"},{name:"Wailmer",id:320,lv:"20",note:"Evolves into Etrian Variant"}]},
+  {name:"Encounter #2",enc:[{name:"Chinchou",id:170,lv:"20"},{name:"Carvanha",id:318,lv:"20"},{name:"Wingull",id:278,lv:"20"}]},
+  {name:"Encounter #3",enc:[{name:"Remoraid",id:223,lv:"20"},{name:"Goldeen",id:118,lv:"20"},{name:"Staryu",id:120,lv:"20"}]},
+  {name:"Encounter #4",enc:[{name:"Magikarp",id:129,lv:"20"},{name:"Gyarados",id:130,lv:"20"},{name:"Shellder",id:90,lv:"20"},{name:"Seel",id:86,lv:"20"}]}
+]},
+{stage:"After the Second Stratum",tag:"Naval",groups:[
+  {name:"Encounter #1",enc:[{name:"Seadra",id:117,lv:"30"},{name:"Tentacruel",id:73,lv:"30"},{name:"Wailmer",id:320,lv:"30",note:"Evolves into Etrian Variant"}]},
+  {name:"Encounter #2",enc:[{name:"Lanturn",id:171,lv:"30"},{name:"Sharpedo",id:319,lv:"30"},{name:"Pelipper",id:279,lv:"30"}]},
+  {name:"Encounter #3",enc:[{name:"Octillery",id:224,lv:"30"},{name:"Goldeen",id:118,lv:"30"},{name:"Starmie",id:121,lv:"30"}]},
+  {name:"Encounter #4",enc:[{name:"Gyarados",id:130,lv:"30"},{name:"Cloyster",id:91,lv:"30"},{name:"Seel",id:86,lv:"30"}]}
+]},
+{stage:"After the Third Stratum",tag:"Naval",groups:[
+  {name:"Encounter #1",enc:[{name:"Gyarados",id:130,lv:"40"},{name:"Tentacruel",id:73,lv:"40"},{name:"Wailord",id:321,lv:"40",etrian:true}]},
+  {name:"Encounter #2",enc:[{name:"Lanturn",id:171,lv:"40"},{name:"Sharpedo",id:319,lv:"40"},{name:"Pelipper",id:279,lv:"40"}]},
+  {name:"Encounter #3",enc:[{name:"Octillery",id:224,lv:"40"},{name:"Seaking",id:119,lv:"40"},{name:"Starmie",id:121,lv:"40"}]},
+  {name:"Encounter #4",enc:[{name:"Gyarados",id:130,lv:"40"},{name:"Cloyster",id:91,lv:"40"},{name:"Dewgong",id:87,lv:"40"}]}
+]},
+{stage:"After the Fourth Stratum",tag:"Naval",groups:[
+  {name:"Encounter #1",enc:[{name:"Gyarados",id:130,lv:"50"},{name:"Tentacruel",id:73,lv:"50"},{name:"Wailord",id:321,lv:"50",etrian:true}]},
+  {name:"Encounter #2",enc:[{name:"Lanturn",id:171,lv:"50"},{name:"Sharpedo",id:319,lv:"50"},{name:"Pelipper",id:279,lv:"50"}]},
+  {name:"Encounter #3",enc:[{name:"Octillery",id:224,lv:"50"},{name:"Seaking",id:119,lv:"50"},{name:"Starmie",id:121,lv:"50"}]},
+  {name:"Encounter #4",enc:[{name:"Gyarados",id:130,lv:"50"},{name:"Cloyster",id:91,lv:"50"},{name:"Dewgong",id:87,lv:"50"}]}
+]}
+];
+
+// ─────────────────────────────────────────────
+// ENCOUNTERS — SEARCH
+// ─────────────────────────────────────────────
+let encSearch="";
+function onEncSearch(){
+  encSearch=(document.getElementById("enc-search").value||"").toLowerCase().trim();
+  buildEncounters();
+}
+
+// ─────────────────────────────────────────────
+// F.O.E.
+// ─────────────────────────────────────────────
+const collapsedFoeRegions=new Set();
+
+function buildFoe(){
+  buildFoeProgress();
+  const caught=getCaught();
+  const cont=document.getElementById("foe-regions");
+  const blocks=FOE_ENCOUNTERS.map(r=>{
+    const isCollapsed=collapsedFoeRegions.has(r.region);
+    const safeReg=r.region.replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+    const rows=r.foes.map(f=>{
+      const c=caught.has(norm(f.name));
+      const etrianBadge=f.etrian?` <span class="enc-etrian">⭐</span>`:"";
+      const moveBadges=f.moves.map(m=>`<span style="display:inline-block;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#fca5a5;padding:1px 7px;border-radius:8px;font-size:10px;margin:1px">${m}</span>`).join(" ");
+      return `<tr>
+        <td><img class="enc-sprite" src="${eSprite(f.id,f.name)}" alt="${f.name}" onerror="this.style.opacity=0"></td>
+        <td>
+          <span class="enc-name-col" style="color:#fca5a5;font-weight:700">${f.name}</span>${etrianBadge}
+          <div style="margin-top:4px">${moveBadges}</div>
+        </td>
+        <td><span class="enc-lvl" style="color:#f87171;font-weight:700">${f.lv}</span></td>
+        <td><span class="enc-pct p-mid">${f.pct}</span></td>
+        <td><button class="enc-cb${c?" caught":""}" onclick="toggleCaughtFoe('${f.name}',this)" title="${c?"Defeated":"Mark defeated"}">${c?"✓":""}</button></td>
+      </tr>`;
+    }).join("");
+    return `<div class="region-block">
+      <div class="region-header" onclick="toggleFoeRegion('${safeReg}')" style="border-left-color:#ef4444">
+        <span class="region-name" style="color:#fca5a5">💀 ${r.region}</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="region-tag">${r.tag}</span>
+          <span class="region-arrow${isCollapsed?"":" open"}" data-foe-arrow="${safeReg}">▼</span>
+        </div>
+      </div>
+      <div class="region-body${isCollapsed?" collapsed":""}" data-foe-body="${safeReg}">
+        <div class="method-block">
+          <div class="method-head" style="color:#f87171;background:rgba(239,68,68,.08)">💀 F.O.E. ENCOUNTERS</div>
+          <table class="enc-table">
+            <thead><tr><th>Sprite</th><th>Pokémon &amp; Moves</th><th>Level</th><th>Chance</th><th>✓</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+  });
+  cont.innerHTML=blocks.join("");
+}
+
+function toggleFoeRegion(name){
+  if(collapsedFoeRegions.has(name)) collapsedFoeRegions.delete(name); else collapsedFoeRegions.add(name);
+  const body=document.querySelector(`[data-foe-body="${CSS.escape(name)}"]`);
+  const arrow=document.querySelector(`[data-foe-arrow="${CSS.escape(name)}"]`);
+  if(body) body.classList.toggle("collapsed",collapsedFoeRegions.has(name));
+  if(arrow) arrow.classList.toggle("open",!collapsedFoeRegions.has(name));
+}
+
+function toggleAllFoeRegions(expand){
+  if(expand) collapsedFoeRegions.clear(); else FOE_ENCOUNTERS.forEach(r=>collapsedFoeRegions.add(r.region));
+  buildFoe();
+}
+
+function toggleCaughtFoe(name,btn){
+  toggleCaught(name);
+  const c=isCaught(name);
+  btn.classList.toggle("caught",c);
+  btn.textContent=c?"✓":"";
+  syncEncButtons(name);
+  renderDexGrid();
+  buildFoeProgress();
+  buildEncounterProgress();
+  buildNavalProgress();
+}
+
+function buildFoeProgress(){
+  const foePokes=new Set(FOE_ENCOUNTERS.flatMap(r=>r.foes.map(f=>norm(f.name))));
+  const caught=getCaught();
+  const n=[...foePokes].filter(x=>caught.has(x)).length;
+  const total=foePokes.size;
+  const pct=total?Math.round(n/total*100):0;
+  document.getElementById("foe-bar").style.width=pct+"%";
+  document.getElementById("foe-count").textContent=n+" / "+total;
+}
+
+// ─────────────────────────────────────────────
+// NAVAL EXPLORATIONS
+// ─────────────────────────────────────────────
+const collapsedNavalRegions=new Set();
+
+function buildNaval(){
+  buildNavalProgress();
+  const caught=getCaught();
+  const cont=document.getElementById("naval-regions");
+  const blocks=NAVAL_ENCOUNTERS.map(stage=>{
+    const isCollapsed=collapsedNavalRegions.has(stage.stage);
+    const safeStage=stage.stage.replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+    const groupBlocks=stage.groups.map(g=>{
+      const rows=g.enc.map(e=>{
+        const c=caught.has(norm(e.name));
+        const etrianBadge=e.etrian?` <span class="enc-etrian">⭐</span>`:"";
+        const noteCell=e.note?`<small style="display:block;color:var(--text2);font-size:10px">${e.note}</small>`:"";
+        return `<tr>
+          <td><img class="enc-sprite" src="${eSprite(e.id,e.name)}" alt="${e.name}" onerror="this.style.opacity=0"></td>
+          <td><span class="enc-name-col">${e.name}</span>${etrianBadge}${noteCell}</td>
+          <td><span class="enc-lvl">${e.lv}</span></td>
+          <td><span class="enc-pct p-event">Naval</span></td>
+          <td><button class="enc-cb${c?" caught":""}" onclick="toggleCaughtNaval('${e.name}',this)" title="${c?"Caught":"Mark caught"}">${c?"✓":""}</button></td>
+        </tr>`;
+      }).join("");
+      return `<div class="method-block"><div class="method-head">${g.name}</div>
+        <table class="enc-table"><thead><tr><th>Sprite</th><th>Pokémon</th><th>Level</th><th>Type</th><th>✓</th></tr></thead>
+        <tbody>${rows}</tbody></table></div>`;
+    }).join("");
+    return `<div class="region-block">
+      <div class="region-header" onclick="toggleNavalRegion('${safeStage}')">
+        <span class="region-name">${stage.stage}</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="region-tag">${stage.tag}</span>
+          <span class="region-arrow${isCollapsed?"":" open"}" data-naval-arrow="${safeStage}">▼</span>
+        </div>
+      </div>
+      <div class="region-body${isCollapsed?" collapsed":""}" data-naval-body="${safeStage}">${groupBlocks}</div>
+    </div>`;
+  });
+  cont.innerHTML=blocks.join("");
+}
+
+function toggleNavalRegion(name){
+  if(collapsedNavalRegions.has(name)) collapsedNavalRegions.delete(name); else collapsedNavalRegions.add(name);
+  const body=document.querySelector(`[data-naval-body="${CSS.escape(name)}"]`);
+  const arrow=document.querySelector(`[data-naval-arrow="${CSS.escape(name)}"]`);
+  if(body) body.classList.toggle("collapsed",collapsedNavalRegions.has(name));
+  if(arrow) arrow.classList.toggle("open",!collapsedNavalRegions.has(name));
+}
+
+function toggleAllNavalRegions(expand){
+  if(expand) collapsedNavalRegions.clear(); else NAVAL_ENCOUNTERS.forEach(s=>collapsedNavalRegions.add(s.stage));
+  buildNaval();
+}
+
+function toggleCaughtNaval(name,btn){
+  toggleCaught(name);
+  const c=isCaught(name);
+  btn.classList.toggle("caught",c);
+  btn.textContent=c?"✓":"";
+  syncEncButtons(name);
+  renderDexGrid();
+  buildNavalProgress();
+  buildEncounterProgress();
+  buildFoeProgress();
+}
+
+function buildNavalProgress(){
+  const navalPokes=new Set();
+  NAVAL_ENCOUNTERS.forEach(s=>s.groups.forEach(g=>g.enc.forEach(e=>navalPokes.add(norm(e.name)))));
+  const caught=getCaught();
+  const n=[...navalPokes].filter(x=>caught.has(x)).length;
+  const total=navalPokes.size;
+  const pct=total?Math.round(n/total*100):0;
+  document.getElementById("naval-bar").style.width=pct+"%";
+  document.getElementById("naval-count").textContent=n+" / "+total;
+}
+
+// ─────────────────────────────────────────────
+// TMs
+// ─────────────────────────────────────────────
+function buildTMs(){
+  document.getElementById("tm-tbody").innerHTML=TMS.map(t=>`
+    <tr>
+      <td><span class="tm-num">${t.n}</span></td>
+      <td style="font-weight:600">${t.m}</td>
+      <td><span class="tb ${TYPE_MAP[t.t]||'t-Normal'}" style="font-size:11px">${t.t}</span></td>
+      <td>${t.loc}</td>
+    </tr>`).join("");
+}
+
+// ─────────────────────────────────────────────
+// TUTORS
+// ─────────────────────────────────────────────
+function buildTutors(){
+  document.getElementById("tutor-tbody").innerHTML=TUTORS.map(t=>`
+    <tr>
+      <td style="font-weight:600">${t.m}</td>
+      <td><span class="tb ${TYPE_MAP[t.type]||'t-Normal'}" style="font-size:11px">${t.type}</span></td>
+      <td>${t.loc}</td>
+    </tr>`).join("");
+}
+
+// ─────────────────────────────────────────────
+// QUESTS
+// ─────────────────────────────────────────────
+function getCompletedQuests(){try{return new Set(JSON.parse(localStorage.getItem("po_quests")||"[]"))}catch{return new Set()}}
+function saveCompletedQuests(s){localStorage.setItem("po_quests",JSON.stringify([...s]))}
+function isQuestComplete(n){return getCompletedQuests().has(n)}
+function toggleQuestComplete(n){
+  const s=getCompletedQuests();
+  if(s.has(n)) s.delete(n); else s.add(n);
+  saveCompletedQuests(s);
+  buildQuests();
+}
+
+let hideCompletedQuests=false;
+function toggleHideCompleted(){
+  hideCompletedQuests=!hideCompletedQuests;
+  const btn=document.getElementById("quest-hide-btn");
+  if(btn){btn.classList.toggle("active",hideCompletedQuests);btn.textContent=hideCompletedQuests?"👁️ Show Completed":"🙈 Hide Completed";}
+  buildQuests();
+}
+
+function buildQuests(){
+  const completed=getCompletedQuests();
+  const visible=hideCompletedQuests?QUESTS.filter(q=>!completed.has(q.n)):QUESTS;
+  const total=QUESTS.length;
+  const n=completed.size;
+  const lbl=document.getElementById("quest-progress-label");
+  if(lbl) lbl.textContent=`${n} / ${total} COMPLETE`;
+  document.getElementById("quest-tbody").innerHTML=visible.map(q=>{
+    const done=completed.has(q.n);
+    return `<tr style="${done?"opacity:.5;":""}">
+      <td><button class="enc-cb${done?" caught":""}" onclick="toggleQuestComplete(${q.n})" title="${done?"Mark incomplete":"Mark complete"}" style="width:22px;height:22px">${done?"✓":""}</button></td>
+      <td><span class="quest-num">#${q.n}</span></td>
+      <td><span class="quest-name"${done?' style="text-decoration:line-through"':''}>${q.name}</span>${q.hint?`<div class="quest-image-hint">📷 Visual hint in official spreadsheet</div>`:""}</td>
+      <td style="font-size:12px;color:var(--text2)">${q.loc}</td>
+      <td style="font-size:12px">${q.desc}</td>
+      <td><span class="quest-reward">${q.reward}</span></td>
+    </tr>`;
+  }).join("");
+}
+
+// ─────────────────────────────────────────────
+// GLOBAL REFRESH (called after any catch toggle)
+// ─────────────────────────────────────────────
+function refreshCaught(){
+  updateDexProgress();
+  buildEncounterProgress();
+  buildEventProgress();
+  buildFoeProgress();
+  buildNavalProgress();
+}
+
+
+function updateClear(inputId,btnId){
+  const v=document.getElementById(inputId).value;
+  document.getElementById(btnId).classList.toggle("visible",v.length>0);
+}
+function clearSearch(inputId,btnId,rebuildFn){
+  document.getElementById(inputId).value="";
+  document.getElementById(btnId).classList.remove("visible");
+  rebuildFn();
+}
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+buildDex();
+buildEncounters();
+buildEvents();
+buildFoe();
+buildNaval();
+buildTMs();
+buildTutors();
+buildQuests();
+</script>
+</body>
+</html>
