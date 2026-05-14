@@ -171,7 +171,10 @@ header{
 .enc-table tr:hover td{background:rgba(255,255,255,.025)}
 .enc-sprite{width:36px;height:36px;image-rendering:pixelated;vertical-align:middle}
 .enc-name-col{font-weight:600}
+.enc-row-clickable{cursor:pointer}
+.enc-row-clickable td{cursor:pointer}
 .enc-etrian{color:var(--gold);font-size:10px;font-weight:700}
+.enc-region-tag{display:inline-block;padding:1px 6px;border-radius:6px;font-size:9px;font-weight:700;background:rgba(0,196,224,.15);border:1px solid rgba(0,196,224,.3);color:var(--teal);margin-left:4px;vertical-align:middle}
 .enc-lvl{color:var(--text2);font-size:12px}
 .enc-pct{font-weight:700;font-size:12px}
 .enc-pct.p-high{color:var(--green)}.enc-pct.p-mid{color:var(--gold)}.enc-pct.p-low{color:#f87171}.enc-pct.p-event{color:var(--teal)}
@@ -317,6 +320,12 @@ header{
     <button class="tab-btn" onclick="switchTab('moves',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/tm-case.png" alt="newmoves"><span class="tab-btn-label">New Moves</span></button>
     <button class="tab-btn" onclick="switchTab('seamap',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/old-sea-map.png" alt="seamap"><span class="tab-btn-label">Sea Map</span></button>
   </nav>
+  <div style="padding:12px;border-top:1px solid rgba(240,192,64,.15);margin-top:auto">
+    <button id="clear-progress-btn" onclick="showClearConfirm()" style="width:100%;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:var(--radius);color:#ef4444;font-family:'Press Start 2P',monospace;font-size:7px;padding:8px 10px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:.2s">
+      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png" alt="" style="width:28px;height:28px;image-rendering:pixelated;flex-shrink:0">
+      <span>Clear Progress</span>
+    </button>
+  </div>
 </div>
 
 <div id="main-wrap">
@@ -356,10 +365,6 @@ header{
     <div class="progress-track"><div class="progress-fill" id="enc-bar" style="width:0%"></div></div>
     <span class="progress-count" id="enc-count">0 / 0</span>
   </div>
-  <div class="note-box">
-    Catching a Pokémon in any location marks it as caught everywhere, including the Pokédex. <strong>⭐</strong> = Regional Variant.
-    Data covers all main-game encounter locations. Postgame and Naval Exploration encounters are noted separately.
-  </div>
   <div class="sticky-controls">
     <div class="search-wrap"><input class="search-input" id="enc-search" placeholder="Search Pokémon or location…" oninput="onEncSearch();updateClear('enc-search','enc-clear')"><button class="search-clear" id="enc-clear" onclick="clearSearch('enc-search','enc-clear',onEncSearch)" title="Clear search">✕</button></div>
     <div class="sc-filters" style="margin-top:6px"><div class="filters" id="enc-filters" style="justify-content:space-between;flex-wrap:wrap;gap:8px">
@@ -386,7 +391,7 @@ header{
     <span class="progress-count" id="evt-count">0 / 0</span>
   </div>
   <div class="note-box">
-    Pokémon obtained through <strong>events</strong>, <strong>sidequests</strong>, and <strong>trades</strong>. These are excluded from the Encounters tab. Marking one as obtained syncs with the Pokédex.
+    Pokémon obtained through <strong>events</strong>, <strong>sidequests</strong>, and <strong>trades</strong>.
   </div>
   <div class="sticky-controls">
     <div class="search-wrap"><input class="search-input" id="evt-search" placeholder="Search Pokémon or location…" oninput="onEvtSearch();updateClear('evt-search','evt-clear')"><button class="search-clear" id="evt-clear" onclick="clearSearch('evt-search','evt-clear',onEvtSearch)" title="Clear search">✕</button></div>
@@ -407,7 +412,7 @@ header{
     <span class="progress-count" id="foe-count">0 / 0</span>
   </div>
   <div class="note-box">
-    <strong><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/94.png" alt="Gengar" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">F.O.E.</strong> (Field-On Enemy) are powerful boss-type Pokémon found roaming the overworld. They are significantly stronger than regular wild encounters. Data sourced from the <a href="https://docs.google.com/spreadsheets/d/1-duiiF5TXQtI3E9BdyXEViYYYVel_sUstNk1lZCqHsE/edit?gid=25816556" target="_blank" style="color:var(--teal)">official guide sheet</a>.
+    <strong><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/dragon-skull.png" alt="Gengar" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">F.O.E.</strong> (Field-On Enemy) are powerful boss-type Pokémon found roaming the overworld. They are significantly stronger than regular wild encounters.
   </div>
   <div class="sticky-controls">
     <div class="search-wrap"><input class="search-input" id="foe-search" placeholder="Search F.O.E. Pokémon or location…" oninput="onFoeSearch();updateClear('foe-search','foe-clear')"><button class="search-clear" id="foe-clear" onclick="clearSearch('foe-search','foe-clear',onFoeSearch)" title="Clear search">✕</button></div>
@@ -427,7 +432,7 @@ header{
     <span class="progress-count" id="naval-count">0 / 0</span>
   </div>
   <div class="note-box">
-    Pokémon encountered during <strong>Naval Explorations</strong> at sea. Encounters scale with your progress through the Strata. Each expedition randomly encounters one group of 3 Pokémon. Data from the <a href="https://docs.google.com/spreadsheets/d/1-duiiF5TXQtI3E9BdyXEViYYYVel_sUstNk1lZCqHsE/edit?gid=25816556" target="_blank" style="color:var(--teal)">official guide sheet</a>.
+    Pokémon encountered during <strong>Naval Explorations</strong> at sea.
   </div>
   <div class="sticky-controls">
     <div class="search-wrap"><input class="search-input" id="naval-search" placeholder="Search Naval Pokémon or stage…" oninput="onNavalSearch();updateClear('naval-search','naval-clear')"><button class="search-clear" id="naval-clear" onclick="clearSearch('naval-search','naval-clear',onNavalSearch)" title="Clear search">✕</button></div>
@@ -441,7 +446,7 @@ header{
 
 <!-- TMs -->
 <div id="tab-tms" class="section">
-  <div class="section-title">💿 TM Locations</div>
+  <div class="section-title">TM Locations</div>
   <table class="guide-table" id="tm-table">
     <thead><tr><th>TM</th><th>Move</th><th>Type</th><th>Effect</th><th>Location / How to Obtain</th></tr></thead>
     <tbody id="tm-tbody"></tbody>
@@ -450,7 +455,7 @@ header{
 
 <!-- MOVE TUTORS -->
 <div id="tab-tutors" class="section">
-  <div class="section-title"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/65.png" alt="Alakazam" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">Move Tutors</div>
+  <div class="section-title"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/wise-glasses.png" alt="movetutors" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">Move Tutors</div>
   <table class="guide-table">
     <thead><tr><th>Move</th><th>Type</th><th>Effect</th><th>Location</th></tr></thead>
     <tbody id="tutor-tbody"></tbody>
@@ -459,10 +464,10 @@ header{
 
 <!-- SIDE QUESTS -->
 <div id="tab-quests" class="section">
-  <div class="section-title"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/79.png" alt="Slowpoke" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">Side Quests</div>
+  <div class="section-title"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/journal.png" alt="sidequests" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">Side Quests</div>
   <div style="display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap">
     <span id="quest-progress-label" style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold)">0 / 0 COMPLETE</span>
-    <button class="filter-btn" id="quest-hide-btn" onclick="toggleHideCompleted()">🙈 Hide Completed</button>
+    <button class="filter-btn" id="quest-hide-btn" onclick="toggleHideCompleted()">Hide Completed</button>
   </div>
   <div class="quest-table-wrap">
   <table class="guide-table">
@@ -474,7 +479,7 @@ header{
 
 <!-- NEW MOVES -->
 <div id="tab-moves" class="section">
-  <div class="section-title"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/175.png" alt="Togepi" style="width:24px;height:24px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:6px">New Moves &amp; Abilities</div>
+  <div class="section-title"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/tm-case.png" alt="newmoves" style="width:24px;height:24px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:6px">New Moves &amp; Abilities</div>
   <div class="sticky-controls">
     <div class="search-wrap"><input class="search-input" id="moves-search" placeholder="Search moves &amp; abilities…" oninput="onMovesSearch();updateClear('moves-search','moves-clear')"><button class="search-clear" id="moves-clear" onclick="clearSearch('moves-search','moves-clear',onMovesSearch)" title="Clear search">✕</button></div>
     <div class="sc-filters" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px" id="moves-filter-row">
@@ -489,7 +494,7 @@ header{
 
 <!-- SEA MAP -->
 <div id="tab-seamap" class="section">
-  <div class="section-title"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/73.png" alt="Tentacruel" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">Sea Map</div>
+  <div class="section-title"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/old-sea-map.png" alt="seamap" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">Sea Map</div>
   <div class="seamap-wrap">
     <img src="https://lh3.googleusercontent.com/pw/AP1GczMlfUBhFnblryqUG56Ssae3knUAK4evUWt3Eb0axVSzPtfmg2pUNjlQ9XlDifZlWxUBiTMgUwwHLoQKe8lP6KibJLSnR_NPUZ9Xb--kLLrPHviVgQqMrq-G8yJxVk_LqmINdAJEY1EFolVqTSdKfSR2=w1490-h652-s-no?authuser=0"
          alt="Pokémon Odyssey Sea Map"
@@ -1218,7 +1223,7 @@ const ENCOUNTERS = [
     {name:"Caterpie",id:10,lv:"6–8",pct:"10%"},
     {name:"Weedle",id:13,lv:"6–9",pct:"15%"},
     {name:"Shroomish",id:285,lv:"6–9",pct:"20%",etrian:true},
-    {name:"Farfetch'd (Galar)",id:83,lv:"7–9",pct:"9%",etrian:true},
+    {name:"Farfetch'd (Galar)",id:10166,lv:"7–9",pct:"9%"},
     {name:"Sunkern",id:191,lv:"7–9",pct:"6%",etrian:true},
   ]},
   {method:"Headbutt",enc:[
@@ -1992,6 +1997,21 @@ const SPRITE_BASE = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sp
 function sprite(id){return SPRITE_BASE+id+".png";}
 
 // ─────────────────────────────────────────────
+// ENC NAME PARSER
+// ─────────────────────────────────────────────
+function parseEncName(name){
+  const m=name.match(/^(.+?)\s*\(([^)]+)\)$/);
+  if(m){
+    const regionWords=["Galar","Alola","Hisui","Paldea","Alolan","Hisuian","Galarian"];
+    const tag=m[2];
+    if(regionWords.some(r=>tag.includes(r))){
+      return {base:m[1].trim(), region:tag, modalName:name};
+    }
+  }
+  return {base:name, region:null, modalName:name};
+}
+
+// ─────────────────────────────────────────────
 // REGION LABEL HELPER
 // ─────────────────────────────────────────────
 // Returns the variant region label for a Pokémon or form.
@@ -2441,11 +2461,12 @@ function buildEncounters(){
         const pid=e.id||null;
         const pctClass=parseInt(e.pct)>=20?"p-high":parseInt(e.pct)>=10?"p-mid":"p-low";
         const noteCell=e.note?`<small style="display:block;color:var(--text2);font-size:10px">${e.note}</small>`:"";
-        const etrianBadge=e.etrian?` <span class="enc-etrian">⭐</span>`:"";
-        const evoNote=e.note&&e.note.includes("Etrian")?` <span style="color:var(--gold);font-size:10px">(⭐)</span>`:"";
-        return `<tr${!isMulti?' class="enc-row-clickable" onclick="openModalByName(event,\''+e.name+'\')"':''}>
+        const _enc=parseEncName(e.name);
+        const etrianBadge=_enc.region?`<span class="enc-region-tag">${_enc.region}</span>`:"";
+        
+        return `<tr${!isMulti?' class="enc-row-clickable" data-modal="'+_enc.modalName+'"':''}>
           <td><img class="enc-sprite" src="${!isMulti?eSprite(pid,e.name):"data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="}" alt="${e.name}" onerror="this.style.opacity=0"></td>
-          <td><span class="${isMulti?'enc-name-col':'enc-name-col enc-name-link'}" data-n="${e.name}" onclick="${isMulti?'':'openModalByName(event,this.dataset.n)'}">${e.name}</span>${etrianBadge}${evoNote}
+          <td><span class="${isMulti?'enc-name-col':'enc-name-col enc-name-link'}" data-n="${_enc.modalName}">${_enc.base}</span>${etrianBadge}
             ${!isMulti?'<div style="margin-top:3px">'+encTypes(e.name).map(tb).join("")+'</div>':""}
             ${noteCell}</td>
           <td><span class="enc-lvl">${e.lv}</span></td>
@@ -2570,10 +2591,11 @@ function buildEvents(){
                     typePct==="Sidequest"?`<span style="color:var(--gold);font-weight:700;font-size:11px">📜 Sidequest</span>`:
                     `<span style="color:#a090e8;font-weight:700;font-size:11px">⚡ Event</span>`;
       const noteCell=e.note?`<small style="display:block;color:var(--text2);font-size:10px;margin-top:2px">${e.note}</small>`:"";
-      const etrianBadge=e.etrian?` <span class="enc-etrian">⭐</span>`:"";
-      return `<tr${!isMulti?' class="enc-row-clickable" onclick="openModalByName(event,\''+e.name+'\')"':''}>
+      const _enc=parseEncName(e.name);
+        const etrianBadge=_enc.region?`<span class="enc-region-tag">${_enc.region}</span>`:"";
+      return `<tr${!isMulti?' class="enc-row-clickable" data-modal="'+_enc.modalName+'"':''}>
         <td><img class="enc-sprite" src="${!isMulti?eSprite(pid,e.name):"data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="}" alt="${e.name}" onerror="this.style.opacity=0"></td>
-        <td><span class="${isMulti?'enc-name-col':'enc-name-col enc-name-link'}" data-n="${e.name}" onclick="${isMulti?'':'openModalByName(event,this.dataset.n)'}">${e.name}</span>${etrianBadge}
+        <td><span class="${isMulti?'enc-name-col':'enc-name-col enc-name-link'}" data-n="${_enc.modalName}">${_enc.base}</span>${etrianBadge}
           ${!isMulti?'<div style="margin-top:3px">'+encTypes(e.name).map(tb).join("")+'</div>':""}
           ${noteCell}</td>
         <td><span class="enc-lvl">${e.lv}</span></td>
@@ -2794,12 +2816,13 @@ function buildFoe(){
     const safeReg=r.region.replace(/\\/g,"\\\\").replace(/'/g,"\\'");
     const rows=foes.map(f=>{
       const c=caught.has(norm(f.name));
-      const etrianBadge=f.etrian?` <span class="enc-etrian">⭐</span>`:"";
+      const _fenc=parseEncName(f.name);
+      const etrianBadge=_fenc.region?`<span class="enc-region-tag">${_fenc.region}</span>`:"";
       const moveBadges=f.moves.map(m=>`<span style="display:inline-block;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#fca5a5;padding:1px 7px;border-radius:8px;font-size:10px;margin:1px">${m}</span>`).join(" ");
-      return `<tr class="enc-row-clickable" onclick="openModalByName(event,'${f.name}')">
+      return `<tr class="enc-row-clickable" data-modal="${_fenc.modalName}">
         <td><img class="enc-sprite" src="${eSprite(f.id,f.name)}" alt="${f.name}" onerror="this.style.opacity=0"></td>
         <td>
-          <span class="enc-name-col enc-name-link" style="color:#fca5a5;font-weight:700" data-n="${f.name}" onclick="openModalByName(event,this.dataset.n)">${f.name}</span>${etrianBadge}
+          <span class="enc-name-col enc-name-link" style="color:#fca5a5;font-weight:700" data-n="${_fenc.modalName}">${_fenc.base}</span>${etrianBadge}
           <div style="margin-top:3px">${encTypes(f.name).map(tb).join("")}</div>
           <div style="margin-top:4px">${moveBadges}</div>
         </td>
@@ -2893,11 +2916,12 @@ function buildNaval(){
     const groupBlocks=groupBlocks2.map(g=>{
       const rows=g.enc.map(e=>{
         const c=caught.has(catchKey(e.name));
-        const etrianBadge=e.etrian?` <span class="enc-etrian">⭐</span>`:"";
+        const _enc=parseEncName(e.name);
+        const etrianBadge=_enc.region?`<span class="enc-region-tag">${_enc.region}</span>`:"";
         const noteCell=e.note?`<small style="display:block;color:var(--text2);font-size:10px">${e.note}</small>`:"";
-        return `<tr class="enc-row-clickable" onclick="openModalByName(event,'${e.name}')">
+        return `<tr class="enc-row-clickable" data-modal="${e.name}">
           <td><img class="enc-sprite" src="${eSprite(e.id,e.name)}" alt="${e.name}" onerror="this.style.opacity=0"></td>
-          <td><span class="enc-name-col enc-name-link" data-n="${e.name}" onclick="openModalByName(event,this.dataset.n)">${e.name}</span>${etrianBadge}
+          <td><span class="enc-name-col enc-name-link" data-n="${e.name}">${_enc.base}</span>${etrianBadge}
             <div style="margin-top:3px">${encTypes(e.name).map(tb).join("")}</div>
             ${noteCell}</td>
           <td><span class="enc-lvl">${e.lv}</span></td>
@@ -3180,8 +3204,51 @@ buildTMs();
 buildTutors();
 buildQuests();
 </script>
+<!-- CLEAR PROGRESS MODAL -->
+<div id="clear-confirm-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;align-items:center;justify-content:center">
+  <div style="background:var(--bg2);border:1px solid rgba(239,68,68,.4);border-radius:12px;padding:24px;max-width:340px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.9)">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png" alt="" style="width:48px;height:48px;image-rendering:pixelated;margin-bottom:12px">
+    <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:#ef4444;margin-bottom:12px;line-height:1.6">Clear All Progress?</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:20px;line-height:1.6">This will permanently reset all caught Pokémon and completed quests. This cannot be undone.</p>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button onclick="hideClearConfirm()" style="flex:1;padding:10px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Press Start 2P',monospace;font-size:7px;cursor:pointer">Cancel</button>
+      <button onclick="clearAllProgress()" style="flex:1;padding:10px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.4);border-radius:8px;color:#ef4444;font-family:'Press Start 2P',monospace;font-size:7px;cursor:pointer">Clear All</button>
+    </div>
+  </div>
+</div>
+
 </div><!-- /#main-wrap -->
 <script>
+function showClearConfirm(){
+  const el=document.getElementById('clear-confirm-overlay');
+  el.style.display='flex';
+}
+function hideClearConfirm(){
+  document.getElementById('clear-confirm-overlay').style.display='none';
+}
+function clearAllProgress(){
+  localStorage.removeItem('po_caught');
+  localStorage.removeItem('po_quests');
+  hideClearConfirm();
+  // Re-render all tabs to reflect cleared state
+  renderDexGrid();
+  buildEncounters();
+  buildEvents();
+  buildFoe();
+  buildNaval();
+  updateDexProgress();
+  updateEncProgress&&updateEncProgress();
+}
+
+// Row-level click delegation for encounter tables
+document.addEventListener('click', function(e){
+  const row = e.target.closest('tr.enc-row-clickable');
+  if(!row) return;
+  if(e.target.closest('.enc-cb')) return; // ignore checkbox clicks
+  const name = row.dataset.modal;
+  if(name) openModalByName(e, name);
+});
+
 function toggleSidebar(){
   document.getElementById('sidebar').classList.toggle('open');
   document.getElementById('sidebar-overlay').classList.toggle('open');
