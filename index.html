@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pokémon Odyssey — Companion Guide v4.1.1</title>
+<title>Pokémon Odyssey — Companion Guide</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#080d18;--bg2:#0f1520;--bg3:#17213a;--border:#243050;--gold:#f0c040;--teal:#00c4e0;--green:#22c55e;--red:#ef4444;--text:#dde6f5;--text2:#8899bb;--shadow:0 4px 20px rgba(0,0,0,.6);--radius:8px}
@@ -13,16 +13,69 @@ body{background:var(--bg);color:var(--text);font-family:'Exo 2',sans-serif;min-h
 ::-webkit-scrollbar-track{background:var(--bg2)}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
-/* HEADER */
-header{background:linear-gradient(135deg,#050a12 0%,#0d1830 60%,#08102a 100%);border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:200;box-shadow:0 4px 30px rgba(0,0,0,.9)}
-.header-top{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;gap:12px}
-.title-block{}
-.site-title{font-family:'Press Start 2P',monospace;font-size:13px;color:var(--gold);text-shadow:0 0 24px rgba(240,192,64,.6);letter-spacing:1px}
-.site-sub{font-size:10px;color:var(--text2);margin-top:3px}
-nav{display:grid;grid-template-columns:repeat(5,1fr);background:rgba(0,0,0,.3);border-top:1px solid rgba(36,48,80,.6)}
-.tab-btn{background:none;border:none;border-bottom:3px solid transparent;color:var(--text2);padding:10px 6px;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:7.5px;white-space:nowrap;transition:.2s all;text-align:center;overflow:hidden;text-overflow:ellipsis}
-.tab-btn:hover{color:var(--text);background:rgba(255,255,255,.04)}
-.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);background:rgba(240,192,64,.07)}
+/* SIDEBAR NAV */
+#sidebar{
+  position:fixed;top:0;left:0;height:100vh;width:180px;
+  background:linear-gradient(180deg,#050a12 0%,#0d1830 100%);
+  border-right:1px solid rgba(240,192,64,.2);
+  display:flex;flex-direction:column;
+  z-index:300;overflow-y:auto;overflow-x:hidden;
+  box-shadow:4px 0 24px rgba(0,0,0,.6);
+  transition:transform .25s ease;
+}
+#sidebar-header{
+  padding:16px 12px 12px;
+  border-bottom:1px solid rgba(240,192,64,.15);
+  text-align:center;
+}
+#sidebar-title{font-family:'Press Start 2P',monospace;font-size:9px;color:var(--gold);text-shadow:0 0 16px rgba(240,192,64,.5);line-height:1.6}
+#sidebar-sub{font-size:8px;color:var(--text2);margin-top:4px}
+#sidebar nav{display:flex;flex-direction:column;padding:8px 0;flex:1}
+.tab-btn{
+  background:none;border:none;border-left:3px solid transparent;
+  color:var(--text2);padding:10px 12px;cursor:pointer;
+  font-family:'Press Start 2P',monospace;font-size:7px;
+  white-space:nowrap;transition:.2s all;
+  display:flex;align-items:center;gap:10px;
+  text-align:left;width:100%;
+}
+.tab-btn:hover{color:var(--text);background:rgba(255,255,255,.05);border-left-color:rgba(240,192,64,.3)}
+.tab-btn.active{color:var(--gold);border-left-color:var(--gold);background:rgba(240,192,64,.08)}
+.tab-btn img{width:32px;height:32px;image-rendering:pixelated;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
+.tab-btn.active img{filter:drop-shadow(0 0 6px rgba(240,192,64,.4))}
+.tab-btn-label{line-height:1.4}
+
+/* MOBILE TOP BAR */
+#mobile-bar{
+  display:none;
+  position:sticky;top:0;z-index:250;
+  background:linear-gradient(135deg,#050a12 0%,#0d1830 100%);
+  border-bottom:1px solid rgba(240,192,64,.2);
+  padding:8px 14px;
+  align-items:center;gap:12px;
+  box-shadow:0 2px 12px rgba(0,0,0,.6);
+}
+#mobile-bar-title{font-family:'Press Start 2P',monospace;font-size:9px;color:var(--gold);text-shadow:0 0 12px rgba(240,192,64,.4)}
+#menu-toggle{
+  background:none;border:1px solid rgba(240,192,64,.3);
+  color:var(--gold);font-size:16px;width:34px;height:34px;
+  border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:.2s;
+}
+#menu-toggle:hover{background:rgba(240,192,64,.1)}
+#sidebar-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:250;
+}
+
+/* MAIN CONTENT AREA */
+#main-wrap{margin-left:180px;min-height:100vh}
+header{
+  background:linear-gradient(135deg,#050a12 0%,#0d1830 60%,#08102a 100%);
+  border-bottom:1px solid rgba(240,192,64,.15);
+  padding:12px 20px;position:sticky;top:0;z-index:200;
+  box-shadow:0 4px 20px rgba(0,0,0,.7);
+  display:none; /* title now in sidebar */
+}
 
 /* SECTIONS */
 .section{display:none;padding:20px;max-width:1440px;margin:0 auto;animation:fadeIn .2s ease}
@@ -64,6 +117,7 @@ nav{display:grid;grid-template-columns:repeat(5,1fr);background:rgba(0,0,0,.3);b
 .type-badges{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;margin-bottom:4px}
 .tb{padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4)}
 .poke-evo{font-size:10px;color:var(--text2);text-align:center;line-height:1.4}
+.evo-link{cursor:pointer;text-decoration:underline;text-underline-offset:2px;color:var(--teal)}
 .caught-check{position:absolute;top:8px;right:8px;background:var(--green);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;display:none}
 .poke-card.caught .caught-check{display:flex}
 
@@ -153,11 +207,13 @@ nav{display:grid;grid-template-columns:repeat(5,1fr);background:rgba(0,0,0,.3);b
 /* RESPONSIVE */
 @media(max-width:640px){
   .pokedex-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
-  .site-title{font-size:9px}
-  .tab-btn{font-size:6.5px;padding:9px 4px}
-  nav{grid-template-columns:repeat(3,1fr)}
   .section{padding:12px}
   .stats-row{grid-template-columns:repeat(3,1fr)}
+  #sidebar{transform:translateX(-100%)}
+  #sidebar.open{transform:translateX(0)}
+  #main-wrap{margin-left:0}
+  #mobile-bar{display:flex}
+  #sidebar-overlay.open{display:block}
 }
 
 /* MOVES TAB */
@@ -230,25 +286,39 @@ nav{display:grid;grid-template-columns:repeat(5,1fr);background:rgba(0,0,0,.3);b
 <body>
 
 <button id="jump-top" title="Jump to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div id="mobile-bar">
+  <button id="menu-toggle" onclick="toggleSidebar()" title="Menu">☰</button>
+  <span id="mobile-bar-title">Pokémon Odyssey Guide</span>
+</div>
+<div id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+<div id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">Pokémon<br>Odyssey<br>Guide</div>
+    <div id="sidebar-sub">Companion Guide</div>
+  </div>
+  <nav>
+    <button class="tab-btn active" onclick="switchTab('pokedex',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="Bulbasaur"><span class="tab-btn-label">Pokédex</span></button>
+    <button class="tab-btn" onclick="switchTab('encounters',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu"><span class="tab-btn-label">Encounters</span></button>
+    <button class="tab-btn" onclick="switchTab('events',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/385.png" alt="Jirachi"><span class="tab-btn-label">Events</span></button>
+    <button class="tab-btn" onclick="switchTab('foe',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/94.png" alt="Gengar"><span class="tab-btn-label">F.O.E.</span></button>
+    <button class="tab-btn" onclick="switchTab('naval',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/131.png" alt="Lapras"><span class="tab-btn-label">Naval</span></button>
+    <button class="tab-btn" onclick="switchTab('tms',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/81.png" alt="Magnemite"><span class="tab-btn-label">TMs</span></button>
+    <button class="tab-btn" onclick="switchTab('tutors',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/65.png" alt="Alakazam"><span class="tab-btn-label">Move Tutors</span></button>
+    <button class="tab-btn" onclick="switchTab('quests',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/79.png" alt="Slowpoke"><span class="tab-btn-label">Side Quests</span></button>
+    <button class="tab-btn" onclick="switchTab('moves',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu"><span class="tab-btn-label">New Moves</span></button>
+    <button class="tab-btn" onclick="switchTab('seamap',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/73.png" alt="Tentacruel"><span class="tab-btn-label">Sea Map</span></button>
+  </nav>
+</div>
+
+<div id="main-wrap">
 <header>
   <div class="header-top">
     <div class="title-block">
       <div class="site-title"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png" alt="Snorlax" id="title-sprite" style="width:28px;height:28px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:6px">Pokémon Odyssey</div>
-      <div class="site-sub">Companion Guide · v4.1.1 · ⭐ = Regional Variant</div>
+      <div class="site-sub">Companion Guide</div>
     </div>
   </div>
-  <nav>
-    <button class="tab-btn active" onclick="switchTab('pokedex',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="Bulbasaur" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">Pokédex</button>
-    <button class="tab-btn" onclick="switchTab('encounters',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">Encounters</button>
-    <button class="tab-btn" onclick="switchTab('events',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/385.png" alt="Jirachi" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">Events</button>
-    <button class="tab-btn" onclick="switchTab('foe',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/94.png" alt="Gengar" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">F.O.E.</button>
-    <button class="tab-btn" onclick="switchTab('naval',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/131.png" alt="Lapras" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">Naval</button>
-    <button class="tab-btn" onclick="switchTab('tms',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/81.png" alt="Magnemite" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">TMs</button>
-    <button class="tab-btn" onclick="switchTab('tutors',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/65.png" alt="Alakazam" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">Move Tutors</button>
-    <button class="tab-btn" onclick="switchTab('quests',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/79.png" alt="Slowpoke" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">Side Quests</button>
-    <button class="tab-btn" onclick="switchTab('moves',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">New Moves</button>
-    <button class="tab-btn" onclick="switchTab('seamap',this)"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/73.png" alt="Tentacruel" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;margin-right:4px">Sea Map</button>
-  </nav>
 </header>
 
 <!-- POKÉDEX -->
@@ -259,9 +329,7 @@ nav{display:grid;grid-template-columns:repeat(5,1fr);background:rgba(0,0,0,.3);b
     <span class="progress-count" id="dex-count">0 / 0</span>
   </div>
   <div class="note-box">
-    <strong>⭐ Regional Variants</strong> are Pokémon with alternate regional forms in the Odyssey region. Their custom sprites can be found in the <a href="https://docs.google.com/spreadsheets/d/1Es1clPMUhEEqZRHW0tgAmvxqSzVXiXmD/edit?gid=1620070709" target="_blank" style="color:var(--teal)">official Etrian Variants sheet</a>. 
-    <strong>Odyssey moves</strong> (shown where data is available from the guide sheets) may differ from standard Pokémon moves. Click any card to view details.
-  </div>
+    <strong>⭐ Regional Variants</strong> are Pokémon with alternate regional forms. </div>
   <div class="sticky-controls" id="sc-pokedex">
     <div class="search-wrap"><input class="search-input" id="dex-search" placeholder="Search Pokémon…" oninput="filterDex();updateClear('dex-search','dex-clear')"><button class="search-clear" id="dex-clear" onclick="clearSearch('dex-search','dex-clear',filterDex)" title="Clear search">✕</button></div>
     <div class="sc-filters" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
@@ -469,7 +537,7 @@ const POKEMON = [
 {id:22,n:"Fearow",t:["Electric","Flying"],a:["Volt Absorb","Rock Head"],ev:null,evo:null,f:"etrian",st:{hp:70,atk:120,def:70,spa:65,spd:70,spe:105},mv:[{lv:1,m:"Night Slash"},{lv:1,m:"Snarl"},{lv:1,m:"Steel Wing"},{lv:1,m:"Leaf Blade"},{lv:1,m:"Quick Attack"},{lv:1,m:"Peck"},{lv:1,m:"Growl"},{lv:5,m:"Leer"},{lv:10,m:"Thundershock"},{lv:15,m:"Aerial Ace"},{lv:20,m:"Spark"},{lv:25,m:"Agility"},{lv:30,m:"Volt Wings"},{lv:35,m:"Drill Peck"},{lv:40,m:"Drill Run"},{lv:45,m:"Wild Charge"},{lv:50,m:"Brave Bird"}]},
 {id:23,n:"Ekans",t:["Poison","Aether"],a:["Intimidate","Defiant"],ev:22,evo:"Arbok",f:"etrian",st:{hp:40,atk:60,def:45,spa:40,spd:60,spe:55},mv:[{lv:1,m:"Mind Bash"},{lv:1,m:"Etheric Boon"},{lv:5,m:"Poison Sting"},{lv:10,m:"Bite"},{lv:15,m:"Screech"},{lv:20,m:"Poison Fang"},{lv:25,m:"Fire Fang"},{lv:25,m:"Ice Fang"},{lv:25,m:"Thunder Fang"},{lv:30,m:"Poison Jab"},{lv:35,m:"Cosmic Slash"},{lv:40,m:"Coil"},{lv:45,m:"Toxic"},{lv:50,m:"Sucker Punch"},{lv:55,m:"Gunk Shot"}]},
 {id:24,n:"Arbok",t:["Poison","Aether"],a:["Intimidate","Defiant"],ev:null,evo:null,f:"etrian",st:{hp:70,atk:100,def:80,spa:65,spd:85,spe:80},mv:[{lv:1,m:"Seed Bomb"},{lv:1,m:"Knock Off"},{lv:1,m:"Dragon Dance"},{lv:1,m:"Mind Bash"},{lv:1,m:"Etheric Boon"},{lv:5,m:"Poison Sting"},{lv:10,m:"Bite"},{lv:15,m:"Screech"},{lv:20,m:"Poison Fang"},{lv:25,m:"Fire Fang"},{lv:25,m:"Ice Fang"},{lv:25,m:"Thunder Fang"},{lv:30,m:"Poison Jab"},{lv:35,m:"Cosmic Slash"},{lv:40,m:"Coil"},{lv:45,m:"Toxic"},{lv:50,m:"Sucker Punch"},{lv:55,m:"Megalodive"},{lv:60,m:"Gunk Shot"}]},
-{id:25,n:"Pikachu",t:["Electric"],a:["Lightningrod","Volt Absorb"],ev:"Thunder Stone",evo:"Raichu",f:"etrianEvo",st:{hp:35,atk:55,def:30,spa:50,spd:40,spe:90},mv:[{lv:1,m:"Thundershock"},{lv:1,m:"Tail Whip"},{lv:5,m:"Thunder Wave"},{lv:10,m:"Double Team"},{lv:15,m:"Fake Out"},{lv:20,m:"Shock Wave"},{lv:25,m:"Water Bomb"},{lv:30,m:"Electroshock"},{lv:35,m:"Thunderbolt"},{lv:40,m:"Light Screen"},{lv:45,m:"Thunder"}]},
+{id:25,n:"Pikachu",t:["Electric"],a:["Lightningrod","Volt Absorb"],ev:"Thunder Stone / Fire Stone",evo:"Raichu / Gorochu",f:"",st:{hp:35,atk:55,def:30,spa:50,spd:40,spe:90},mv:[{lv:1,m:"Thundershock"},{lv:1,m:"Tail Whip"},{lv:5,m:"Thunder Wave"},{lv:10,m:"Double Team"},{lv:15,m:"Fake Out"},{lv:20,m:"Shock Wave"},{lv:25,m:"Water Bomb"},{lv:30,m:"Electroshock"},{lv:35,m:"Thunderbolt"},{lv:40,m:"Light Screen"},{lv:45,m:"Thunder"}]},
 {id:26,n:"Raichu",t:["Electric"],a:["Lightningrod","Volt Absorb"],ev:null,evo:null,f:"",st:{hp:60,atk:90,def:55,spa:90,spd:80,spe:110},mv:[{lv:1,m:"Thundershock"},{lv:1,m:"Tail Whip"},{lv:5,m:"Thunder Wave"},{lv:10,m:"Double Team"},{lv:15,m:"Fake Out"},{lv:20,m:"Shock Wave"},{lv:25,m:"Water Bomb"},{lv:30,m:"Electroshock"},{lv:35,m:"Thunderbolt"},{lv:40,m:"Light Screen"},{lv:45,m:"Thunder"}]},
 {id:27,n:"Sandshrew",t:["Poison"],a:["Poison Point","Adaptability"],ev:22,evo:"Sandslash",f:"etrian",st:{hp:50,atk:75,def:85,spa:20,spd:30,spe:40},mv:[{lv:1,m:"Scratch"},{lv:1,m:"Defense Curl"},{lv:1,m:"Poison Sting"},{lv:5,m:"Metal Claw"},{lv:10,m:"Rollout"},{lv:15,m:"Rapid Spin"},{lv:20,m:"Bulldoze"},{lv:25,m:"Agility"},{lv:30,m:"Slash"},{lv:35,m:"Iron Head"},{lv:40,m:"Swords Dance"},{lv:45,m:"Earthquake"},{lv:50,m:"Stone Edge"}]},
 {id:28,n:"Sandslash",t:["Poison"],a:["Poison Point","Adaptability"],ev:null,evo:null,f:"etrian",st:{hp:80,atk:110,def:120,spa:45,spd:65,spe:80},mv:[{lv:1,m:"Super Fang"},{lv:1,m:"Knock Off"},{lv:1,m:"Iron Drill"},{lv:1,m:"X-Scissor"},{lv:1,m:"Defense Curl"},{lv:1,m:"Poison Sting"},{lv:5,m:"Metal Claw"},{lv:10,m:"Rollout"},{lv:15,m:"Rapid Spin"},{lv:20,m:"Bulldoze"},{lv:25,m:"Agility"},{lv:30,m:"Slash"},{lv:35,m:"Iron Head"},{lv:40,m:"Swords Dance"},{lv:45,m:"Earthquake"},{lv:50,m:"Stone Edge"}]},
@@ -615,9 +683,9 @@ const POKEMON = [
 {id:169,n:"Crobat",t:["Poison","Flying"],a:["Inner Focus","Super Luck"],ev:null,evo:null,f:"",st:{hp:85,atk:90,def:80,spa:70,spd:80,spe:130},mv:[{lv:1,m:"Super Fang"},{lv:1,m:"Zen Headbutt"},{lv:1,m:"U-Turn"},{lv:1,m:"Absorb"},{lv:1,m:"Supersonic"},{lv:5,m:"Astonish"},{lv:10,m:"Confuse Ray"},{lv:15,m:"Poison Fang"},{lv:20,m:"Bite"},{lv:25,m:"Wing Attack"},{lv:30,m:"Crunch"},{lv:35,m:"Haze"},{lv:40,m:"Poison Jab"},{lv:45,m:"Leech Life"},{lv:50,m:"Brave Bird"}]},
 {id:170,n:"Chinchou",t:["Water","Electric"],a:["Volt Absorb","Water Absorb"],ev:27,evo:"Lanturn",f:"",st:{hp:75,atk:38,def:38,spa:56,spd:56,spe:67},mv:[{lv:1,m:"Water Gun"},{lv:1,m:"Supersonic"},{lv:1,m:"Thundershock"},{lv:5,m:"Thunder Wave"},{lv:10,m:"Bubblebeam"},{lv:15,m:"Confuse Ray"},{lv:20,m:"Shock Wave"},{lv:25,m:"Charge"},{lv:30,m:"Electroshock"},{lv:35,m:"Muddy Water"},{lv:40,m:"Frost Curse"},{lv:45,m:"Hydro Pump"}]},
 {id:171,n:"Lanturn",t:["Water","Electric"],a:["Volt Absorb","Water Absorb"],ev:null,evo:null,f:"",st:{hp:145,atk:45,def:60,spa:80,spd:80,spe:65},mv:[{lv:1,m:"Electroweb"},{lv:1,m:"Icy Wind"},{lv:1,m:"Water Gun"},{lv:1,m:"Supersonic"},{lv:1,m:"Thundershock"},{lv:10,m:"Thunder Wave"},{lv:15,m:"Bubblebeam"},{lv:20,m:"Confuse Ray"},{lv:25,m:"Shock Wave"},{lv:27,m:"Stockpile"},{lv:27,m:"Spit Up"},{lv:27,m:"Swallow"},{lv:30,m:"Charge"},{lv:35,m:"Electroshock"},{lv:40,m:"Muddy Water"},{lv:45,m:"Frost Curse"},{lv:50,m:"Hydro Pump"}]},
-{id:172,n:"ScreamTail",t:["Psychic"],a:["Filter"],ev:null,evo:null,f:"etrian",r:"Paradox",sid:986,st:{hp:115,atk:65,def:99,spa:65,spd:115,spe:111},mv:[{lv:1,m:"Fake Out"},{lv:1,m:"Sing"},{lv:1,m:"Encore"},{lv:1,m:"Sunny Day"},{lv:5,m:"Helping Hand"},{lv:10,m:"Confusion"},{lv:15,m:"Bite"},{lv:20,m:"Body Slam"},{lv:25,m:"Psybeam"},{lv:30,m:"Rest"},{lv:35,m:"Hyper Voice"},{lv:40,m:"Crunch"},{lv:45,m:"Psychic"},{lv:50,m:"Wish"},{lv:55,m:"Substitute"},{lv:60,m:"Boomburst"}]},
-{id:173,n:"SandyShock",t:["Electric","Ground"],a:["Clear Body"],ev:null,evo:null,f:"etrian",r:"Paradox",sid:990,st:{hp:85,atk:81,def:97,spa:121,spd:85,spe:101},mv:[{lv:1,m:"Thunder Wave"},{lv:1,m:"Thundershock"},{lv:1,m:"Electroweb"},{lv:1,m:"Sunny Day"},{lv:5,m:"Spark"},{lv:10,m:"Bulldoze"},{lv:15,m:"Magnet Bomb"},{lv:20,m:"Shock Wave"},{lv:25,m:"Tri Attack"},{lv:30,m:"Power Gem"},{lv:35,m:"Electroshock"},{lv:40,m:"Flash Cannon"},{lv:45,m:"Thunderbolt"},{lv:50,m:"Earth Power"},{lv:55,m:"Spikes"},{lv:60,m:"Thunder"}]},
-{id:174,n:"Flut. Mane",t:["Ghost","Fairy"],a:["Levitate"],ev:null,evo:null,f:"etrian",r:"Paradox",sid:987,st:{hp:55,atk:55,def:55,spa:135,spd:135,spe:135},mv:[{lv:1,m:"Confuse Ray"},{lv:1,m:"Astonish"},{lv:1,m:"Hypnosis"},{lv:1,m:"Sunny Day"},{lv:5,m:"Confusion"},{lv:10,m:"Fake Tears"},{lv:15,m:"Hex"},{lv:20,m:"Psybeam"},{lv:25,m:"Frost Curse"},{lv:30,m:"Magical Leaf"},{lv:35,m:"Psychic"},{lv:40,m:"Shadow Ball"},{lv:45,m:"Mysticalfire"},{lv:50,m:"Power Gem"},{lv:55,m:"Pain Split"},{lv:60,m:"Hyper Voice"}]},
+{id:172,n:"Scream Tail",t:["Psychic"],a:["Filter"],ev:null,evo:null,f:"etrian",r:"Paradox",sid:985,st:{hp:115,atk:65,def:99,spa:65,spd:115,spe:111},mv:[{lv:1,m:"Fake Out"},{lv:1,m:"Sing"},{lv:1,m:"Encore"},{lv:1,m:"Sunny Day"},{lv:5,m:"Helping Hand"},{lv:10,m:"Confusion"},{lv:15,m:"Bite"},{lv:20,m:"Body Slam"},{lv:25,m:"Psybeam"},{lv:30,m:"Rest"},{lv:35,m:"Hyper Voice"},{lv:40,m:"Crunch"},{lv:45,m:"Psychic"},{lv:50,m:"Wish"},{lv:55,m:"Substitute"},{lv:60,m:"Boomburst"}]},
+{id:173,n:"Sandy Shock",t:["Electric","Ground"],a:["Clear Body"],ev:null,evo:null,f:"etrian",r:"Paradox",sid:989,st:{hp:85,atk:81,def:97,spa:121,spd:85,spe:101},mv:[{lv:1,m:"Thunder Wave"},{lv:1,m:"Thundershock"},{lv:1,m:"Electroweb"},{lv:1,m:"Sunny Day"},{lv:5,m:"Spark"},{lv:10,m:"Bulldoze"},{lv:15,m:"Magnet Bomb"},{lv:20,m:"Shock Wave"},{lv:25,m:"Tri Attack"},{lv:30,m:"Power Gem"},{lv:35,m:"Electroshock"},{lv:40,m:"Flash Cannon"},{lv:45,m:"Thunderbolt"},{lv:50,m:"Earth Power"},{lv:55,m:"Spikes"},{lv:60,m:"Thunder"}]},
+{id:174,n:"Flutter Mane",t:["Ghost","Fairy"],a:["Levitate"],ev:null,evo:null,f:"etrian",r:"Paradox",sid:987,st:{hp:55,atk:55,def:55,spa:135,spd:135,spe:135},mv:[{lv:1,m:"Confuse Ray"},{lv:1,m:"Astonish"},{lv:1,m:"Hypnosis"},{lv:1,m:"Sunny Day"},{lv:5,m:"Confusion"},{lv:10,m:"Fake Tears"},{lv:15,m:"Hex"},{lv:20,m:"Psybeam"},{lv:25,m:"Frost Curse"},{lv:30,m:"Magical Leaf"},{lv:35,m:"Psychic"},{lv:40,m:"Shadow Ball"},{lv:45,m:"Mysticalfire"},{lv:50,m:"Power Gem"},{lv:55,m:"Pain Split"},{lv:60,m:"Hyper Voice"}]},
 {id:175,n:"Togepi",t:["Normal"],a:["Serene Grace","Super Luck"],ev:"Happiness",evo:"Togetic",f:"",st:{hp:35,atk:20,def:65,spa:40,spd:65,spe:20},mv:[{lv:1,m:"Growl"},{lv:1,m:"Pound"},{lv:5,m:"Sweet Kiss"},{lv:10,m:"Charm"},{lv:15,m:"Ancientpower"},{lv:20,m:"Yawn"},{lv:25,m:"Metronome"},{lv:30,m:"Hyper Voice"},{lv:35,m:"Safeguard"},{lv:40,m:"Follow Me"},{lv:45,m:"Baton Pass"},{lv:50,m:"Wish"}]},
 {id:176,n:"Togetic",t:["Normal","Flying"],a:["Serene Grace","Super Luck"],ev:"Shiny Stone",evo:"Togekiss",f:"",st:{hp:55,atk:40,def:85,spa:80,spd:105,spe:40},mv:[{lv:1,m:"Growl"},{lv:1,m:"Pound"},{lv:5,m:"Sweet Kiss"},{lv:10,m:"Charm"},{lv:15,m:"Ancientpower"},{lv:20,m:"Yawn"},{lv:25,m:"Metronome"},{lv:30,m:"Hyper Voice"},{lv:35,m:"Safeguard"},{lv:40,m:"Follow Me"},{lv:45,m:"Baton Pass"},{lv:50,m:"Wish"}]},
 {id:177,n:"Natu",t:["Aether","Electric"],a:["Singularity","Flare Boost"],ev:25,evo:"Xatu",f:"",st:{hp:45,atk:50,def:45,spa:70,spd:60,spe:60},mv:[{lv:1,m:"Thundershock"},{lv:1,m:"Etheric Boon"},{lv:5,m:"Light Shot"},{lv:10,m:"Double Team"},{lv:15,m:"Confuse Ray"},{lv:20,m:"Shock Wave"},{lv:20,m:"Mysticalfire"},{lv:20,m:"Aurora Beam"},{lv:25,m:"Astral Gleam"},{lv:30,m:"Electroshock"},{lv:35,m:"Radiant Star"},{lv:40,m:"Thunderbolt"},{lv:45,m:"Roost"}]},
@@ -644,7 +712,7 @@ const POKEMON = [
 {id:198,n:"Murkrow",t:["Dark","Flying"],a:["Insomnia","Super Luck"],ev:"Dusk Stone",evo:"Honchkrow",f:"",st:{hp:60,atk:85,def:42,spa:85,spd:82,spe:91},mv:[{lv:1,m:"Peck"},{lv:1,m:"Astonish"},{lv:5,m:"Gust"},{lv:10,m:"Haze"},{lv:15,m:"Wing Attack"},{lv:20,m:"Night Shade"},{lv:25,m:"Feint Attack"},{lv:30,m:"Sucker Punch"},{lv:35,m:"Air Slash"},{lv:40,m:"Wing Talon"},{lv:45,m:"Night Slash"},{lv:50,m:"Brave Bird"}]},
 {id:199,n:"Slowking",t:["Water","Psychic"],a:["Oblivious","Cloud Nine"],ev:null,evo:null,f:"",st:{hp:95,atk:75,def:80,spa:100,spd:110,spe:30},mv:[{lv:1,m:"Power Gem"},{lv:1,m:"Curse"},{lv:1,m:"Tackle"},{lv:5,m:"Water Gun"},{lv:10,m:"Yawn"},{lv:15,m:"Confusion"},{lv:20,m:"Disable"},{lv:25,m:"Water Pulse"},{lv:30,m:"Psybeam"},{lv:35,m:"Muddy Water"},{lv:40,m:"Psychic"},{lv:45,m:"Slack Off"},{lv:50,m:"Nasty Plot"}]},
 {id:200,n:"Misdreavus",t:["Ghost"],a:["Levitate"],ev:"Dusk Stone",evo:"Mismagius",f:"",st:{hp:60,atk:60,def:60,spa:85,spd:85,spe:85},mv:[{lv:1,m:"Confusion"},{lv:1,m:"Growl"},{lv:5,m:"Astonish"},{lv:10,m:"Confuse Ray"},{lv:15,m:"Power Gem"},{lv:20,m:"Hex"},{lv:25,m:"Psybeam"},{lv:30,m:"Frost Curse"},{lv:35,m:"Mysticalfire"},{lv:40,m:"Shadow Ball"},{lv:45,m:"Will-o-Wisp"}]},
-{id:201,n:"Gorochu",t:["Electric","Fighting"],a:["Lightningrod","Volt Absorb"],ev:null,evo:null,f:"etrian",sid:null,st:{hp:65,atk:100,def:60,spa:100,spd:85,spe:115},mv:[{lv:1,m:"Volt Switch"},{lv:1,m:"Nasty Plot"},{lv:1,m:"Knock Off"},{lv:1,m:"Aura Sphere"},{lv:1,m:"Thundershock"},{lv:5,m:"Thunder Wave"},{lv:10,m:"Double Team"},{lv:15,m:"Fake Out"},{lv:20,m:"Shock Wave"},{lv:25,m:"Water Bomb"},{lv:30,m:"Electroshock"},{lv:35,m:"Thunderbolt"},{lv:40,m:"Light Screen"},{lv:45,m:"Thunder"},{lv:50,m:"Wild Charge"},{lv:55,m:"Close Combat"}]},
+{id:201,n:"Gorochu",t:["Electric","Fighting"],a:["Lightningrod","Volt Absorb"],ev:null,evo:null,f:"",sid:null,st:{hp:65,atk:100,def:60,spa:100,spd:85,spe:115},mv:[{lv:1,m:"Volt Switch"},{lv:1,m:"Nasty Plot"},{lv:1,m:"Knock Off"},{lv:1,m:"Aura Sphere"},{lv:1,m:"Thundershock"},{lv:5,m:"Thunder Wave"},{lv:10,m:"Double Team"},{lv:15,m:"Fake Out"},{lv:20,m:"Shock Wave"},{lv:25,m:"Water Bomb"},{lv:30,m:"Electroshock"},{lv:35,m:"Thunderbolt"},{lv:40,m:"Light Screen"},{lv:45,m:"Thunder"},{lv:50,m:"Wild Charge"},{lv:55,m:"Close Combat"}]},
 {id:202,n:"Wobbuffet",t:["Psychic"],a:["Shadow Tag"],ev:null,evo:null,f:"",st:{hp:200,atk:45,def:65,spa:45,spd:65,spe:30},mv:[{lv:1,m:"Charm"},{lv:1,m:"Infestation"},{lv:1,m:"Confusion"},{lv:1,m:"Growl"},{lv:5,m:"Safeguard"},{lv:10,m:"Encore"},{lv:15,m:"Confuse Ray"},{lv:20,m:"Psybeam"},{lv:25,m:"Follow Me"},{lv:30,m:"Knock Off"},{lv:35,m:"Psychic"},{lv:40,m:"Foul Play"},{lv:45,m:"Wobbushield"},{lv:50,m:"Wish"}]},
 {id:203,n:"Girafarig",t:["Normal","Psychic"],a:["Inner Focus","Cloud Nine"],ev:32,evo:"Farigiraf",f:"",st:{hp:70,atk:80,def:65,spa:90,spd:65,spe:85},mv:[{lv:1,m:"Tackle"},{lv:1,m:"Growl"},{lv:1,m:"Astonish"},{lv:5,m:"Confusion"},{lv:10,m:"Feint Attack"},{lv:15,m:"Stomp"},{lv:20,m:"Psybeam"},{lv:25,m:"Agility"},{lv:30,m:"Zen Headbutt"},{lv:35,m:"Crunch"},{lv:40,m:"Baton Pass"},{lv:45,m:"Psychic"},{lv:50,m:"Nasty Plot"},{lv:55,m:"Hyper Voice"}]},
 {id:204,n:"Pineco",t:["Bug"],a:["Sturdy","Skill Link"],ev:31,evo:"Forretress",f:"",st:{hp:50,atk:65,def:90,spa:35,spd:35,spe:15},mv:[{lv:1,m:"Rapid Spin"},{lv:1,m:"Pin Missile"},{lv:1,m:"Rock Blast"},{lv:5,m:"Protect"},{lv:10,m:"Selfdestruct"},{lv:15,m:"Leech life"},{lv:20,m:"Rock Polish"},{lv:25,m:"Iron Head"},{lv:30,m:"Spikes"},{lv:35,m:"Iron Defense"},{lv:40,m:"First Press"}]},
@@ -665,10 +733,10 @@ const POKEMON = [
 {id:219,n:"Magcargo",t:["Fire","Rock"],a:["Magma Armor","Flame Body"],ev:null,evo:null,f:"",st:{hp:80,atk:50,def:140,spa:80,spd:120,spe:30},mv:[{lv:1,m:"Shell Smash"},{lv:1,m:"Heat Wave"},{lv:1,m:"Yawn"},{lv:1,m:"Smog"},{lv:5,m:"Ember"},{lv:10,m:"Rock Throw"},{lv:15,m:"Flame Wheel"},{lv:20,m:"Ancientpower"},{lv:25,m:"Bulldoze"},{lv:30,m:"Rock Slide"},{lv:35,m:"Flamethrower"},{lv:40,m:"Body Slam"},{lv:45,m:"Recover"},{lv:50,m:"Earth Power"},{lv:55,m:"Fire Blast"},{lv:60,m:"Shatter Shot"}]},
 {id:220,n:"Swinub",t:["Ice","Ground"],a:["Thick Fat","Slush Rush"],ev:33,evo:"Piloswine",f:"",st:{hp:50,atk:50,def:40,spa:30,spd:30,spe:50},mv:[{lv:1,m:"Tackle"},{lv:1,m:"Mud Slap"},{lv:5,m:"Powder Snow"},{lv:10,m:"Flail"},{lv:15,m:"Ice Shard"},{lv:20,m:"Take Down"},{lv:25,m:"Endure"},{lv:30,m:"Icicle Crash"},{lv:35,m:"Amnesia"},{lv:40,m:"Double Edge"},{lv:45,m:"Earthquake"}]},
 {id:221,n:"Piloswine",t:["Ice","Ground"],a:["Thick Fat","Slush Rush"],ev:"Ancient Power",evo:"Mamoswine",f:"",st:{hp:100,atk:100,def:80,spa:60,spd:60,spe:50},mv:[{lv:1,m:"Tackle"},{lv:1,m:"Powder Snow"},{lv:10,m:"Flail"},{lv:20,m:"Ice Shard"},{lv:25,m:"Take Down"},{lv:30,m:"Endure"},{lv:33,m:"Horn Attack"},{lv:35,m:"Icicle Crash"},{lv:40,m:"Amnesia"},{lv:45,m:"Double Edge"},{lv:50,m:"Earthquake"},{lv:55,m:"Thrash"}]},
-{id:222,n:"RagingBolt",t:["Electric","Dragon"],a:["Lightningrod"],ev:null,evo:null,f:"etrian",r:"Paradox",sid:1009,st:{hp:125,atk:73,def:91,spa:137,spd:89,spe:75},mv:[{lv:1,m:"Wild Charge"},{lv:1,m:"Twister"},{lv:1,m:"Leer"},{lv:1,m:"Sunny Day"},{lv:5,m:"Bite"},{lv:10,m:"Shock Wave"},{lv:15,m:"Charge"},{lv:20,m:"Dragonbreath"},{lv:25,m:"Snarl"},{lv:30,m:"Crunch"},{lv:35,m:"Thunderbolt"},{lv:40,m:"Dragon Rush"},{lv:45,m:"Volt Switch"},{lv:50,m:"Rain Dance"},{lv:55,m:"Dragon Pulse"},{lv:60,m:"Thunderclap"},{lv:65,m:"Thunder"},{lv:70,m:"Dragon Dance"}]},
+{id:222,n:"Raging Bolt",t:["Electric","Dragon"],a:["Lightningrod"],ev:null,evo:null,f:"etrian",r:"Paradox",sid:1009,st:{hp:125,atk:73,def:91,spa:137,spd:89,spe:75},mv:[{lv:1,m:"Wild Charge"},{lv:1,m:"Twister"},{lv:1,m:"Leer"},{lv:1,m:"Sunny Day"},{lv:5,m:"Bite"},{lv:10,m:"Shock Wave"},{lv:15,m:"Charge"},{lv:20,m:"Dragonbreath"},{lv:25,m:"Snarl"},{lv:30,m:"Crunch"},{lv:35,m:"Thunderbolt"},{lv:40,m:"Dragon Rush"},{lv:45,m:"Volt Switch"},{lv:50,m:"Rain Dance"},{lv:55,m:"Dragon Pulse"},{lv:60,m:"Thunderclap"},{lv:65,m:"Thunder"},{lv:70,m:"Dragon Dance"}]},
 {id:223,n:"Remoraid",t:["Water"],a:["Hustle","Sniper"],ev:25,evo:"Octillery",f:"",st:{hp:35,atk:65,def:35,spa:65,spd:35,spe:65},mv:[{lv:1,m:"Water Gun"},{lv:1,m:"Helping Hand"},{lv:5,m:"Focus Energy"},{lv:10,m:"Psybeam"},{lv:15,m:"Aurora Beam"},{lv:20,m:"Water Pulse"},{lv:25,m:"Signal Beam"},{lv:30,m:"Ice Beam"},{lv:35,m:"Dark Pulse"},{lv:40,m:"Hydro Pump"},{lv:45,m:"Aura Sphere"},{lv:50,m:"Hyper Beam"}]},
 {id:224,n:"Octillery",t:["Water"],a:["Swift Swim","Sniper"],ev:null,evo:null,f:"",st:{hp:95,atk:80,def:85,spa:115,spd:85,spe:65},mv:[{lv:1,m:"Seed Bomb"},{lv:1,m:"Waterfall"},{lv:1,m:"Water Gun"},{lv:1,m:"Helping Hand"},{lv:5,m:"Focus Energy"},{lv:10,m:"Psybeam"},{lv:15,m:"Aurora Beam"},{lv:20,m:"Water Pulse"},{lv:25,m:"Octazooka"},{lv:25,m:"Signal Beam"},{lv:30,m:"Ice Beam"},{lv:35,m:"Dark Pulse"},{lv:40,m:"Hydro Pump"},{lv:45,m:"Aura Sphere"},{lv:50,m:"Hyper Beam"}]},
-{id:225,n:"GouginFire",t:["Fire","Dragon"],a:["Multiscale"],ev:null,evo:null,f:"etrian",r:"Paradox",sid:1011,st:{hp:105,atk:115,def:121,spa:65,spd:93,spe:91},mv:[{lv:1,m:"Thunder Fang"},{lv:1,m:"Bulldoze"},{lv:1,m:"Leer"},{lv:1,m:"Sunny Day"},{lv:5,m:"Bite"},{lv:10,m:"Fire Fang"},{lv:15,m:"Rock Throw"},{lv:20,m:"Dragonbreath"},{lv:25,m:"Snarl"},{lv:30,m:"Crunch"},{lv:35,m:"Blaze Kick"},{lv:40,m:"Dragon Claw"},{lv:45,m:"Morning Sun"},{lv:50,m:"Flare Blitz"},{lv:55,m:"Earthquake"},{lv:60,m:"Fiery Bulwark"},{lv:65,m:"Dragon Rush"},{lv:70,m:"Dragon Dance"}]},
+{id:225,n:"Gouging Fire",t:["Fire","Dragon"],a:["Multiscale"],ev:null,evo:null,f:"etrian",r:"Paradox",sid:1011,st:{hp:105,atk:115,def:121,spa:65,spd:93,spe:91},mv:[{lv:1,m:"Thunder Fang"},{lv:1,m:"Bulldoze"},{lv:1,m:"Leer"},{lv:1,m:"Sunny Day"},{lv:5,m:"Bite"},{lv:10,m:"Fire Fang"},{lv:15,m:"Rock Throw"},{lv:20,m:"Dragonbreath"},{lv:25,m:"Snarl"},{lv:30,m:"Crunch"},{lv:35,m:"Blaze Kick"},{lv:40,m:"Dragon Claw"},{lv:45,m:"Morning Sun"},{lv:50,m:"Flare Blitz"},{lv:55,m:"Earthquake"},{lv:60,m:"Fiery Bulwark"},{lv:65,m:"Dragon Rush"},{lv:70,m:"Dragon Dance"}]},
 {id:226,n:"Mantine",t:["Water","Aether"],a:["Levitate"],ev:null,evo:null,f:"etrian",st:{hp:90,atk:40,def:70,spa:90,spd:140,spe:70},mv:[{lv:1,m:"Frost Curse"},{lv:1,m:"Signal Beam"},{lv:1,m:"Light Shot"},{lv:1,m:"Water Gun"},{lv:5,m:"Air Cutter"},{lv:10,m:"Water Pulse"},{lv:15,m:"Psybeam"},{lv:20,m:"Etheric Boon"},{lv:25,m:"Astral Gleam"},{lv:30,m:"Air Slash"},{lv:35,m:"Roost"},{lv:40,m:"Radiant Star"},{lv:45,m:"Hurricane"},{lv:50,m:"Hydro Pump"},{lv:55,m:"Azure Flood"}]},
 {id:227,n:"Skarmory",t:["Steel","Flying"],a:["Keen Eye","Sturdy"],ev:null,evo:null,f:"",st:{hp:70,atk:90,def:140,spa:40,spd:80,spe:70},mv:[{lv:1,m:"Spikes"},{lv:1,m:"Curse"},{lv:1,m:"Iron Head"},{lv:1,m:"Night Slash"},{lv:1,m:"Peck"},{lv:1,m:"Leer"},{lv:5,m:"Sand Attack"},{lv:10,m:"Metal Claw"},{lv:15,m:"Iron Defense"},{lv:20,m:"Wing Attack"},{lv:25,m:"Slash"},{lv:30,m:"Steel Wing"},{lv:35,m:"Drill Peck"},{lv:40,m:"Shift Gear"},{lv:45,m:"X-Scissor"},{lv:50,m:"Brave Bird"}]},
 {id:228,n:"Houndour",t:["Dark","Fire"],a:["Flash Fire","Early Bird"],ev:24,evo:"Houndoom",f:"",st:{hp:45,atk:60,def:30,spa:80,spd:50,spe:65},mv:[{lv:1,m:"Leer"},{lv:1,m:"Ember"},{lv:5,m:"Howl"},{lv:10,m:"Smog"},{lv:15,m:"Bite"},{lv:20,m:"Taunt"},{lv:25,m:"Mysticalfire"},{lv:30,m:"Snarl"},{lv:35,m:"Flamethrower"},{lv:40,m:"Nasty Plot"},{lv:45,m:"Heat Wave"},{lv:50,m:"Dark Pulse"}]},
@@ -677,8 +745,8 @@ const POKEMON = [
 {id:231,n:"Phanpy",t:["Ground"],a:["Sturdy","Speed Boost"],ev:25,evo:"Donphan",f:"",st:{hp:90,atk:60,def:60,spa:40,spd:40,spe:40},mv:[{lv:1,m:"Defense Curl"},{lv:1,m:"Tackle"},{lv:1,m:"Growl"},{lv:5,m:"Trailblaze"},{lv:10,m:"Rollout"},{lv:15,m:"Bulldoze"},{lv:20,m:"Endure"},{lv:25,m:"Body Slam"},{lv:30,m:"Charm"},{lv:35,m:"Double Edge"}]},
 {id:232,n:"Donphan",t:["Ground"],a:["Sturdy","Speed Boost"],ev:null,evo:null,f:"",st:{hp:90,atk:120,def:120,spa:60,spd:60,spe:50},mv:[{lv:1,m:"Ice Shard"},{lv:1,m:"Fire Fang"},{lv:1,m:"Head Smash"},{lv:1,m:"Rapid Spin"},{lv:1,m:"Bulldoze"},{lv:1,m:"Charm"},{lv:10,m:"Trailblaze"},{lv:15,m:"Rollout"},{lv:20,m:"Endure"},{lv:25,m:"Hi Horsepower"},{lv:30,m:"Rock Tomb"},{lv:35,m:"Take Down"},{lv:40,m:"Rock Slide"},{lv:45,m:"Earthquake"},{lv:50,m:"Stone Edge"}]},
 {id:233,n:"Porygon2",t:["Normal"],a:["Trace","Adaptability"],ev:"Dubious Disc",evo:"Porygon-Z",f:"",st:{hp:85,atk:80,def:90,spa:105,spd:95,spe:60},mv:[{lv:1,m:"Thundershock"},{lv:1,m:"Tackle"},{lv:1,m:"Electroweb"},{lv:5,m:"Psybeam"},{lv:10,m:"Agility"},{lv:15,m:"Recover"},{lv:20,m:"Shock Wave"},{lv:25,m:"Signal Beam"},{lv:30,m:"Electroshock"},{lv:35,m:"Tri Attack"},{lv:40,m:"Psychic"},{lv:45,m:"Thunderbolt"},{lv:50,m:"Hyper Beam"}]},
-{id:234,n:"Roar. Moon",t:["Dragon","Dark"],a:["Intimidate"],ev:null,evo:null,f:"etrian",r:"Paradox",sid:1005,st:{hp:105,atk:139,def:71,spa:55,spd:101,spe:119},mv:[{lv:1,m:"Iron Head"},{lv:1,m:"Bite"},{lv:1,m:"Leer"},{lv:1,m:"Dragonbreath"},{lv:1,m:"Sunny Day"},{lv:5,m:"Ember"},{lv:10,m:"Headbutt"},{lv:15,m:"Scary Face"},{lv:20,m:"Take Down"},{lv:25,m:"Zen Headbutt"},{lv:30,m:"Dragon Claw"},{lv:35,m:"Shadow Claw"},{lv:40,m:"Flamethrower"},{lv:45,m:"Night Slash"},{lv:50,m:"Roost"},{lv:55,m:"Dragon Dance"},{lv:60,m:"Dragon Rush"}]},
-{id:235,n:"WalkinWake",t:["Water","Dragon"],a:["Competitive"],ev:null,evo:null,f:"etrian",r:"Paradox",sid:1007,st:{hp:99,atk:83,def:91,spa:125,spd:83,spe:109},mv:[{lv:1,m:"Waterfall"},{lv:1,m:"Twister"},{lv:1,m:"Leer"},{lv:1,m:"Sunny Day"},{lv:5,m:"Bite"},{lv:10,m:"Water Pulse"},{lv:15,m:"Air Cutter"},{lv:20,m:"Dragonbreath"},{lv:25,m:"Snarl"},{lv:30,m:"Crunch"},{lv:35,m:"Scald"},{lv:40,m:"Dragon Rush"},{lv:45,m:"Muddy Water"},{lv:50,m:"Dragon Pulse"},{lv:55,m:"Rain Dance"},{lv:60,m:"Hydro Steam"},{lv:65,m:"Flamethrower"},{lv:70,m:"Dragon Dance"}]},
+{id:234,n:"Roaring Moon",t:["Dragon","Dark"],a:["Intimidate"],ev:null,evo:null,f:"etrian",r:"Paradox",sid:1005,st:{hp:105,atk:139,def:71,spa:55,spd:101,spe:119},mv:[{lv:1,m:"Iron Head"},{lv:1,m:"Bite"},{lv:1,m:"Leer"},{lv:1,m:"Dragonbreath"},{lv:1,m:"Sunny Day"},{lv:5,m:"Ember"},{lv:10,m:"Headbutt"},{lv:15,m:"Scary Face"},{lv:20,m:"Take Down"},{lv:25,m:"Zen Headbutt"},{lv:30,m:"Dragon Claw"},{lv:35,m:"Shadow Claw"},{lv:40,m:"Flamethrower"},{lv:45,m:"Night Slash"},{lv:50,m:"Roost"},{lv:55,m:"Dragon Dance"},{lv:60,m:"Dragon Rush"}]},
+{id:235,n:"Walking Wake",t:["Water","Dragon"],a:["Competitive"],ev:null,evo:null,f:"etrian",r:"Paradox",sid:1007,st:{hp:99,atk:83,def:91,spa:125,spd:83,spe:109},mv:[{lv:1,m:"Waterfall"},{lv:1,m:"Twister"},{lv:1,m:"Leer"},{lv:1,m:"Sunny Day"},{lv:5,m:"Bite"},{lv:10,m:"Water Pulse"},{lv:15,m:"Air Cutter"},{lv:20,m:"Dragonbreath"},{lv:25,m:"Snarl"},{lv:30,m:"Crunch"},{lv:35,m:"Scald"},{lv:40,m:"Dragon Rush"},{lv:45,m:"Muddy Water"},{lv:50,m:"Dragon Pulse"},{lv:55,m:"Rain Dance"},{lv:60,m:"Hydro Steam"},{lv:65,m:"Flamethrower"},{lv:70,m:"Dragon Dance"}]},
 {id:236,n:"Tyrogue",t:["Fighting"],a:["Guts"],ev:20,evo:"Hitmontop",f:"",st:{hp:35,atk:35,def:35,spa:35,spd:35,spe:35},mv:[{lv:1,m:"Tackle"},{lv:1,m:"Helping Hand"},{lv:1,m:"Fake Out"},{lv:1,m:"Focus Energy"}]},
 {id:237,n:"Hitmontop",t:["Fighting"],a:["Intimidate","Technician"],ev:null,evo:null,f:"",st:{hp:50,atk:95,def:95,spa:35,spd:110,spe:70},mv:[{lv:1,m:"Rolling Kick"},{lv:1,m:"Rapid Spin"},{lv:1,m:"Hi Jump Kick"},{lv:1,m:"Helping Hand"},{lv:1,m:"Tackle"},{lv:1,m:"Focus Energy"},{lv:1,m:"Fake Out"},{lv:5,m:"Quick Attack"},{lv:10,m:"Detect"},{lv:15,m:"Revenge"},{lv:20,m:"Triple Kick"},{lv:25,m:"Bullet Punch"},{lv:30,m:"Triple Axel"},{lv:35,m:"Drill Run"},{lv:40,m:"Mach Punch"},{lv:45,m:"Sucker Punch"},{lv:50,m:"Close Combat"}]},
 {id:238,n:"Smoochum",t:["Grass","Water"],a:["Snow Cloak","Oblivious"],ev:30,evo:"Jynx",f:"etrian",st:{hp:45,atk:30,def:15,spa:85,spd:65,spe:65},mv:[{lv:1,m:"Pound"},{lv:1,m:"Water Gun"},{lv:5,m:"Absorb"},{lv:10,m:"Lovely Kiss"},{lv:15,m:"Mega Drain"},{lv:20,m:"Water Pulse"},{lv:25,m:"Frost Curse"},{lv:30,m:"Giga Drain"},{lv:35,m:"Scald"},{lv:40,m:"Cosmic Power"},{lv:45,m:"Wish"},{lv:50,m:"Hydro Pump"}]},
@@ -1510,11 +1578,11 @@ const ENCOUNTERS = [
 // ── CAVE OF AGES ──
 {region:"Cave of Ages",tag:"Stratum IV",slots:[
   {method:"Grass",enc:[
-    {name:"ScreamTail",id:987,lv:"45–49",pct:"45%"},
-    {name:"SandyShock",id:989,lv:"46–49",pct:"20%"},
-    {name:"Flut. Mane",id:990,lv:"45–48",pct:"20%"},
+    {name:"Scream Tail",id:985,lv:"45–49",pct:"45%"},
+    {name:"Sandy Shock",id:989,lv:"46–49",pct:"20%"},
+    {name:"Flutter Mane",id:987,lv:"45–48",pct:"20%"},
     {name:"Great Tusk",id:984,lv:"47–49",pct:"9%"},
-    {name:"Roar. Moon",id:1005,lv:"48–50",pct:"6%"},
+    {name:"Roaring Moon",id:1005,lv:"48–50",pct:"6%"},
   ]}
 ]},
 // ── FIFTH STRATUM – B1F ──
@@ -1773,7 +1841,7 @@ const ENCOUNTERS = [
     {name:"Mismagius",id:429,lv:"72–74",pct:"6%",etrian:true},
   ]},
   {method:"Event",enc:[
-    {name:"Blaziken (Battle Bond)",id:257,lv:"75",pct:"Sidequest",etrian:true,note:"Postgame — My Parting Gift... quest"},
+    {name:"Blaziken (Battle Bond)",id:257,lv:"75",pct:"Sidequest",note:"Postgame — My Parting Gift... quest"},
   ]}
 ]},
 // ── POSTGAME EVENTS ──
@@ -1784,17 +1852,17 @@ const ENCOUNTERS = [
 ]},
 {region:"Seventh Stratum — B1F (Postgame)",tag:"Postgame",slots:[
   {method:"Event",enc:[
-    {name:"WalkinWake",id:1009,lv:"90",pct:"Event"},
+    {name:"Walking Wake",id:1007,lv:"90",pct:"Event"},
   ]}
 ]},
 {region:"Fourth Stratum (Postgame)",tag:"Postgame",slots:[
   {method:"Event",enc:[
-    {name:"RagingBolt",id:1021,lv:"90",pct:"Event"},
+    {name:"Raging Bolt",id:1009,lv:"90",pct:"Event"},
   ]}
 ]},
 {region:"Third Stratum (Postgame)",tag:"Postgame",slots:[
   {method:"Event",enc:[
-    {name:"GouginFire",id:1020,lv:"90",pct:"Event"},
+    {name:"Gouging Fire",id:1011,lv:"90",pct:"Event"},
   ]}
 ]},
 ];
@@ -1981,22 +2049,15 @@ const ETRIAN_SPRITES = {
   // ── Gen 2 ──────────────────────────────────
   "Hoothoot":       "./sprites/163.png",
   "Noctowl":        "./sprites/164.png",
-  "ScreamTail":     "./sprites/172.png",
-  "SandyShock":     "./sprites/173.png",
-  "Flut. Mane":     "./sprites/174.png",
+  // Paradox Pokémon use PokeAPI sprites via their sid field
   "Mareep":         "./sprites/179.png",
   "Ampharos":       "./sprites/181.png",
   "Bellossom":      "./sprites/182.png",
   "Sunkern":        "./sprites/191.png",
   "Gorochu":        "./sprites/201.png",  // custom Odyssey Pokémon
-  "Great Tusk":     "./sprites/211.png",
   "Sneasel":        "./sprites/215.png",
-  "RagingBolt":     "./sprites/222.png",
-  "GouginFire":     "./sprites/225.png",
   "Mantine":        "./sprites/226.png",
   "Corsola":        "./sprites/370.png",
-  "Roar. Moon":     "./sprites/234.png",
-  "WalkinWake":     "./sprites/235.png",
   "Smoochum":       "./sprites/238.png",
   "Elekid":         "./sprites/239.png",
   "Magby":          "./sprites/240.png",
@@ -2047,7 +2108,6 @@ const ETRIAN_SPRITES = {
   "Gallade":        "./sprites/403.png",
   "Dusknoir":       "./sprites/405.png",
   // ── Custom Odyssey ─────────────────────────
-  "Gorochu":        "./sprites/201.png",
   "Reefsola":       "./sprites/386.png",
 };
 
@@ -2113,6 +2173,24 @@ function renderDexGrid(){
   if(f==="uncaught") visible=visible.filter(p=>!caught.has(catchKey(p.n)));
   if(f==="etrian") visible=visible.filter(p=>p.f==="etrian"||p.f==="etrianEvo");
   grid.innerHTML=visible.map(p=>renderCard(p,caught)).join("");
+}
+
+// Dedicated global handler for evo link clicks — called from HTML onclick attributes
+function goToEvo(id, e){
+  e.stopPropagation();
+  e.preventDefault();
+  openModal(id);
+}
+
+// Build clickable evolution target links from an evo string like "Vileplume / Bellossom ⭐"
+function makeEvoLinks(evoStr){
+  if(!evoStr) return evoStr;
+  return evoStr.split(" / ").map(part=>{
+    const clean=part.replace(/\s*⭐/g,"").trim();
+    const found=POKEMON.find(pk=>pk.n===clean);
+    if(found) return `<span class="evo-link" onclick="goToEvo(${found.id},event)">${part}</span>`;
+    return part;
+  }).join(" / ");
 }
 
 function renderCard(p,caught){
@@ -2194,8 +2272,8 @@ function renderFormBody(p,f){
   const rLabel=regionLabel(p,f);
   const spriteUrl=(ETRIAN_SPRITES[fname])||(sid?SPRITE_BASE+sid+".png":"data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=");
   const c=isCaught(p.n);
-  const evoSpan=evo?'<span class="evo-link" data-evo="'+evo+'" onclick="openModalByName(event,this.dataset.evo)"><strong>'+evo+'</strong></span>':'';
-  const evoLine=ev?(typeof ev==="number"?"Lv."+ev+" \u2192 "+evoSpan:ev+" \u2192 "+evoSpan):(evo?"Final form":"Final form");
+  const evoLinks=makeEvoLinks(evo);
+  const evoLine=ev?(typeof ev==="number"?"Lv."+ev+" \u2192 "+evoLinks:ev+" \u2192 "+evoLinks):(evo?"Final form":"Final form");
   const flagNote=isStar
     ?`<div style="background:rgba(240,192,64,.08);border:1px solid rgba(240,192,64,.2);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--gold);margin-bottom:10px">⭐ ${rLabel} Variant</div>`
     :isEvo?'<div style="background:rgba(240,192,64,.08);border:1px solid rgba(240,192,64,.2);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--gold);margin-bottom:10px">Evolves into a Regional Variant</div>'
@@ -2972,7 +3050,10 @@ POKEMON.forEach(p=>{
   if(p.forms) p.forms.forEach(f=>{ if(f.fname) ENC_TYPES[catchKey(f.fname)]=f.ft||p.t; });
   ENC_TYPES[catchKey(p.n)]=p.t;
   // Build reverse-evo map: evo_target_name -> {fromName, ev}
-  if(p.evo) EVOLVES_FROM[norm(p.evo)]={fromName:p.n,ev:p.ev};
+  if(p.evo) p.evo.split(" / ").forEach(part=>{
+    const clean=part.replace(/\s*⭐/g,"").trim();
+    if(clean) EVOLVES_FROM[norm(clean)]={fromName:p.n,ev:p.ev};
+  });
   if(p.forms) p.forms.forEach(f=>{
     if(f.fevo) EVOLVES_FROM[norm(f.fevo)]={fromName:f.fname,ev:f.fev};
   });
@@ -3085,6 +3166,22 @@ buildNaval();
 buildTMs();
 buildTutors();
 buildQuests();
+</script>
+</div><!-- /#main-wrap -->
+<script>
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+// Close sidebar when a tab is selected on mobile
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    if(window.innerWidth<=640){
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebar-overlay').classList.remove('open');
+    }
+  });
+});
 </script>
 </body>
 </html>
