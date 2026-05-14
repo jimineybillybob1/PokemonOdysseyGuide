@@ -214,6 +214,12 @@ header{
   #main-wrap{margin-left:0}
   #mobile-bar{display:flex}
   #sidebar-overlay.open{display:block}
+  /* Prevent horizontal overflow on tables */
+  .enc-table,.guide-table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+  .method-block{max-width:100%;overflow:hidden}
+  /* Prevent any single element bursting the viewport */
+  .section *{max-width:100%;box-sizing:border-box}
+  .section img{max-width:none} /* sprites can be their natural size */
 }
 
 /* MOVES TAB */
@@ -236,18 +242,20 @@ header{
 
 /* STICKY CONTROLS */
 .sticky-controls{
-  position:sticky;top:var(--header-h,60px);z-index:50;
-  background:var(--bg);
-  border-bottom:1px solid var(--border);
-  backdrop-filter:none;
-  margin:0 -20px 14px;
-  padding:8px 20px 8px;
+  position:sticky;top:var(--header-h,60px);z-index:100;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  margin:0 0 14px;
+  padding:10px 14px;
   transition:padding .2s,box-shadow .2s;
+  box-shadow:0 4px 18px rgba(0,0,0,.45);
 }
 /* Compact (scrolled) state — filters hidden, only slim search bar shows */
 .sticky-controls.compact{
-  padding:5px 20px;
-  box-shadow:0 4px 18px rgba(0,0,0,.55);
+  padding:6px 14px;
+  border-radius:var(--radius);
+  box-shadow:0 6px 24px rgba(0,0,0,.6);
 }
 .sticky-controls .search-wrap{display:flex;width:100%}
 .sticky-controls .search-input{width:100%;box-sizing:border-box}
@@ -3139,11 +3147,16 @@ function buildMoves() {
 }
 (function(){
   function setHeaderH(){
-    const h=document.querySelector("header");
-    if(h) document.documentElement.style.setProperty("--header-h",h.offsetHeight+"px");
+    const mobileBar=document.getElementById("mobile-bar");
+    const header=document.querySelector("header");
+    // On mobile the header is hidden — use the mobile bar height instead
+    const mobileBarVisible = mobileBar && getComputedStyle(mobileBar).display !== "none";
+    const h = mobileBarVisible ? mobileBar.offsetHeight : (header ? header.offsetHeight : 0);
+    document.documentElement.style.setProperty("--header-h", h+"px");
   }
   setHeaderH();
   window.addEventListener("resize",setHeaderH);
+  document.fonts.ready.then(setHeaderH);
 })();
 window.addEventListener("scroll",function(){
   document.getElementById("jump-top").classList.toggle("visible",window.scrollY>300);
