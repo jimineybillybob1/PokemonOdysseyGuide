@@ -2133,7 +2133,7 @@ function renderCard(p,caught){
   return `<div class="poke-card${c?" caught":""}" onclick="openModal(${p.id})">
     <div class="poke-card-top">
       <span class="poke-num">#${String(p.id).padStart(3,"0")}</span>
-      <span>${isStar?`<span class="variant-badge">⭐ ${regionLabel(p)} Variant</span>`:""}</span>
+      <span>${isStar?`<span class="etrian-star" title="${regionLabel(p)} Variant">⭐</span>`:""}</span>
       <button class="catch-btn${c?" caught":""}" data-pn="${p.n}" onclick="event.stopPropagation();const _n=this.dataset.pn;toggleCaught(_n);renderDexGrid();updateDexProgress();syncEncButtons(_n);" title="${c?"Caught – click to unmark":"Mark as caught"}">${c?"✓":""}</button>
     </div>
     <img class="poke-sprite" src="${cardSpriteUrl}" alt="${cardName}" loading="lazy" onerror="this.style.opacity='.3'">
