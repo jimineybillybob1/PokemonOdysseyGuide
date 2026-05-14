@@ -5,15 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pokémon Odyssey — Companion Guide v4.1.1</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0a0e1a">
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
-<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Odyssey Guide">
-<meta name="description" content="Interactive companion guide for Pokémon Odyssey — Pokédex, encounters, events, TMs, move tutors, side quests and more.">
 <style>
 :root{--bg:#080d18;--bg2:#0f1520;--bg3:#17213a;--border:#243050;--gold:#f0c040;--teal:#00c4e0;--green:#22c55e;--red:#ef4444;--text:#dde6f5;--text2:#8899bb;--shadow:0 4px 20px rgba(0,0,0,.6);--radius:8px}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -1939,117 +1930,112 @@ function sprite(id){return SPRITE_BASE+id+".png";}
 // Full list of Etrian Variants in this game (add a URL for each one):
 const ETRIAN_SPRITES = {
   // ── Gen 1 ──────────────────────────────────
-  // "Rattata":             "",
-  // "Raticate":            "",  // also covers Ratreecate if using same key
-  // "Spearow":             "",
-  // "Fearow":              "",
-  // "Pikachu":             "",  // (⭐) evolves into etrian Raichu
-  // "Raichu":              "",
-  // "Grimer (Alola)":      "",
-  // "Muk (Alola)":         "",
-  // "Voltorb (Hisui)":     "",
-  // "Electrode (Hisui)":   "",
-  // "Jigglypuff":          "",
-  // "Wigglytuff":          "",
-  // "Krabby":              "",
-  // "Kingler":             "",
-  // "Exeggcute":           "",
-  // "Exeggutor":           "",
-  // "Farfetch'd (Galar)":  "",
-  // "Aerodactyl":          "",
+  "Rattata":        "./sprites/19.png",
+  "Ratreecate":     "./sprites/20.png",   // custom Odyssey Pokémon
+  "Spearow":        "./sprites/21.png",
+  "Fearow":         "./sprites/22.png",
+  "Ekans":          "./sprites/23.png",
+  "Arbok":          "./sprites/24.png",
+  // Pikachu — etrianEvo only, normal sprite via PokeAPI
+  "Raichu":         "./sprites/26.png",
+  "Sandshrew":      "./sprites/27.png",
+  "Sandslash":      "./sprites/28.png",
+  "Jigglypuff":     "./sprites/39.png",
+  "Wigglytuff":     "./sprites/40.png",
+  // Oddish — etrianEvo only, normal sprite via PokeAPI
+  "Vileplume":      "./sprites/45.png",
+  "Vulpix":         "./sprites/37.png",
+  "Ninetales":      "./sprites/38.png",
+  "Machop":         "./sprites/66.png",
+  "Machoke":        "./sprites/67.png",
+  "Grimer":         "./sprites/88.png",
+  "Muk":            "./sprites/89.png",
+  "Krabby":         "./sprites/98.png",
+  "Kingler":        "./sprites/99.png",
+  "Voltorb":        "./sprites/100.png",
+  "Electrode":      "./sprites/101.png",
+  "Exeggcute":      "./sprites/102.png",
+  "Exeggutor":      "./sprites/103.png",
+  "Cubone":         "./sprites/104.png",
+  "Marowak":        "./sprites/105.png",
+  "Chansey":        "./sprites/113.png",
+  "Jynx":           "./sprites/124.png",
+  "Magmar":         "./sprites/126.png",
+  // Eevee — etrianEvo only, normal sprite via PokeAPI
+  "Omanyte":        "./sprites/138.png",
+  "Kabuto":         "./sprites/140.png",
+  "Kabutops":       "./sprites/141.png",
+  "Aerodactyl":     "./sprites/142.png",
+  "Stantler":       "./sprites/146.png",
+  "Farfetch'd":     "./sprites/83.png",
   // ── Gen 2 ──────────────────────────────────
-  // "Hoothoot":            "",
-  // "Noctowl":             "",
-  // "Mareep":              "",
-  // "Corsola":             "",
-  // "Elekid":              "",
-  // "Gulpin":              "",
-  // "Smoochum":            "",
-  // "Sneasel":             "",
-  // "Stantler":            "",
+  "Hoothoot":       "./sprites/163.png",
+  "Noctowl":        "./sprites/164.png",
+  "ScreamTail":     "./sprites/172.png",
+  "SandyShock":     "./sprites/173.png",
+  "Flut. Mane":     "./sprites/174.png",
+  "Mareep":         "./sprites/179.png",
+  "Ampharos":       "./sprites/181.png",
+  "Bellossom":      "./sprites/182.png",
+  "Sunkern":        "./sprites/191.png",
+  "Gorochu":        "./sprites/201.png",  // custom Odyssey Pokémon
+  "Great Tusk":     "./sprites/211.png",
+  "Sneasel":        "./sprites/215.png",
+  "RagingBolt":     "./sprites/222.png",
+  "GouginFire":     "./sprites/225.png",
+  "Mantine":        "./sprites/226.png",
+  "Corsola":        "./sprites/370.png",
+  "Roar. Moon":     "./sprites/234.png",
+  "WalkinWake":     "./sprites/235.png",
+  "Smoochum":       "./sprites/238.png",
+  "Elekid":         "./sprites/239.png",
+  "Magby":          "./sprites/240.png",
+  "Celebi":         "./sprites/251.png",
   // ── Gen 3 ──────────────────────────────────
-  // "Poochyena":           "",
-  // "Mightyena":           "",
-  // "Oddish":              "",  // (⭐) etrianEvo
-  // "Wailmer":             "",  // (⭐) etrianEvo
-  // "Wailord":             "",
-  // "Shroomish":           "",
-  // "Volbeat":             "",
-  // "Illumise":            "",
-  // "Ralts":               "",
-  // "Natu":                "",
-  // "Xatu":                "",
-  // "Sandshrew":           "",
-  // "Sandslash":           "",
-  // "Aron":                "",
-  // "Meditite":            "",
-  // "Duskull":             "",
-  // "Wurmple":             "",  // (⭐) etrianEvo
-  // "Dustox":              "",
-  // "Beautifly":           "",
-  // "Ponyta":              "",
-  // "Machop":              "",
-  // "Machoke":             "",
-  // "Magby":               "",
-  // "Magmar":              "",
-  // "Sunkern":             "",
-  // "Mantine":             "",
-  // "Baltoy":              "",
-  // "Cubone":              "",
-  // "Absol":               "",
-  // "Ekans":               "",
-  // "Barboach":            "",
-  // "Whiscash":            "",
-  // "Vulpix":              "",
-  // "Ninetales":           "",
-  // "Blaziken":            "",
-  // "Ampharos":            "",
-  // "Breloom":             "",
-  // "Bellossom":           "",
-  // "Swalot":              "",
-  // "Kabuto":              "",
-  // "Omanyte":             "",
-  // "Relicanth":           "",
+  "Blaziken":       "./sprites/257.png",
+  "Poochyena":      "./sprites/261.png",
+  "Mightyena":      "./sprites/262.png",
+  // Wurmple — etrianEvo only, normal sprite via PokeAPI
+  "Beautifly":      "./sprites/267.png",
+  "Dustox":         "./sprites/269.png",
+  "Ralts":          "./sprites/280.png",
+  "Kirlia":         "./sprites/281.png",
+  "Gardevoir":      "./sprites/282.png",
+  "Shroomish":      "./sprites/285.png",
+  "Breloom":        "./sprites/286.png",
+  "Aron":           "./sprites/304.png",
+  "Lairon":         "./sprites/305.png",
+  "Aggron":         "./sprites/306.png",
+  "Meditite":       "./sprites/307.png",
+  "Medicham":       "./sprites/308.png",
+  "Volbeat":        "./sprites/313.png",
+  "Illumise":       "./sprites/314.png",
+  "Gulpin":         "./sprites/316.png",
+  "Swalot":         "./sprites/317.png",
+  // Wailmer — etrianEvo only, normal sprite via PokeAPI
+  "Wailord":        "./sprites/321.png",
+  "Regigigas":      "./sprites/327.png",
+  "Barboach":       "./sprites/339.png",
+  "Whiscash":       "./sprites/340.png",
+  "Baltoy":         "./sprites/343.png",
+  "Claydal":        "./sprites/344.png",  // custom Odyssey Pokémon
+  "Duskull":        "./sprites/355.png",
+  "Dusclops":       "./sprites/356.png",
+  "Absol":          "./sprites/359.png",
+  "Relicanth":      "./sprites/369.png",
+  "Regirock":       "./sprites/377.png",
+  "Regice":         "./sprites/378.png",
+  "Registeel":      "./sprites/379.png",
+  "Jirachi":        "./sprites/385.png",
+  "Ponyta":         "./sprites/77.png",
+  "Rapidash":       "./sprites/78.png",
   // ── Gen 4 ──────────────────────────────────
-  // "Marowak":             "",
-  // "Lairon":              "",
-  // "Medicham":            "",
-  // "Weavile":             "",
-  // "Tangrowth":           "",
-  // "Dusclops":            "",
-  // "Dusknoir":            "",
-  // "Kabutops":            "",
-  // "Gardevoir":           "",
-  // "Gallade":             "",
-  // "Rapidash":            "",
-  // "Claydol":             "",
-  // "Arbok":               "",
-  // "Chansey":             "",
-  // "Vileplume":           "",
-  // "Mismagius":           "",
-  // ── Regional & Form variants ──────────────────
-  // These use PokeAPI sprite IDs for their official regional forms.
-  // The sid field on each POKEMON/form entry already points to the right
-  // PokeAPI id (e.g. Farfetch'd (Galar) = sid:10110 → 10110.png).
-  // Only add an entry here if you want to OVERRIDE that with a custom image.
-  //
-  // Regional form PokeAPI sprite IDs already set in the POKEMON array:
-  //   Grimer (Alola)      sid:10139  → PokeAPI 10139.png
-  //   Muk (Alola)         sid:10040  → PokeAPI 10040.png
-  //   Farfetch'd (Galar)  sid:10110  → PokeAPI 10110.png
-  //   Sirfetch'd          sid:865    → PokeAPI 865.png
-  //   Corsola (Etrian)    sid:222    → PokeAPI 222.png (standard Corsola)
-  //   Voltorb (Hisui)     sid:10218  → PokeAPI 10218.png
-  //   Electrode (Hisui)   sid:10219  → PokeAPI 10219.png
-  //   Kleavor             sid:900    → PokeAPI 900.png
-  //   Sneasler            sid:903    → PokeAPI 903.png
-  //
-  // To change any of these, either:
-  //   a) Update the sid value in the POKEMON array to a different PokeAPI id
-  //   b) Add an entry here with a full custom URL
-  //
-  // ── Custom / Odyssey-only ──────────────────
-  // "Ratreecate":          "",  // custom Odyssey Pokémon — no PokeAPI sprite
+  "Mismagius":      "./sprites/389.png",
+  "Weavile":        "./sprites/391.png",
+  "Tangrowth":      "./sprites/395.png",
+  "Magmortar":      "./sprites/397.png",
+  "Gallade":        "./sprites/403.png",
+  "Dusknoir":       "./sprites/405.png",
 };
 
 // Returns the correct sprite URL for a Pokémon.
